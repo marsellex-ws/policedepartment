@@ -189,7 +189,7 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1p
 <style id="ui-patch-v3">
 header.top{overflow:hidden;background:linear-gradient(180deg,rgba(6,17,28,.95),rgba(7,18,29,.84))!important}
 header.top .topin{position:relative;overflow:hidden}
-header.top .topin::before{content:"";position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:min(36vw,420px);height:72px;background:url('reestr_shapk.png') no-repeat center/contain;opacity:.42;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,.32))}
+header.top .topin::before{content:"";position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:74px;background:url('reestr_shapk.png') no-repeat center/100% 100%;opacity:.42;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,.32))}
 header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(108,175,228,.18),rgba(255,117,144,.14),rgba(108,175,228,.18),transparent)}
 .brand,.headright{position:relative;z-index:1}
 .brand-text small{opacity:.95}
@@ -204,19 +204,19 @@ header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px
 .btn:hover::before{transform:scaleY(1);opacity:1;box-shadow:0 0 16px rgba(96,183,255,.34)}
 .btn:hover::after{opacity:1;animation:shineRun 3s linear infinite}
 @keyframes shineRun{0%{transform:translateX(0)}100%{transform:translateX(310%)}}
-.hero-art{width:360px;min-height:330px;display:grid;place-items:center}
+.hero-art{width:380px;min-height:350px;display:grid;place-items:center}
 .hero-art-bg{position:absolute;inset:0;display:grid;place-items:center}
 .halo{width:248px;height:248px;border-color:rgba(116,171,210,.28);box-shadow:0 0 0 32px rgba(100,170,229,.03),0 0 0 64px rgba(100,170,229,.018),inset 0 0 36px rgba(53,145,217,.08);animation:spin 26s linear infinite}
-.orbit-shell{position:relative;width:300px;height:300px;display:grid;place-items:center}
+.orbit-shell{position:relative;width:320px;height:320px;display:grid;place-items:center}
 .orbit-ring{position:absolute;border-radius:50%;border:1px solid rgba(117,178,224,.17)}
-.orbit-ring.outer{inset:6px;border-color:rgba(125,184,228,.18)}
-.orbit-ring.inner{inset:44px;border-color:rgba(100,154,198,.16)}
-.orbit-icons{position:absolute;inset:48px;border-radius:50%;border:1px solid rgba(102,157,202,.14);animation:spin 16s linear infinite}
-.orbit-icons .icon-node{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;display:grid;place-items:center;background:rgba(7,20,31,.84);border:1px solid rgba(123,177,224,.16);box-shadow:0 12px 26px rgba(0,0,0,.24),0 0 18px rgba(99,176,236,.06)}
-.orbit-icons .icon-node svg{width:17px;height:17px;stroke:#b7dcfb;stroke-width:1.8;fill:none}
-.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(102px)}
-.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(102px) rotate(-120deg)}
-.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(102px) rotate(-240deg)}
+.orbit-ring.outer{inset:8px;border-color:rgba(125,184,228,.18)}
+.orbit-ring.inner{inset:42px;border-color:rgba(100,154,198,.16)}
+.orbit-ring.core{inset:82px;border-color:rgba(100,154,198,.22)}
+
+
+
+
+
 .orbit-dot,.orbit-burst{position:absolute;left:50%;top:50%;will-change:transform,opacity}
 .orbit-dot{width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;box-shadow:0 0 26px currentColor,0 0 0 6px rgba(255,255,255,.03)}
 .orbit-dot.blue{background:#63beff;color:#63beff}
@@ -225,9 +225,9 @@ header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px
 .orbit-burst{width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;opacity:0;border:1px solid rgba(255,255,255,.78);background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,255,255,.25) 42%,transparent 74%)}
 .orbit-burst.boom{animation:orbitBoom .46s ease-out}
 @keyframes orbitBoom{0%{opacity:.95;transform:translate(var(--bx),var(--by)) scale(.3)}72%{opacity:.34}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(2.6)}}
-.orbit-center{position:relative;z-index:2;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 1px rgba(161,213,249,.16),0 0 28px rgba(81,170,235,.12)}
-.orbit-center img{width:84%;height:84%;object-fit:contain;display:block;filter:drop-shadow(0 7px 18px rgba(76,162,233,.28))}
-.hero-art-inner,.orbit-outer{display:none!important}
+.orbit-center{position:relative;z-index:2;width:122px;height:122px;border-radius:50%;display:grid;place-items:center}
+.orbit-center img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 9px 22px rgba(76,162,233,.34))}
+.hero-art-inner,.orbit-outer,.orbit-icons{display:none!important}
 .toast-zone{position:fixed;top:24px;right:24px;bottom:auto;display:flex;flex-direction:column;gap:10px;z-index:120;pointer-events:none}
 .toast{min-width:240px;max-width:380px;padding:14px 18px;border:1px solid rgba(118,176,219,.28);background:rgba(12,29,44,.96);color:#dceeff;box-shadow:0 18px 42px rgba(3,11,20,.45);border-radius:14px;font-size:12px;font-weight:700;opacity:0;transform:translateX(30px);transition:transform .26s ease,opacity .26s ease,border-color .26s ease;pointer-events:auto}
 .toast.show{opacity:1;transform:translateX(0)}
@@ -242,14 +242,14 @@ header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px
 .action-edit:hover .plus{opacity:0;transform:scale(.45);max-width:0}
 .action-edit:hover .edit-wrap{max-width:96px;opacity:1}
 .action-edit:focus-visible{outline:2px solid rgba(117,190,250,.62);outline-offset:2px}
-@media(max-width:1100px){header.top .topin::before{width:min(40vw,310px);height:58px;opacity:.36}.hero{grid-template-columns:minmax(0,1fr) 270px}.hero-art{width:270px;min-height:270px}.orbit-shell{width:226px;height:226px}.orbit-icons{inset:34px}.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(79px)}.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(79px) rotate(-120deg)}.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(79px) rotate(-240deg)}}
+@media(max-width:1100px){header.top .topin::before{height:60px;opacity:.36}.hero{grid-template-columns:minmax(0,1fr) 290px}.hero-art{width:290px;min-height:290px}.orbit-shell{width:248px;height:248px}.orbit-ring.inner{inset:32px}.orbit-ring.core{inset:64px}}
 @media(max-width:760px){header.top .topin::before{display:none}.hero-art{display:none}.toast-zone{left:14px;right:14px;top:16px}.toast{max-width:none;min-width:0}}
 </style>
 
 </head>
 <body><div class="loader" id="loader"><div class="loader-core"><span class="loader-dot blue"></span><span class="loader-dot red"></span><div class="loader-logo"><img src="pd_photo.png" alt=""></div></div></div><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
 <header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><img class="brand-mark" src="pd_photo.png" alt=""><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><a class="btn primary" id="loginBtn" href="entrance.html#login">Войти</a><a class="btn" id="registerBtn" href="entrance.html#register">Регистрация</a><a class="btn hidden" id="manageBtn" href="entrance.html#manage">Управление</a><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
-<main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-icons" id="orbitIcons"><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M6 8h11l3 2-2 2h-2l-2 4H9l1-4H7l-1 2H4v-2l2-2z"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M11 2h2v3l2 1 2-2 2 2-2 2 1 2h3v2h-3l-1 2 2 2-2 2-2-2-2 1v3h-2v-3l-2-1-2 2-2-2 2-2-1-2H2v-2h3l1-2-2-2 2-2 2 2 2-1z"/><circle cx="12" cy="12" r="2.5"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3.1 8.1 7 10 3.9-1.9 7-5.5 7-10V6z"/></svg></div></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
+<main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-ring core"></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
 <section class="wrap main-section" id="registry"><div class="section-top"><div><h2>УЧЁТ ВЗЫСКАНИЯ</h2></div><div><button class="btn" id="addBtn" type="button" hidden>＋ Добавить наказание</button></div></div>
 <div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
 <div class="table-scroll"><table class="records"><thead><tr><th>№</th><th>Имя</th><th>Номер аккаунта</th><th>PD</th><th>Наказание / УПД</th><th>Отработка</th><th>Доказательства</th><th>Кто выдал</th><th>Статус</th><th>Дата</th><th id="actionHeader" class="hidden">Действия</th></tr></thead><tbody id="tableBody"></tbody></table></div>
@@ -281,7 +281,7 @@ header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px
   const dateText = value => {const d = new Date(value); return Number.isNaN(d.getTime()) ? '—' : new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(d);};
   const canEdit = dept => !!state.user && (state.user.is_admin || Array.isArray(state.user.editable_departments) && state.user.editable_departments.includes(dept));
   const anyEdit = () => departments.some(canEdit);
-  const humanError = error => error?.status === 409 ? 'Запись уже изменена. Обнови список' : error?.status === 403 ? 'Недостаточно прав' : error?.status === 401 ? 'Не удалось войти' : 'Не удалось сохранить';
+  const humanError = error => error?.status === 409 ? 'Запись уже изменена. Обнови список.' : error?.status === 403 ? 'Недостаточно прав' : error?.status === 401 ? 'Не удалось войти' : 'Не удалось сохранить';
 
   
 function notify(message, isError=false) {
@@ -435,7 +435,8 @@ function notify(message, isError=false) {
     else window.addEventListener('load', hide, {once:true});
   }
 
-  function initOrbit(){
+  
+function initOrbit(){
     const shell = $('orbitShell');
     const blue = $('orbBlue');
     const red = $('orbRed');
@@ -443,17 +444,8 @@ function notify(message, isError=false) {
     const burst = $('orbBurst');
     if(!shell || !blue || !red || !merge || !burst) return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if(prefersReduced){
-      blue.style.opacity = '1';
-      red.style.opacity = '1';
-      merge.style.opacity = '0';
-      return;
-    }
-    let phase = 'split';
-    let phaseStart = performance.now();
-    const splitDuration = 2200;
-    const mergeDuration = 3200;
-    const mergeAngle = -Math.PI / 2;
+    const TAU = Math.PI * 2;
+    const norm = a => (a % TAU + TAU) % TAU;
     const place = (el, angle, radius) => {
       el.style.transform = `translate(${Math.cos(angle) * radius}px, ${Math.sin(angle) * radius}px)`;
     };
@@ -465,43 +457,67 @@ function notify(message, isError=false) {
       void burst.offsetWidth;
       burst.classList.add('boom');
     };
+    if(prefersReduced){
+      blue.style.opacity = '1'; red.style.opacity = '1'; merge.style.opacity = '0';
+      place(blue, Math.PI, shell.clientWidth * 0.475);
+      place(red, 0, shell.clientWidth * 0.475);
+      return;
+    }
+    let phase = 'split';
+    let phaseStart = performance.now();
+    let startAngle = -Math.PI / 2;
+    let meetAngle = 0;
+    let splitDuration = 2700;
+    let mergeDuration = 3600;
+    function nextCycle(fromAngle){
+      startAngle = norm(fromAngle);
+      meetAngle = norm(startAngle + (Math.PI * (0.55 + Math.random() * 1.2)));
+      if(Math.abs(meetAngle - startAngle) < 0.35) meetAngle = norm(startAngle + Math.PI);
+      splitDuration = 2400 + Math.random() * 1100;
+      mergeDuration = 3300 + Math.random() * 900;
+    }
+    nextCycle(startAngle);
     const frame = now => {
       const radius = shell.clientWidth * 0.475;
       if(phase === 'split'){
         const p = Math.min((now - phaseStart) / splitDuration, 1);
-        const blueAngle = Math.PI + p * (Math.PI / 2);
-        const redAngle = 0 - p * (Math.PI / 2);
+        const blueTravel = norm(meetAngle - startAngle);
+        const redTravel = TAU - blueTravel;
+        const blueAngle = startAngle + blueTravel * p;
+        const redAngle = startAngle - redTravel * p;
         blue.style.opacity = '1';
         red.style.opacity = '1';
         merge.style.opacity = '0';
         place(blue, blueAngle, radius);
         place(red, redAngle, radius);
         if(p >= 1){
-          blast(mergeAngle);
+          blast(meetAngle);
           phase = 'merge';
           phaseStart = now;
           blue.style.opacity = '0';
           red.style.opacity = '0';
           merge.style.opacity = '1';
-          place(merge, mergeAngle, radius);
+          place(merge, meetAngle, radius);
         }
       } else {
         const p = Math.min((now - phaseStart) / mergeDuration, 1);
-        const whiteAngle = mergeAngle + p * (Math.PI * 2);
+        const whiteAngle = meetAngle + TAU * p;
         place(merge, whiteAngle, radius);
         if(p >= 1){
-          blast(mergeAngle);
+          blast(meetAngle);
           phase = 'split';
           phaseStart = now;
           merge.style.opacity = '0';
           blue.style.opacity = '1';
           red.style.opacity = '1';
+          nextCycle(meetAngle);
         }
       }
       requestAnimationFrame(frame);
     };
     requestAnimationFrame(frame);
   }
+
 
   initLoader();
   initOrbit();
