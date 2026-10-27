@@ -169,12 +169,101 @@ header.header {
   }
 }
 
+
+/* Центрированный заголовок и эмблема: без изображения с надписью. */
+.hero{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:center;
+  gap:16px;
+  min-height:0;
+  padding:clamp(48px,5.3vw,78px) 0 27px;
+}
+.hero-title{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:center;
+  column-gap:clamp(13px,2.8vw,36px);
+  row-gap:1px;
+  width:100%;
+  margin:0;
+  font-size:clamp(39px,6.2vw,80px);
+  font-weight:900;
+  line-height:1.05;
+  letter-spacing:-.056em;
+  text-transform:uppercase;
+  isolation:isolate;
+}
+.hero-title span{
+  display:inline-block;
+  background-clip:text;
+  -webkit-background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 5px 16px rgba(0,9,22,.4));
+}
+.hero-title .title-blue{
+  background-image:linear-gradient(165deg,#f3fbff 7%,#a8dcff 42%,#509ce5 89%);
+}
+.hero-title .title-red{
+  background-image:linear-gradient(165deg,#fff1f2 8%,#ffb2c0 43%,#ef6e8e 91%);
+}
+.hero-art{
+  align-self:center;
+  justify-self:center;
+  width:380px;
+  height:345px;
+  min-height:345px;
+  margin:2px auto 0;
+}
+/* Подсчёт записей теперь относится к разделу учёта взысканий. */
+.main-section{padding-top:28px}
+.main-section > .metrics{
+  display:flex;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+  align-items:stretch;
+  gap:13px;
+  margin:0 0 28px;
+}
+.main-section > .metrics .metric{
+  min-width:157px;
+  padding:14px 19px;
+  flex:0 1 172px;
+  margin:0;
+}
+.main-section > .metrics .metric strong{font-size:29px;line-height:1.1}
+.main-section > .metrics .metric span{font-size:11px}
+@media(max-width:1100px){
+  .hero{display:flex;gap:13px;min-height:0;padding:60px 0 22px}
+  .hero-art{width:320px;min-height:312px;height:312px;justify-self:center}
+  .hero-title{font-size:clamp(38px,6.2vw,68px)}
+}
+@media(max-width:760px){
+  .hero{display:flex;flex-direction:column;align-items:center;gap:5px;padding:45px 0 22px;min-height:0}
+  .hero-title{font-size:clamp(33px,8.3vw,56px);letter-spacing:-.05em;column-gap:10px;row-gap:1px}
+  .hero-art{display:grid;width:100%;height:275px;min-height:275px;max-width:380px;margin:8px auto 0}
+  .main-section{padding-top:27px}
+  .main-section > .metrics{gap:8px;margin:0 0 24px}
+  .main-section > .metrics .metric{min-width:0;flex:1 1 0;padding:12px 10px;border-radius:12px}
+  .main-section > .metrics .metric strong{font-size:clamp(21px,5.4vw,29px)}
+  .main-section > .metrics .metric span{font-size:10px}
+}
+@media(max-width:370px){
+  .hero-title{font-size:clamp(30px,8.4vw,36px)}
+  .main-section > .metrics .metric{padding:10px 8px}
+}
+
   </style>
 </head>
 <body><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
 <header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><img class="brand-mark" src="pd_photo.png" alt=""><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><a class="btn primary" id="loginBtn" href="entrance.html#login">Войти</a><a class="btn" id="registerBtn" href="entrance.html#register">Регистрация</a><a class="btn hidden" id="manageBtn" href="entrance.html#manage">Управление</a><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
-<main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-ring core"></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
+<main id="top"><section class="wrap hero"><h1 class="hero-title"><span class="title-blue">РЕЕСТР</span><span class="title-red">НАКАЗАНИЙ</span></h1><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-ring core"></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
 <section class="wrap main-section" id="registry"><div class="section-top"><div><h2>УЧЁТ ВЗЫСКАНИЯ</h2></div><div><button class="btn" id="addBtn" type="button" hidden>＋ Добавить наказание</button></div></div>
+<div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div>
 <div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button><span class="tab-indicator hover" id="tabHoverLine" aria-hidden="true"></span><span class="tab-indicator" id="tabActiveLine" aria-hidden="true"></span></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
 <div class="table-scroll"><table class="records"><thead><tr><th>№</th><th>Имя</th><th>Номер аккаунта</th><th>PD</th><th>Наказание / УПД</th><th>Отработка</th><th>Доказательства</th><th>Кто выдал</th><th>Статус</th><th>Дата</th><th id="actionHeader" class="hidden">Действия</th></tr></thead><tbody id="tableBody"></tbody></table></div>
 <div class="footline"><span id="countInfo"></span><div class="pager"><button class="btn small" id="prevPage" type="button">← Назад</button><span id="pageInfo">1 / 1</span><button class="btn small" id="nextPage" type="button">Вперёд →</button></div></div></section></main>
