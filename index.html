@@ -59,13 +59,104 @@ dialog{width:min(620px,calc(100% - 28px));max-height:90vh;overflow:auto;border:1
 @media(max-width:1100px){.hero{grid-template-columns:minmax(0,1fr) 290px}.hero-art{width:290px;min-height:285px}.orbit-shell{width:250px;height:250px}.orbit-ring.inner{inset:35px}.orbit-ring.core{inset:66px}.registry-logo{max-width:580px}.records{min-width:1130px}}
 @media(max-width:760px){.wrap{width:calc(100% - 32px)}header.top{height:74px}.brand-text{font-size:11px;letter-spacing:.07em}.brand-text small{font-size:8px;letter-spacing:.11em}.brand-mark{width:28px;height:32px}.headright{gap:6px}.headright .btn{padding:8px 10px;font-size:10px;min-height:34px}.user{display:none}.hero{display:block;min-height:0;padding:51px 0 22px}.registry-logo{width:min(100%,490px)}.metrics{margin-top:25px;gap:8px}.metric{padding:13px 15px;min-width:95px;flex:1}.metric strong{font-size:24px}.metric span{font-size:10px}.hero-art{width:100%;height:260px;min-height:260px;justify-self:center}.orbit-shell{width:225px;height:225px}.orbit-ring.inner{inset:28px}.orbit-ring.core{inset:58px}.orbit-center{width:104px;height:104px}.main-section{padding:40px 0 70px}.filters{align-items:stretch}.filter-tools{width:100%}.search{flex:1;min-width:160px}.tab{padding:10px 13px}.records th:first-child,.records td:first-child{padding-left:14px}.footer .links{justify-content:flex-start}.fields{grid-template-columns:1fr}.footline{align-items:flex-start;flex-direction:column}.toast-zone{right:12px;left:12px;top:12px}.toast{min-width:0;max-width:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+  
+/* Вкладки департаментов: общая линия и два независимых индикатора. */
+.tabs#tabs{
+  position:relative;
+  display:inline-flex;
+  align-items:stretch;
+  flex-wrap:nowrap;
+  gap:12px;
+  padding:0 0 6px;
+  border:0;
+  isolation:isolate;
+}
+.tabs#tabs::before{
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:1px;
+  border-radius:1px;
+  background:linear-gradient(90deg,rgba(125,186,232,.35),rgba(125,186,232,.18));
+  pointer-events:none;
+}
+.tabs#tabs .tab{
+  position:relative;
+  z-index:1;
+  min-width:55px;
+  margin:0;
+  padding:11px 15px 15px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#89a9c2;
+  font-size:13px;
+  font-weight:790;
+  line-height:1.3;
+  box-shadow:none;
+  outline:0;
+  transform:none;
+  transition:color .25s ease,text-shadow .25s ease;
+}
+.tabs#tabs .tab::before,
+.tabs#tabs .tab::after{display:none!important;content:none!important}
+.tabs#tabs .tab:hover,
+.tabs#tabs .tab:focus-visible{
+  color:#f3faff;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  transform:none;
+  text-shadow:0 0 15px rgba(103,194,255,.42);
+}
+.tabs#tabs .tab:focus-visible{outline:1px solid rgba(119,198,247,.6);outline-offset:-4px;border-radius:5px}
+.tabs#tabs .tab.active{
+  color:#f0f8ff;
+  border:0;
+  background:transparent;
+  box-shadow:none!important;
+  text-shadow:0 0 11px rgba(132,210,255,.19);
+}
+.tabs#tabs .tab-indicator{
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:40px;
+  height:3px;
+  border-radius:99px 99px 0 0;
+  pointer-events:none;
+  opacity:0;
+  background:var(--indicator-color,#76ccff);
+  box-shadow:0 0 10px var(--indicator-color,#76ccff),0 0 22px var(--indicator-color,#76ccff);
+  transition:left .35s cubic-bezier(.2,.85,.2,1),width .35s cubic-bezier(.2,.85,.2,1),opacity .18s ease,background .3s ease;
+}
+.tabs#tabs .tab-indicator.on{opacity:1}
+.tabs#tabs .tab-indicator.hover{
+  height:2px;
+  bottom:0;
+  opacity:0;
+  filter:brightness(1.2);
+  box-shadow:0 0 12px var(--indicator-color,#76ccff);
+}
+.tabs#tabs .tab-indicator.hover.on{opacity:.9}
+@media(max-width:760px){
+  .tabs#tabs{gap:2px;width:max-content;max-width:100%;}
+  .tabs#tabs .tab{padding:11px 12px 15px;font-size:12px;min-width:47px}
+}
+@media(prefers-reduced-motion:reduce){
+  .tabs#tabs .tab,
+  .tabs#tabs .tab-indicator{transition:none!important}
+}
+
   </style>
 </head>
 <body><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
 <header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><img class="brand-mark" src="pd_photo.png" alt=""><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><a class="btn primary" id="loginBtn" href="entrance.html#login">Войти</a><a class="btn" id="registerBtn" href="entrance.html#register">Регистрация</a><a class="btn hidden" id="manageBtn" href="entrance.html#manage">Управление</a><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
 <main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-ring core"></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
 <section class="wrap main-section" id="registry"><div class="section-top"><div><h2>УЧЁТ ВЗЫСКАНИЯ</h2></div><div><button class="btn" id="addBtn" type="button" hidden>＋ Добавить наказание</button></div></div>
-<div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
+<div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button><span class="tab-indicator hover" id="tabHoverLine" aria-hidden="true"></span><span class="tab-indicator" id="tabActiveLine" aria-hidden="true"></span></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
 <div class="table-scroll"><table class="records"><thead><tr><th>№</th><th>Имя</th><th>Номер аккаунта</th><th>PD</th><th>Наказание / УПД</th><th>Отработка</th><th>Доказательства</th><th>Кто выдал</th><th>Статус</th><th>Дата</th><th id="actionHeader" class="hidden">Действия</th></tr></thead><tbody id="tableBody"></tbody></table></div>
 <div class="footline"><span id="countInfo"></span><div class="pager"><button class="btn small" id="prevPage" type="button">← Назад</button><span id="pageInfo">1 / 1</span><button class="btn small" id="nextPage" type="button">Вперёд →</button></div></div></section></main>
 <footer class="footer"><div class="wrap footinner"><div><p>© marsellex · С 2024 по настоящее время</p></div><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a><button id="privacyBtn" type="button">Конфиденциальность</button></nav></div></footer>
@@ -199,7 +290,59 @@ function notify(message, isError=false) {
     finally{sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;updateAuth();notify('Вы вышли');}
   };
 
-  $('tabs').onclick=e=>{const b=e.target.closest('[data-dept]');if(!b)return;state.dept=b.dataset.dept;state.page=0;document.querySelectorAll('[data-dept]').forEach(el=>{const active=el===b;el.classList.toggle('active',active);el.setAttribute('aria-selected',String(active));});draw();};
+  const tabColors = {ALL:'#78caff',LSPD:'#84e6b6',SFPD:'#73c7ff',LVPD:'#f18aa5'};
+  const tabsEl = $('tabs');
+  const activeLine = $('tabActiveLine');
+  const hoverLine = $('tabHoverLine');
+  const tabButtons = [...tabsEl.querySelectorAll('[data-dept]')];
+  function positionTabLine(indicator,button){
+    if(!button)return;
+    const containerRect=tabsEl.getBoundingClientRect();
+    const buttonRect=button.getBoundingClientRect();
+    const width=Math.max(30,buttonRect.width-28);
+    const x=buttonRect.left-containerRect.left+(buttonRect.width-width)/2;
+    indicator.style.left=x+'px';
+    indicator.style.width=width+'px';
+    indicator.style.setProperty('--indicator-color',tabColors[button.dataset.dept]||'#78caff');
+    indicator.classList.add('on');
+  }
+  function syncActiveLine(){positionTabLine(activeLine,tabsEl.querySelector('.tab.active'));}
+  function clearHoverLine(){hoverLine.classList.remove('on');}
+  function activateDepartment(button){
+    state.dept=button.dataset.dept;
+    state.page=0;
+    tabButtons.forEach(el=>{
+      const active=el===button;
+      el.classList.toggle('active',active);
+      el.setAttribute('aria-selected',String(active));
+    });
+    syncActiveLine();
+    clearHoverLine();
+    draw();
+  }
+  tabsEl.addEventListener('click',event=>{
+    const button=event.target.closest('button[data-dept]');
+    if(button&&tabsEl.contains(button))activateDepartment(button);
+  });
+  tabButtons.forEach((button,index)=>{
+    button.addEventListener('mouseenter',()=>positionTabLine(hoverLine,button));
+    button.addEventListener('focus',()=>positionTabLine(hoverLine,button));
+    button.addEventListener('blur',clearHoverLine);
+    button.addEventListener('keydown',event=>{
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+      event.preventDefault();
+      const next=event.key==='Home'?0:event.key==='End'?tabButtons.length-1:
+        (index+(event.key==='ArrowRight'?1:-1)+tabButtons.length)%tabButtons.length;
+      tabButtons[next].focus();
+      activateDepartment(tabButtons[next]);
+    });
+  });
+  tabsEl.addEventListener('mouseleave',clearHoverLine);
+  window.addEventListener('resize',()=>{
+    syncActiveLine();
+    clearHoverLine();
+  });
+  requestAnimationFrame(syncActiveLine);
   $('search').oninput=e=>{state.query=e.target.value.trim().toLowerCase();state.page=0;draw();};
   $('statusFilter').onchange=e=>{state.status=e.target.value;state.page=0;draw();};
   $('prevPage').onclick=()=>{if(state.page>0){state.page--;draw();}};
