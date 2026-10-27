@@ -20,6 +20,26 @@ main{padding:42px 0 76px}.center-shell{display:flex;align-items:center;justify-c
 @keyframes drift{from{transform:translate(0,0)}to{transform:translate(-7vw,6vh)}}@keyframes lightSweep{0%{transform:translateX(0)}100%{transform:translateX(300%)}}@keyframes reveal{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}@keyframes gentleFloat{0%,100%{translate:0 0}50%{translate:0 -3px}}
 @media(max-width:760px){.wrap{width:calc(100% - 32px)}.header{height:74px}.brand{font-size:11px;letter-spacing:.08em}.brand img{width:28px;height:32px}.nav{gap:12px}.nav a{font-size:11px}main{padding:34px 0 57px}.center-shell{min-height:calc(100vh - 180px)}.inline-tabs{justify-content:stretch}.tab{min-width:0;flex:1;padding:12px 10px}.row,.triple{grid-template-columns:1fr}.profile-inline{align-items:start;flex-direction:column}.candidate,.request{align-items:start;flex-direction:column}.footer .footin{flex-direction:column;align-items:start}.toast-zone{left:12px;right:12px;top:12px}.toast{min-width:0;max-width:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+  header.top,
+  header.header {
+    height: 88px;
+    background-image: url('reestr_shapk.png?v=2');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  @media (max-width: 760px) {
+    header.top,
+    header.header {
+      height: 74px;
+      background-image: url('reestr_shapk_mobile.png?v=2');
+      background-position: center;
+      background-size: cover;
+    }
+  }
+    
   </style>
 </head>
 <body><div class="grid-noise" aria-hidden="true"></div><header class="header"><div class="wrap top-inner"><a class="brand" href="index.html"><img src="pd_photo.png" alt=""> POLICE DEPARTMENT</a><nav class="nav"><a href="index.html">Реестр</a><a href="#login" id="topAccount">Войти</a></nav></div></header><div class="police-ribbon" aria-hidden="true"></div>
