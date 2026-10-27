@@ -9,16 +9,17 @@ dialog{width:min(620px,calc(100% - 25px));border:1px solid #d8e6f2;border-radius
 @media(max-width:1100px){.hero{grid-template-columns:1fr 250px}.hero-art{width:240px}.halo{width:195px;height:195px}.hero-art-inner{width:125px;height:125px}.hero-art-inner span{font-size:61px}.filters{align-items:start}.filter-tools{width:100%}.search{flex:1}}
 @media(max-width:760px){.wrap{width:calc(100% - 38px)}header.top{height:65px}.brand-mark{width:29px;height:32px}.brand-text{font-size:11px;letter-spacing:.11em}.brand-text small{font-size:8px}.user{display:none}.headright{gap:8px}.btn{padding:10px 12px}.hero{padding:58px 0 30px;min-height:0;display:block}.hero h1{font-size:clamp(44px,9.8vw,69px);margin:24px 0 17px}.hero-art{display:none}.metrics{gap:20px;margin-top:32px;flex-wrap:wrap}.metric{display:block}.metric strong{display:block;font-size:28px}.metric span{font-size:10px}.main-section{padding:32px 0 65px}.section-top h2{font-size:25px}.section-top{align-items:start}.filters{gap:14px}.tabs{gap:5px}.tab{font-size:11px;padding:9px 11px}.search{min-width:190px}.records{min-width:1050px}.footinner{display:block}.links{justify-content:flex-start;margin-top:24px}.footline{gap:8px;flex-wrap:wrap}.fields{grid-template-columns:1fr}.dialog-content{padding:20px}.dialoghead h3{font-size:21px}.detail{grid-template-columns:100px 1fr}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+.headright a.btn{text-decoration:none;white-space:nowrap}.headright .user{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media(max-width:760px){.headright{gap:5px!important}.headright a.btn,.headright button.btn{padding:9px 10px;font-size:10px}.headright #registerBtn{padding:9px 7px}.brand-text{font-size:10px!important}.topin{gap:7px!important}}
 </style></head>
 <body><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
-<header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><svg class="brand-mark" viewBox="0 0 50 56" fill="none" aria-hidden="true"><path d="M25 2 44 9v16c0 13-8 22-19 29C14 47 6 38 6 25V9L25 2Z" stroke="currentColor" stroke-width="2" fill="#e7f2fb"/><path d="m25 12 3.2 7.7 8.3.6-6.4 5.4 2 8-7.1-4.3-7.1 4.3 2-8-6.4-5.4 8.3-.6L25 12Z" fill="#6297c1"/><path d="m17 39 8 5 8-5" stroke="#96afc5" stroke-width="2" stroke-linecap="round"/></svg><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><button class="btn primary" type="button" id="loginBtn">Войти</button><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
+<header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><svg class="brand-mark" viewBox="0 0 50 56" fill="none" aria-hidden="true"><path d="M25 2 44 9v16c0 13-8 22-19 29C14 47 6 38 6 25V9L25 2Z" stroke="currentColor" stroke-width="2" fill="#e7f2fb"/><path d="m25 12 3.2 7.7 8.3.6-6.4 5.4 2 8-7.1-4.3-7.1 4.3 2-8-6.4-5.4 8.3-.6L25 12Z" fill="#6297c1"/><path d="m17 39 8 5 8-5" stroke="#96afc5" stroke-width="2" stroke-linecap="round"/></svg><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><a class="btn primary" id="loginBtn" href="entrance.html#login">Войти</a><a class="btn" id="registerBtn" href="entrance.html#register">Регистрация</a><a class="btn hidden" id="manageBtn" href="entrance.html#manage">Управление</a><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
 <main id="top"><section class="wrap hero"><div><div class="eyebrow">POLICE RECORDS</div><h1><span>Реестр</span><span>наказаний</span></h1><p class="hero-copy">Сведения о дисциплинарных взысканиях сотрудников полиции.</p><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="halo"></div><div class="hero-art-inner"><span>PD</span></div><span class="art-dot"></span><span class="art-mini">DISCIPLINE / 01</span></div></section>
 <section class="wrap main-section" id="registry"><div class="section-top"><div><div class="subeyebrow">СПИСОК ВЗЫСКАНИЙ</div><h2>Наказания</h2></div><div><button class="btn" id="addBtn" type="button" hidden>＋ Добавить наказание</button></div></div>
 <div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
 <div class="table-scroll"><table class="records"><thead><tr><th>№</th><th>Имя</th><th>Номер аккаунта</th><th>PD</th><th>Наказание / УПД</th><th>Отработка</th><th>Доказательства</th><th>Кто выдал</th><th>Статус</th><th>Дата</th><th id="actionHeader" class="hidden">Действия</th></tr></thead><tbody id="tableBody"></tbody></table></div>
 <div class="footline"><span id="countInfo"></span><div class="pager"><button class="btn small" id="prevPage" type="button">← Назад</button><span id="pageInfo">1 / 1</span><button class="btn small" id="nextPage" type="button">Вперёд →</button></div></div></section></main>
 <footer class="footer"><div class="wrap footinner"><div><strong>Police Department</strong><p>© marsellex · С 2024 по настоящее время</p></div><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a><button id="privacyBtn" type="button">Конфиденциальность</button></nav></div></footer>
-<dialog id="loginDialog"><div class="dialog-content"><div class="dialoghead"><div><h3>Вход</h3><p>Используй данные World Script</p></div><button class="x" data-close="loginDialog" type="button" aria-label="Закрыть">×</button></div><form id="loginForm"><div class="fields"><div class="field full"><label for="login">Логин</label><input id="login" name="login" autocomplete="username" maxlength="100" required></div><div class="field full"><label for="password">Пароль</label><input id="password" name="password" autocomplete="current-password" type="password" required></div></div><div class="error" id="loginError" role="alert"></div><div class="actions"><button type="button" data-close="loginDialog" class="btn">Отмена</button><button type="submit" class="btn primary" id="loginSubmit">Войти</button></div></form></div></dialog>
+
 <dialog id="recordDialog"><div class="dialog-content"><div class="dialoghead"><div><h3 id="recordTitle">Добавить наказание</h3><p>Данные о взыскании</p></div><button class="x" data-close="recordDialog" type="button" aria-label="Закрыть">×</button></div><form id="recordForm"><div class="fields">
 <div class="field"><label for="rName">Имя *</label><input id="rName" name="nickname" required maxlength="100" placeholder="Имя_Фамилия"></div><div class="field"><label for="rAccount">Номер аккаунта *</label><input id="rAccount" name="account_number" required maxlength="64" placeholder="Например, 123456"></div>
 <div class="field"><label for="formDept">Департамент *</label><select id="formDept" name="department" required><option value="LSPD">LSPD</option><option value="SFPD">SFPD</option><option value="LVPD">LVPD</option></select></div>
@@ -37,7 +38,7 @@ dialog{width:min(620px,calc(100% - 25px));border:1px solid #d8e6f2;border-radius
   const departments = ['LSPD', 'SFPD', 'LVPD'];
   const workNames = { none:'Не требуется', payment:'Оплата', duty:'Наряд', conversation:'Беседа', demotion:'Понижение', other:'Другое' };
   const statuses = { active:'Активно', paid:'Погашено', cancelled:'Отменено' };
-  const state = { token:null,user:null,items:[],dept:'ALL',status:'all',query:'',page:0,pageSize:12,loaded:false,loading:false,requestId:0,editing:null,action:null };
+  const state = { token:sessionStorage.getItem('pd_site_token'),user:null,items:[],dept:'ALL',status:'all',query:'',page:0,pageSize:12,loaded:false,loading:false,requestId:0,editing:null,action:null };
   let toastTimeout;
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -86,7 +87,7 @@ dialog{width:min(620px,calc(100% - 25px));border:1px solid #d8e6f2;border-radius
   }
   function updateAuth(){
     const user=state.user;
-    $('loginBtn').classList.toggle('hidden',!!user);$('logoutBtn').classList.toggle('hidden',!user);$('username').textContent=user?(user.nickname||user.login):'';
+    $('loginBtn').classList.toggle('hidden',!!user);$('registerBtn').classList.toggle('hidden',!!user);$('logoutBtn').classList.toggle('hidden',!user);$('manageBtn').classList.toggle('hidden',!user || !['admin','minister','leader'].includes(user.role));$('username').textContent=user?(user.nickname||user.login):'';
     $('addBtn').hidden=!anyEdit(); draw();
   }
   async function load(){
@@ -107,17 +108,11 @@ dialog{width:min(620px,calc(100% - 25px));border:1px solid #d8e6f2;border-radius
   function modalOpen(id){$(id).showModal();}function modalClose(id){$(id).close();}
   document.querySelectorAll('[data-close]').forEach(button=>button.addEventListener('click',()=>modalClose(button.dataset.close)));
   document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close();}));
-  $('loginBtn').onclick=()=>{$('loginForm').reset();$('loginError').textContent='';modalOpen('loginDialog');};
-  $('loginForm').onsubmit=async e=>{
-    e.preventDefault();const btn=$('loginSubmit');btn.disabled=true;$('loginError').textContent='';
-    try{
-      const user=await api('/api/auth/login',{method:'POST',body:{login:$('login').value.trim(),password:$('password').value}});
-      state.token=user.session_token;$('password').value='';const me=await api('/api/auth/me',{auth:true});state.user=me.user;
-      modalClose('loginDialog');updateAuth();notify('Вход выполнен');
-    }catch(error){state.token=null;state.user=null;updateAuth();$('loginError').textContent=error?.status===401?'Неверный логин или пароль':'Не удалось войти';}
-    finally{btn.disabled=false;}
+  $('logoutBtn').onclick=async()=>{
+    try{await api('/api/auth/logout',{method:'POST',auth:true});}catch{}
+    finally{sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;updateAuth();notify('Вы вышли');}
   };
-  $('logoutBtn').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST',auth:true});}catch{}finally{state.token=null;state.user=null;updateAuth();notify('Вы вышли');}};
+
   $('tabs').onclick=e=>{const b=e.target.closest('[data-dept]');if(!b)return;state.dept=b.dataset.dept;state.page=0;document.querySelectorAll('[data-dept]').forEach(el=>{const active=el===b;el.classList.toggle('active',active);el.setAttribute('aria-selected',String(active));});draw();};
   $('search').oninput=e=>{state.query=e.target.value.trim().toLowerCase();state.page=0;draw();};
   $('statusFilter').onchange=e=>{state.status=e.target.value;state.page=0;draw();};
@@ -177,6 +172,12 @@ dialog{width:min(620px,calc(100% - 25px));border:1px solid #d8e6f2;border-radius
   };
   $('privacyBtn').onclick=()=>modalOpen('privacyDialog');
   document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('search').focus();}});
-  updateAuth();load();
+  async function restoreUser(){
+    if(!state.token){updateAuth();return;}
+    try{const data=await api('/api/auth/me',{auth:true});state.user=data.user;}
+    catch{sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;}
+    updateAuth();
+  }
+  updateAuth();load();restoreUser();
 })();
 </script></body></html>
