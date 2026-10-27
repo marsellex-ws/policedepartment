@@ -178,24 +178,78 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1p
 .table-scroll{background:rgba(12,25,39,.58)!important;border-color:rgba(122,171,214,.16)!important;box-shadow:0 20px 80px rgba(0,0,0,.24)!important}.records tbody tr{position:relative}.records tbody tr:hover td{background:rgba(255,255,255,.04)!important}.records tbody tr:hover td:first-child{box-shadow:inset 4px 0 0 #60b8ff}
 .metric{background:rgba(12,28,42,.52)!important;border:1px solid rgba(122,171,214,.16)!important;box-shadow:0 18px 58px rgba(1,10,22,.26)!important}.metric strong{color:#f0f8ff}.metric span{color:#8fb1cc}.filters{gap:15px}.tab,.btn,.select,.search{border-radius:16px!important}.tab{background:rgba(12,27,42,.58)!important;color:#bfd3e4!important;border:1px solid rgba(122,171,214,.16)!important;box-shadow:0 18px 58px rgba(1,10,22,.25)}.tab.active{background:linear-gradient(180deg,rgba(17,38,58,.88),rgba(9,23,37,.82))!important;color:#f4fbff!important;border-color:rgba(126,194,248,.42)!important}
 .btn{background:rgba(12,29,45,.52)!important;border:1px solid rgba(125,176,222,.24)!important;color:#e3f3ff!important;box-shadow:0 18px 65px rgba(2,15,29,.26)!important}.btn.primary,.btn.mint{background:linear-gradient(180deg,rgba(69,139,197,.96),rgba(48,103,149,.96))!important;border-color:rgba(133,202,255,.55)!important}.btn.plain{background:rgba(10,22,35,.52)!important}.search,.select{background:rgba(8,22,34,.32)!important;border:1px solid rgba(118,171,216,.16)!important;color:#eff7ff!important}.search input,.select, .search input::placeholder{color:#7f9db8!important}.dialog-content{background:linear-gradient(180deg,rgba(10,24,37,.94),rgba(7,18,29,.97))!important;border:1px solid rgba(122,171,214,.18)!important;color:#eef8ff}.dialoghead p,.hint,.footline span,.records td,.records th,.proof,.account,.work{color:#9bb7ce!important}.records th{border-bottom-color:rgba(122,171,214,.16)!important}.records td{border-bottom-color:rgba(122,171,214,.10)!important}.name{color:#eef8ff!important}.proof:hover{color:#c9ebff!important}.footer{background:linear-gradient(180deg,rgba(6,16,26,.82),rgba(7,18,29,.98))!important;border-top:1px solid rgba(116,169,215,.14)!important}.links a, .footer p, .footline span, .pager span{color:#93adc5!important}
-.hero-art{width:360px;display:grid;place-items:center}.halo{width:248px;height:248px;border-color:rgba(116,171,210,.28);box-shadow:0 0 0 32px rgba(100,170,229,.03),0 0 0 64px rgba(100,170,229,.018),inset 0 0 36px rgba(53,145,217,.08);animation:spin 26s linear infinite}.orbit-outer,.orbit-icons{position:absolute;border-radius:50%;border:1px solid rgba(123,177,224,.20)}.orbit-outer{width:290px;height:290px;animation:spin 16s linear infinite}.orbit-outer.red{animation:spinReverse 16s linear infinite;border-color:rgba(234,123,146,.22)}.orbit-outer::before,.orbit-outer::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;box-shadow:0 0 22px currentColor}.orbit-outer.blue::before{color:#61b9ff;transform:rotate(0deg) translateX(145px)}.orbit-outer.blue::after{display:none}.orbit-outer.red::before{display:none}.orbit-outer.red::after{color:#ff7792;transform:rotate(180deg) translateX(145px)}.orbit-icons{width:210px;height:210px;display:block;animation:spin 13s linear infinite}.orbit-icons .icon-node{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;display:grid;place-items:center;background:rgba(8,22,34,.82);border:1px solid rgba(123,177,224,.18);box-shadow:0 12px 30px rgba(0,0,0,.26),0 0 22px rgba(99,176,236,.08)}.orbit-icons .icon-node svg{width:18px;height:18px;stroke:#b7dcfb;stroke-width:1.8;fill:none}.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(105px) rotate(0deg)}.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(105px) rotate(-120deg)}.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(105px) rotate(-240deg)}.hero-art-inner{position:relative;z-index:2;width:148px;height:148px;border-radius:32px;transform:rotate(-8deg);background:linear-gradient(135deg,rgba(46,75,103,.60),rgba(16,34,50,.75));border:1px solid rgba(153,203,241,.29);box-shadow:0 25px 65px rgba(2,15,30,.27),0 0 65px rgba(70,160,223,.09),inset 0 1px rgba(224,242,255,.13);backdrop-filter:blur(12px);display:grid;place-items:center;animation:emblemFloat 7s ease-in-out infinite}.hero-art-inner img{width:76%;height:76%;object-fit:contain;display:block;filter:drop-shadow(0 8px 23px rgba(76,162,233,.29))}.hero-art-bg{position:absolute;inset:0;display:grid;place-items:center}
+.hero-art{width:360px;display:grid;place-items:center}.halo{width:248px;height:248px;border-color:rgba(116,171,210,.28);box-shadow:0 0 0 32px rgba(100,170,229,.03),0 0 0 64px rgba(100,170,229,.018),inset 0 0 36px rgba(53,145,217,.08);animation:spin 26s linear infinite}.orbit-outer,.orbit-icons{position:absolute;border-radius:50%;border:1px solid rgba(123,177,224,.20)}.orbit-outer{width:290px;height:290px;animation:spin 16s linear infinite}.orbit-outer.red{animation:spinReverse 16s linear infinite;border-color:rgba(234,123,146,.22)}.orbit-outer::before,.orbit-outer::after{content:"";position:absolute;left:50%;top:50%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;box-shadow:0 0 22px currentColor}.orbit-outer.blue::before{color:#61b9ff;transform:rotate(0deg) translateX(145px)}.orbit-outer.blue::after{display:none}.orbit-outer.red::before{display:none}.orbit-outer.red::after{color:#ff7792;transform:rotate(180deg) translateX(145px)}.orbit-icons{width:210px;height:210px;display:block;animation:spin 13s linear infinite}.orbit-icons .icon-node{position:absolute;left:50%;top:50%;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;display:grid;place-items:center;background:rgba(8,22,34,.82);border:1px solid rgba(123,177,224,.18);box-shadow:0 12px 30px rgba(0,0,0,.26),0 0 22px rgba(99,176,236,.08)}.orbit-icons .icon-node svg{width:18px;height:18px;stroke:#b7dcfb;stroke-width:1.8;fill:none}.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(105px) rotate(0deg)}.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(105px) rotate(-120deg)}.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(105px) rotate(-240deg)}.hero-art-inner{position:relative;z-index:2;width:148px;height:148px;border-radius:32px;transform:rotate(-8deg);background:linear-gradient(135deg,rgba(46,75,103,.60),rgba(16,34,50,.75));border:1px solid rgba(153,203,241,.29);box-shadow:0 25px 65px rgba(2,15,30,.27),0 0 65px rgba(70,160,223,.09),inset 0 1px rgba(224,242,255,.13);backdrop-filter:blur(12px);display:grid;place-items:center;animation:emblemFloat 7s ease-in-out infinite}.hero-art-inner img{width:76%;height:76%;object-fit:contain;display:block;filter:drop-shadow(0 8px 23px rgba(76,162,233,.29))}.hero-art-bg{position:absolute;inset:0;display:grid;place-items:center}.loader{position:fixed;inset:0;background:radial-gradient(circle at center,rgba(8,25,39,.92),rgba(5,13,22,.98));display:grid;place-items:center;z-index:100;transition:opacity .45s ease,visibility .45s ease}.loader.hide{opacity:0;visibility:hidden}.loader-core{position:relative;width:124px;height:124px}.loader-core::before,.loader-core::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(127,193,247,.28)}.loader-core::before{animation:spin 2s linear infinite}.loader-core::after{inset:12px;border-color:rgba(255,121,144,.28);animation:spinReverse 1.4s linear infinite}.loader-dot{position:absolute;left:50%;top:50%;width:16px;height:16px;border-radius:50%;margin:-8px 0 0 -8px;box-shadow:0 0 18px currentColor}.loader-dot.blue{color:#5fb8ff;animation:orbitBlue 1.8s linear infinite}.loader-dot.red{color:#ff7990;animation:orbitRed 1.8s linear infinite}.loader-logo{position:absolute;inset:34px;border-radius:50%;display:grid;place-items:center;background:rgba(10,24,37,.92);box-shadow:0 0 0 1px rgba(129,187,239,.18) inset,0 0 28px rgba(90,177,255,.14)}.loader-logo img{width:42px;height:42px;object-fit:contain;filter:drop-shadow(0 5px 12px rgba(95,184,255,.28))}
 @keyframes shineRun{0%{transform:translateX(0)}100%{transform:translateX(285%)}}@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes spinReverse{to{transform:rotate(-360deg)}}@keyframes orbitBlue{from{transform:rotate(0deg) translateX(54px) rotate(0deg)}to{transform:rotate(360deg) translateX(54px) rotate(-360deg)}}@keyframes orbitRed{from{transform:rotate(180deg) translateX(54px) rotate(-180deg)}to{transform:rotate(-180deg) translateX(54px) rotate(180deg)}}
 @media(max-width:1100px){.registry-logo{max-width:580px!important}.hero{grid-template-columns:minmax(0,1fr) 270px}.hero-art{width:270px}.orbit-outer{width:220px;height:220px}.orbit-outer.blue::before{transform:rotate(0deg) translateX(110px)}.orbit-outer.red::after{transform:rotate(180deg) translateX(110px)}.orbit-icons{width:164px;height:164px}.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(82px)}.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(82px) rotate(-120deg)}.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(82px) rotate(-240deg)}}
 @media(max-width:760px){header.top{height:78px}.topin::before,.topin::after,.brand::before{display:none}.hero{padding-top:55px;padding-bottom:25px}.registry-logo{width:min(100%,520px)!important}.hero-art{display:none}}
 
 @media(prefers-reduced-motion:reduce){.hero-art-inner{animation:none!important}.atmosphere::before,.atmosphere::after,.metrics .metric,.tab,.btn,.search,.select,.table-scroll,.loader-core::before,.loader-core::after{animation:none!important}}
 
+</style>
+<style id="ui-patch-v3">
+header.top{overflow:hidden;background:linear-gradient(180deg,rgba(6,17,28,.95),rgba(7,18,29,.84))!important}
+header.top .topin{position:relative;overflow:hidden}
+header.top .topin::before{content:"";position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:min(36vw,420px);height:72px;background:url('reestr_shapk.png') no-repeat center/contain;opacity:.42;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,.32))}
+header.top .topin::after{content:"";position:absolute;left:0;right:0;bottom:11px;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(108,175,228,.18),rgba(255,117,144,.14),rgba(108,175,228,.18),transparent)}
+.brand,.headright{position:relative;z-index:1}
+.brand-text small{opacity:.95}
+.metrics .metric,.tab,.search,.select,.table-scroll,.dialog-content{position:relative;overflow:hidden}
+.metrics .metric::before,.tab::before,.search::before,.select::before,.table-scroll::before,.dialog-content::before{display:none!important}
+.metrics .metric::after,.tab::after,.search::after,.select::after,.table-scroll::after,.dialog-content::after{content:"";position:absolute;inset:0;left:-160%;background:linear-gradient(100deg,transparent 12%,rgba(255,255,255,.02) 34%,rgba(163,221,255,.18) 50%,transparent 70%);opacity:0;pointer-events:none}
+.metrics .metric:hover::after,.tab:hover::after,.search:hover::after,.select:hover::after,.table-scroll:hover::after,.dialog-content:hover::after{opacity:1;animation:shineRun 3s linear infinite}
+.metrics .metric:hover,.tab:hover,.search:hover,.select:hover,.table-scroll:hover{transform:translateY(-2px)!important}
+.btn{position:relative;overflow:hidden}
+.btn::before{content:"";position:absolute;left:0;top:0;width:4px;height:100%;border-radius:999px;background:linear-gradient(180deg,rgba(103,191,255,.1),rgba(99,191,255,.95),rgba(255,126,150,.36));transform:scaleY(.18);transform-origin:center;opacity:.12;transition:transform .28s ease,opacity .28s ease,box-shadow .28s ease}
+.btn::after{content:"";position:absolute;inset:0;left:-160%;background:linear-gradient(100deg,transparent 12%,rgba(255,255,255,.02) 34%,rgba(163,221,255,.22) 50%,transparent 70%);opacity:0;pointer-events:none}
+.btn:hover::before{transform:scaleY(1);opacity:1;box-shadow:0 0 16px rgba(96,183,255,.34)}
+.btn:hover::after{opacity:1;animation:shineRun 3s linear infinite}
+@keyframes shineRun{0%{transform:translateX(0)}100%{transform:translateX(310%)}}
+.hero-art{width:360px;min-height:330px;display:grid;place-items:center}
+.hero-art-bg{position:absolute;inset:0;display:grid;place-items:center}
+.halo{width:248px;height:248px;border-color:rgba(116,171,210,.28);box-shadow:0 0 0 32px rgba(100,170,229,.03),0 0 0 64px rgba(100,170,229,.018),inset 0 0 36px rgba(53,145,217,.08);animation:spin 26s linear infinite}
+.orbit-shell{position:relative;width:300px;height:300px;display:grid;place-items:center}
+.orbit-ring{position:absolute;border-radius:50%;border:1px solid rgba(117,178,224,.17)}
+.orbit-ring.outer{inset:6px;border-color:rgba(125,184,228,.18)}
+.orbit-ring.inner{inset:44px;border-color:rgba(100,154,198,.16)}
+.orbit-icons{position:absolute;inset:48px;border-radius:50%;border:1px solid rgba(102,157,202,.14);animation:spin 16s linear infinite}
+.orbit-icons .icon-node{position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;display:grid;place-items:center;background:rgba(7,20,31,.84);border:1px solid rgba(123,177,224,.16);box-shadow:0 12px 26px rgba(0,0,0,.24),0 0 18px rgba(99,176,236,.06)}
+.orbit-icons .icon-node svg{width:17px;height:17px;stroke:#b7dcfb;stroke-width:1.8;fill:none}
+.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(102px)}
+.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(102px) rotate(-120deg)}
+.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(102px) rotate(-240deg)}
+.orbit-dot,.orbit-burst{position:absolute;left:50%;top:50%;will-change:transform,opacity}
+.orbit-dot{width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;box-shadow:0 0 26px currentColor,0 0 0 6px rgba(255,255,255,.03)}
+.orbit-dot.blue{background:#63beff;color:#63beff}
+.orbit-dot.red{background:#ff6f8f;color:#ff6f8f}
+.orbit-dot.merge{background:#ffffff;color:#ffffff;opacity:0;box-shadow:0 0 30px rgba(255,255,255,.95),0 0 0 7px rgba(255,255,255,.05)}
+.orbit-burst{width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;opacity:0;border:1px solid rgba(255,255,255,.78);background:radial-gradient(circle,rgba(255,255,255,.95) 0%,rgba(255,255,255,.25) 42%,transparent 74%)}
+.orbit-burst.boom{animation:orbitBoom .46s ease-out}
+@keyframes orbitBoom{0%{opacity:.95;transform:translate(var(--bx),var(--by)) scale(.3)}72%{opacity:.34}100%{opacity:0;transform:translate(var(--bx),var(--by)) scale(2.6)}}
+.orbit-center{position:relative;z-index:2;width:92px;height:92px;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 1px rgba(161,213,249,.16),0 0 28px rgba(81,170,235,.12)}
+.orbit-center img{width:84%;height:84%;object-fit:contain;display:block;filter:drop-shadow(0 7px 18px rgba(76,162,233,.28))}
+.hero-art-inner,.orbit-outer{display:none!important}
+.toast-zone{position:fixed;top:24px;right:24px;bottom:auto;display:flex;flex-direction:column;gap:10px;z-index:120;pointer-events:none}
+.toast{min-width:240px;max-width:380px;padding:14px 18px;border:1px solid rgba(118,176,219,.28);background:rgba(12,29,44,.96);color:#dceeff;box-shadow:0 18px 42px rgba(3,11,20,.45);border-radius:14px;font-size:12px;font-weight:700;opacity:0;transform:translateX(30px);transition:transform .26s ease,opacity .26s ease,border-color .26s ease;pointer-events:auto}
+.toast.show{opacity:1;transform:translateX(0)}
+.toast.hide{opacity:0;transform:translateX(24px)}
+.toast.bad{color:#ffd0d8;border-color:rgba(206,111,135,.52);background:rgba(54,18,30,.96)}
+.actions-list{gap:8px}
+.action-edit{position:relative;border:none;background:none;color:#9ecef0;padding:0 6px;min-width:30px;height:30px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:6px;overflow:hidden;transition:min-width .24s ease,padding .24s ease,background .24s ease,color .24s ease,box-shadow .24s ease;cursor:pointer}
+.action-edit .plus{font-size:24px;line-height:1;transition:opacity .22s ease,transform .22s ease,max-width .22s ease;max-width:20px}
+.action-edit .edit-wrap{display:inline-flex;align-items:center;gap:6px;max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transition:max-width .24s ease,opacity .24s ease}
+.action-edit .edit-wrap svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.8;fill:none;flex:none}
+.action-edit:hover{min-width:120px;padding:0 12px;background:rgba(64,120,164,.18);color:#ecf8ff;box-shadow:0 0 16px rgba(92,188,252,.18)}
+.action-edit:hover .plus{opacity:0;transform:scale(.45);max-width:0}
+.action-edit:hover .edit-wrap{max-width:96px;opacity:1}
+.action-edit:focus-visible{outline:2px solid rgba(117,190,250,.62);outline-offset:2px}
+@media(max-width:1100px){header.top .topin::before{width:min(40vw,310px);height:58px;opacity:.36}.hero{grid-template-columns:minmax(0,1fr) 270px}.hero-art{width:270px;min-height:270px}.orbit-shell{width:226px;height:226px}.orbit-icons{inset:34px}.orbit-icons .icon-node:nth-child(1){transform:rotate(0deg) translateX(79px)}.orbit-icons .icon-node:nth-child(2){transform:rotate(120deg) translateX(79px) rotate(-120deg)}.orbit-icons .icon-node:nth-child(3){transform:rotate(240deg) translateX(79px) rotate(-240deg)}}
+@media(max-width:760px){header.top .topin::before{display:none}.hero-art{display:none}.toast-zone{left:14px;right:14px;top:16px}.toast{max-width:none;min-width:0}}
+</style>
 
-/* Orbit-only police animation: never cover the page. */
-.orbit-outer,.orbit-icons,.halo{pointer-events:none}
-.orbit-outer::before,.orbit-outer::after{background:currentColor}
-.orbit-outer.blue::before{box-shadow:0 0 0 5px rgba(94,185,255,.12),0 0 20px rgba(94,185,255,.75)}
-.orbit-outer.red::after{box-shadow:0 0 0 5px rgba(255,105,132,.12),0 0 20px rgba(255,105,132,.75)}
-.hero-art-inner{pointer-events:none}
-</style></head>
-<body><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
+</head>
+<body><div class="loader" id="loader"><div class="loader-core"><span class="loader-dot blue"></span><span class="loader-dot red"></span><div class="loader-logo"><img src="pd_photo.png" alt=""></div></div></div><div class="atmosphere" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div>
 <header class="top"><div class="wrap topin"><a class="brand" href="#top" aria-label="Police Department — главная"><img class="brand-mark" src="pd_photo.png" alt=""><span class="brand-text">POLICE DEPARTMENT<small>ДИСЦИПЛИНАРНЫЙ РЕЕСТР</small></span></a><div class="headright"><span class="user" id="username"></span><a class="btn primary" id="loginBtn" href="entrance.html#login">Войти</a><a class="btn" id="registerBtn" href="entrance.html#register">Регистрация</a><a class="btn hidden" id="manageBtn" href="entrance.html#manage">Управление</a><button class="btn hidden" id="logoutBtn" type="button">Выйти</button></div></div></header>
-<main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-outer blue"></div><div class="orbit-outer red"></div><div class="orbit-icons"><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M6 8h11l3 2-2 2h-2l-2 4H9l1-4H7l-1 2H4v-2l2-2z"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M11 2h2v3l2 1 2-2 2 2-2 2 1 2h3v2h-3l-1 2 2 2-2 2-2-2-2 1v3h-2v-3l-2-1-2 2-2-2 2-2-1-2H2v-2h3l1-2-2-2 2-2 2 2 2-1z"/><circle cx="12" cy="12" r="2.5"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3.1 8.1 7 10 3.9-1.9 7-5.5 7-10V6z"/></svg></div></div></div><div class="hero-art-inner"><img src="pd_photo.png" alt=""></div></div></section>
+<main id="top"><section class="wrap hero"><div><h1 class="hero-title"><img class="registry-logo" src="reestr.png" alt="Реестр наказаний"></h1><div class="metrics" aria-label="Статистика реестра"><div class="metric"><strong id="totalCount">—</strong><span>Всего</span></div><div class="metric"><strong id="activeCount">—</strong><span>Активных</span></div><div class="metric"><strong id="paidCount">—</strong><span>Погашено</span></div></div></div><div class="hero-art" aria-hidden="true"><div class="hero-art-bg"><div class="halo"></div><div class="orbit-shell" id="orbitShell"><div class="orbit-ring outer"></div><div class="orbit-ring inner"></div><div class="orbit-icons" id="orbitIcons"><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M6 8h11l3 2-2 2h-2l-2 4H9l1-4H7l-1 2H4v-2l2-2z"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M11 2h2v3l2 1 2-2 2 2-2 2 1 2h3v2h-3l-1 2 2 2-2 2-2-2-2 1v3h-2v-3l-2-1-2 2-2-2 2-2-1-2H2v-2h3l1-2-2-2 2-2 2 2 2-1z"/><circle cx="12" cy="12" r="2.5"/></svg></div><div class="icon-node"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3.1 8.1 7 10 3.9-1.9 7-5.5 7-10V6z"/></svg></div></div><span class="orbit-dot blue" id="orbBlue"></span><span class="orbit-dot red" id="orbRed"></span><span class="orbit-dot merge" id="orbMerge"></span><span class="orbit-burst" id="orbBurst"></span><div class="orbit-center"><img src="pd_photo.png" alt=""></div></div></div></div></section>
 <section class="wrap main-section" id="registry"><div class="section-top"><div><h2>УЧЁТ ВЗЫСКАНИЯ</h2></div><div><button class="btn" id="addBtn" type="button" hidden>＋ Добавить наказание</button></div></div>
 <div class="filters"><div class="tabs" id="tabs" role="tablist" aria-label="Департамент"><button class="tab active" data-dept="ALL" role="tab" aria-selected="true">Все</button><button class="tab" data-dept="LSPD" role="tab" aria-selected="false">LSPD</button><button class="tab" data-dept="SFPD" role="tab" aria-selected="false">SFPD</button><button class="tab" data-dept="LVPD" role="tab" aria-selected="false">LVPD</button></div><div class="filter-tools"><label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m16 16 5 5"/></svg><input id="search" type="search" placeholder="Найти запись…" autocomplete="off"><span class="sr-only">Поиск</span></label><select id="statusFilter" class="select" aria-label="Статус"><option value="all">Все статусы</option><option value="active">Активные</option><option value="paid">Погашенные</option><option value="cancelled">Отменённые</option></select><button class="btn plain" id="refreshBtn" aria-label="Обновить данные" title="Обновить" type="button"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button></div></div>
 <div class="table-scroll"><table class="records"><thead><tr><th>№</th><th>Имя</th><th>Номер аккаунта</th><th>PD</th><th>Наказание / УПД</th><th>Отработка</th><th>Доказательства</th><th>Кто выдал</th><th>Статус</th><th>Дата</th><th id="actionHeader" class="hidden">Действия</th></tr></thead><tbody id="tableBody"></tbody></table></div>
@@ -221,19 +275,30 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1p
   const workNames = { none:'Не требуется', payment:'Оплата', duty:'Наряд', conversation:'Беседа', demotion:'Понижение', other:'Другое' };
   const statuses = { active:'Активно', paid:'Погашено', cancelled:'Отменено' };
   const state = { token:sessionStorage.getItem('pd_site_token'),user:null,items:[],dept:'ALL',status:'all',query:'',page:0,pageSize:12,loaded:false,loading:false,requestId:0,editing:null,action:null };
-  let toastTimeout;
 
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const safeLink = value => { try {const u = new URL(String(value)); return u.protocol === 'https:' && !u.username && !u.password ? u.href : null;} catch {return null;} };
   const dateText = value => {const d = new Date(value); return Number.isNaN(d.getTime()) ? '—' : new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(d);};
   const canEdit = dept => !!state.user && (state.user.is_admin || Array.isArray(state.user.editable_departments) && state.user.editable_departments.includes(dept));
   const anyEdit = () => departments.some(canEdit);
-  const humanError = error => error?.status === 409 ? 'Запись уже изменена. Обнови список.' : error?.status === 403 ? 'Недостаточно прав' : error?.status === 401 ? 'Не удалось войти' : 'Не удалось сохранить';
+  const humanError = error => error?.status === 409 ? 'Запись уже изменена. Обнови список' : error?.status === 403 ? 'Недостаточно прав' : error?.status === 401 ? 'Не удалось войти' : 'Не удалось сохранить';
 
-  function notify(message, isError=false) {
-    const root = $('toastZone'); root.innerHTML = `<div class="toast ${isError?'bad':''}">${esc(message)}</div>`;
-    clearTimeout(toastTimeout); toastTimeout=setTimeout(()=>{root.textContent='';},3500);
-  }
+  
+function notify(message, isError=false) {
+  const root = $('toastZone');
+  if(!root) return;
+  const node = document.createElement('div');
+  node.className = `toast ${isError ? 'bad' : ''}`;
+  node.textContent = message;
+  root.appendChild(node);
+  requestAnimationFrame(() => node.classList.add('show'));
+  setTimeout(() => {
+    node.classList.remove('show');
+    node.classList.add('hide');
+    setTimeout(() => node.remove(), 260);
+  }, 3600);
+}
+
   async function api(path,{method='GET',body,auth=false}={}) {
     const c=new AbortController();const timer=setTimeout(()=>c.abort(),75000);
     try {
@@ -261,7 +326,7 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1p
         const write=canEdit(x.department)&&x.status==='active';
         const proofViolation=safeLink(x.evidence_url),proofPaid=safeLink(x.redemption_proof_url);
         const proofHTML=`<div class="proof-links">${proofViolation?`<a class="proof" href="${esc(proofViolation)}" target="_blank" rel="noopener noreferrer">Нарушение ↗</a>`:''}${proofPaid?`<a class="proof" href="${esc(proofPaid)}" target="_blank" rel="noopener noreferrer">${esc(x.redemption_proof_label||'Погашено')} ↗</a>`:''}${!proofViolation&&!proofPaid?'—':''}</div>`;
-        const actionHTML=editAvailable?`<td><div class="actions-list">${write?`<button class="text-action" data-edit="${esc(x.id)}" type="button">Изменить</button><button class="text-action pay" data-action="pay" data-id="${esc(x.id)}" type="button">Погасить</button><button class="text-action cancel" data-action="cancel" data-id="${esc(x.id)}" type="button">Отмена</button>`:''}</div></td>`:'';
+        const actionHTML=editAvailable?`<td><div class="actions-list">${write?`<button class="action-edit" data-edit="${esc(x.id)}" type="button" title="Изменить запись" aria-label="Изменить запись"><span class="plus">+</span><span class="edit-wrap"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10-10-4-4L4 16v4z"></path><path d="m12 6 4 4"></path></svg><span>Изменить</span></span></button><button class="text-action pay" data-action="pay" data-id="${esc(x.id)}" type="button">Погасить</button><button class="text-action cancel" data-action="cancel" data-id="${esc(x.id)}" type="button">Отмена</button>`:''}</div></td>`:'';
         return `<tr><td>${start+i+1}</td><td><span class="name ${x.status!=='active'?'strike':''}">${esc(x.nickname)}</span></td><td class="account">${esc(x.account_number)}</td><td><span class="dept ${x.department==='SFPD'?'sf':x.department==='LVPD'?'lv':''}">${esc(x.department)}</span></td><td><strong class="punishment-type ${punishmentClass(x.punishment_type)}">${esc(x.punishment_type)}</strong>${x.article?`<div style="font-size:11px;color:#8ba2b5">УПД ${esc(x.article)}</div>`:''}</td><td><span class="work">${esc(workNames[x.redemption_type]||'Не требуется')}</span></td><td>${proofHTML}</td><td>${esc(x.issued_by)}</td><td><span class="status ${esc(x.status)}">${esc(statuses[x.status]||'—')}</span></td><td>${esc(dateText(x.issued_at))}</td>${actionHTML}</tr>`;
       }).join('');
     }
@@ -361,6 +426,86 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1p
     catch{sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;}
     updateAuth();
   }
+
+  function initLoader(){
+    const loader = $('loader');
+    if(!loader) return;
+    const hide = () => setTimeout(() => loader.classList.add('hide'), 360);
+    if(document.readyState === 'complete') hide();
+    else window.addEventListener('load', hide, {once:true});
+  }
+
+  function initOrbit(){
+    const shell = $('orbitShell');
+    const blue = $('orbBlue');
+    const red = $('orbRed');
+    const merge = $('orbMerge');
+    const burst = $('orbBurst');
+    if(!shell || !blue || !red || !merge || !burst) return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(prefersReduced){
+      blue.style.opacity = '1';
+      red.style.opacity = '1';
+      merge.style.opacity = '0';
+      return;
+    }
+    let phase = 'split';
+    let phaseStart = performance.now();
+    const splitDuration = 2200;
+    const mergeDuration = 3200;
+    const mergeAngle = -Math.PI / 2;
+    const place = (el, angle, radius) => {
+      el.style.transform = `translate(${Math.cos(angle) * radius}px, ${Math.sin(angle) * radius}px)`;
+    };
+    const blast = angle => {
+      const radius = shell.clientWidth * 0.475;
+      burst.style.setProperty('--bx', `${Math.cos(angle) * radius}px`);
+      burst.style.setProperty('--by', `${Math.sin(angle) * radius}px`);
+      burst.classList.remove('boom');
+      void burst.offsetWidth;
+      burst.classList.add('boom');
+    };
+    const frame = now => {
+      const radius = shell.clientWidth * 0.475;
+      if(phase === 'split'){
+        const p = Math.min((now - phaseStart) / splitDuration, 1);
+        const blueAngle = Math.PI + p * (Math.PI / 2);
+        const redAngle = 0 - p * (Math.PI / 2);
+        blue.style.opacity = '1';
+        red.style.opacity = '1';
+        merge.style.opacity = '0';
+        place(blue, blueAngle, radius);
+        place(red, redAngle, radius);
+        if(p >= 1){
+          blast(mergeAngle);
+          phase = 'merge';
+          phaseStart = now;
+          blue.style.opacity = '0';
+          red.style.opacity = '0';
+          merge.style.opacity = '1';
+          place(merge, mergeAngle, radius);
+        }
+      } else {
+        const p = Math.min((now - phaseStart) / mergeDuration, 1);
+        const whiteAngle = mergeAngle + p * (Math.PI * 2);
+        place(merge, whiteAngle, radius);
+        if(p >= 1){
+          blast(mergeAngle);
+          phase = 'split';
+          phaseStart = now;
+          merge.style.opacity = '0';
+          blue.style.opacity = '1';
+          red.style.opacity = '1';
+        }
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
+  initLoader();
+  initOrbit();
   updateAuth();load();restoreUser();
 })();
+
 </script></body></html>
