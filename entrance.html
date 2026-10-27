@@ -1,9 +1,109 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f8fc"><meta name="referrer" content="no-referrer"><title>Реестр</title><link rel="icon" href="pd_photo.png" type="image/png">
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#141d27"><meta name="referrer" content="no-referrer"><title>Реестр</title><link rel="icon" href="pd_photo.png" type="image/png">
 <style>
 :root{--bg:#f5f8fc;--ink:#172c41;--mute:#7d93a7;--blue:#3a75ac;--line:#dbe6f0;--good:#23845e;--bad:#bc5169}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse 700px 550px at 85% 0%,#d7eafa8a,transparent),radial-gradient(ellipse 500px 450px at 5% 30%,#e1ebff8c,transparent),var(--bg);color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}.wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}.header{height:76px;border-bottom:1px solid #d6e2efbd;background:#f9fcffca;backdrop-filter:blur(18px);display:flex;align-items:center}.top-inner{display:flex;justify-content:space-between;gap:14px;align-items:center}.brand{text-decoration:none;font-size:12px;font-weight:850;letter-spacing:.15em;display:flex;align-items:center;gap:9px}.badge-logo{display:grid;place-items:center;height:32px;width:32px;border-radius:11px;background:#dcecf9;color:#2a608b}.nav{display:flex;align-items:center;gap:17px}.nav a{font-size:12px;text-decoration:none;color:#496e8f}.nav a:hover{text-decoration:underline}.hero{padding:69px 0 30px}.eyebrow{font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#6590b3;font-weight:800}.hero h1{font-size:clamp(38px,5.4vw,67px);letter-spacing:-.072em;margin:15px 0 6px;line-height:1.06}.hero p{font-size:13px;color:#7a92a9;line-height:1.7;margin:0}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:64px;align-items:start;min-height:360px;margin-top:27px}.card{border:1px solid #d5e3f0;border-radius:20px;background:#ffffffbb;backdrop-filter:blur(8px);box-shadow:0 22px 70px #537a9c17;padding:27px}.side h2{font-size:26px;letter-spacing:-.05em;margin:0 0 9px}.side p{font-size:13px;color:#839ab0;line-height:1.8;margin:0;max-width:320px}.scope-lines{margin-top:34px;display:grid;gap:16px}.scope-line{display:flex;gap:13px;align-items:center;font-size:12px;color:#45617b}.scope-line i{height:29px;width:29px;display:grid;place-items:center;border-radius:10px;font-size:10px;font-style:normal;font-weight:850;color:#507ba5;background:#e3eef8}.tabs{display:flex;gap:20px;border-bottom:1px solid #d6e4ef;margin-bottom:24px}.tab{background:transparent;border:0;padding:8px 2px 14px;font-size:12px;color:#7891a6;font-weight:750;border-bottom:2px solid transparent}.tab.active{color:#27577d;border-bottom-color:#498cbd}.form{display:grid;gap:16px}.field{display:grid;gap:8px}.field label{font-size:11px;color:#637e95;font-weight:750}.field input,.field select{width:100%;border:1px solid #cbdae6;border-radius:10px;background:#f9fcff;color:#203c55;padding:12px 13px;outline:none;font-size:13px;min-height:45px}.field input:focus,.field select:focus{border-color:#609cc8;box-shadow:0 0 0 3px #70b0e526}.field input::placeholder{color:#a2b4c4}.btn{display:inline-flex;justify-content:center;align-items:center;gap:7px;border:1px solid #c6d9e7;background:#fff8;color:#2e587a;padding:11px 16px;border-radius:10px;font-size:12px;font-weight:750;transition:.18s}.btn:hover:not(:disabled){background:#e7f1fa;border-color:#8bb2d2}.btn.primary{background:#265982;border-color:#265982;color:#fff}.btn.primary:hover{background:#3376aa}.btn.warn{color:#b24765;border-color:#e0b4c1}.btn:disabled{opacity:.45;cursor:not-allowed}.btn.sm{font-size:11px;padding:8px 11px}.btn.full{width:100%}.error{color:#b74760;font-size:12px;min-height:17px}.ok{color:#24805f;font-size:12px;min-height:17px}.hide{display:none!important}.userbar{display:flex;gap:13px;align-items:center;justify-content:space-between;margin-bottom:24px}.identity-name{font-size:23px;font-weight:820;letter-spacing:-.04em}.identity-role{font-size:11px;color:#7f99ad;margin-top:6px}.section{margin-top:25px;padding-top:23px;border-top:1px solid #d7e4ef}.section h3{font-size:16px;letter-spacing:-.025em;margin:0 0 14px}.compact{font-size:11px;color:#7c91a3}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>.field{flex:1;min-width:132px}.candidate{display:flex;gap:13px;align-items:center;justify-content:space-between;border-bottom:1px solid #e2eaf1;padding:13px 0}.candidate:last-child{border-bottom:0}.candidate b{font-size:12px;font-weight:760}.candidate small{display:block;font-size:10px;color:#8ba2b6;margin-top:4px}.selected{color:#26608e;font-size:11px;font-weight:750}.request{padding:17px 0;border-bottom:1px solid #e0eaf1;display:flex;gap:15px;justify-content:space-between;align-items:center}.request:last-child{border-bottom:0}.request strong{font-size:13px}.request small{display:block;color:#819bad;margin-top:6px;font-size:11px}.request-actions{display:flex;gap:7px;flex-wrap:wrap}.pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.pill{padding:4px 7px;border-radius:5px;background:#edf3f9;font-size:10px;color:#8c9eb0}.pill.yes{background:#e3f3e9;color:#358264}.minimal{font-size:12px;color:#8295a7;line-height:1.8}.notice{font-size:11px;color:#59778e;line-height:1.7}.bootstrap{margin-top:28px;border-top:1px solid #dce7f0;padding-top:18px}.bootstrap summary{font-size:11px;color:#6584a0;cursor:pointer}.footer{margin:70px auto 30px;border-top:1px solid #dbe5ed;padding-top:20px;display:flex;align-items:center;justify-content:space-between;color:#8aa0b3;font-size:11px}.footer a{text-decoration:none}.footer a:hover{text-decoration:underline}
 @media(max-width:850px){.grid{grid-template-columns:1fr;gap:25px}.side{display:none}.hero{padding-top:42px}.card{padding:20px}.wrap{width:calc(100% - 32px)}}@media(max-width:440px){.header{height:64px}.brand{font-size:10px;letter-spacing:.06em}.nav{gap:10px}.nav a{font-size:11px}.request{display:block}.request-actions{margin-top:12px}}
-.badge-logo{background:none!important;object-fit:contain;padding:0!important}.side h2{font-size:20px!important}</style></head>
+.badge-logo{background:none!important;object-fit:contain;padding:0!important}.side h2{font-size:20px!important}
+/* Tactical Carbon — purely presentational overrides. */
+:root{
+  color-scheme:dark;
+  --bg:#141d27;
+  --ink:#eaf4ff;
+  --text:#bdcee0;
+  --muted:#95a9bf;
+  --mute:#95a9bf;
+  --line:rgba(149,188,222,.19);
+  --blue:#83c7ff;
+  --blue-soft:#203c53;
+  --mint:#83dab9;
+  --good:#89dcb5;
+  --bad:#f19aab;
+  --red:#eca5b0;
+  --gold:#edcb87;
+  --shadow:0 24px 70px rgba(1,9,20,.35);
+  --edge:rgba(146,191,229,.23);
+  --panel:rgba(27,43,58,.75);
+  --panel-hover:rgba(34,59,80,.88);
+  --signal:#75c4ff;
+}
+html{background:var(--bg);scrollbar-color:#3b5a71 #151f2a}
+body{
+  position:relative;
+  isolation:isolate;
+  color:var(--ink);
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 73% 54% at 94% 7%,rgba(40,95,145,.20),transparent 74%),
+    radial-gradient(ellipse 47% 40% at 6% 66%,rgba(36,70,96,.16),transparent 74%),
+    linear-gradient(142deg,#192633 0%,#121b25 52%,#182531 100%);
+}
+body::before,body::after{content:"";position:fixed;inset:-25vh -25vw;pointer-events:none;z-index:-1;will-change:transform,opacity}
+body::before{background:radial-gradient(ellipse 26% 31% at 76% 26%,rgba(50,149,233,.20),transparent 75%),radial-gradient(ellipse 27% 25% at 18% 76%,rgba(39,113,170,.13),transparent 77%);filter:blur(44px);animation:tacticalDrift 21s ease-in-out infinite alternate}
+body::after{background:radial-gradient(ellipse 20% 25% at 55% 49%,rgba(101,170,216,.11),transparent 77%);filter:blur(60px);animation:tacticalDriftReverse 27s ease-in-out infinite alternate}
+@keyframes tacticalDrift{0%{transform:translate3d(-2%,-1%,0) scale(1);opacity:.7}50%{transform:translate3d(5%,3%,0) scale(1.09);opacity:1}100%{transform:translate3d(-3%,6%,0) scale(.97);opacity:.78}}
+@keyframes tacticalDriftReverse{0%{transform:translate3d(5%,4%,0) scale(1.05)}100%{transform:translate3d(-5%,-3%,0) scale(.96)}}
+button,input,select,textarea{font:inherit}
+button{transition:background-color .26s ease,border-color .26s ease,box-shadow .26s ease,transform .26s cubic-bezier(.2,.7,.2,1),color .26s ease}
+a{transition:color .22s ease}
+:focus-visible{outline:2px solid #9ad6ff;outline-offset:3px}
+::selection{background:#4e98cf70;color:#fff}
+/* Buttons with a small signal strip emerging from the left edge. */
+.btn,.tab,.scope-line,.card,.metric,.candidate,.request,.records tbody tr td:first-child{transition:background-color .28s ease,border-color .28s ease,box-shadow .28s ease,transform .28s cubic-bezier(.2,.7,.2,1),color .25s ease}
+.btn{position:relative;isolation:isolate;overflow:visible;border:1px solid var(--edge);color:#d5e8fb;background:rgba(32,51,68,.75);box-shadow:inset 0 1px rgba(255,255,255,.05);text-decoration:none;border-radius:11px}
+.btn::before{content:"";position:absolute;left:-2px;top:50%;height:0;width:3px;opacity:0;border-radius:10px;background:linear-gradient(180deg,#a6e2ff,#57aefe);box-shadow:0 0 13px rgba(111,194,255,.75);transform:translateX(-5px) translateY(-50%);transition:height .27s cubic-bezier(.2,.7,.2,1),opacity .24s,transform .27s}
+.btn:hover:not(:disabled),.btn:focus-visible{border-color:rgba(134,203,251,.6);background:rgba(38,74,104,.92);box-shadow:0 9px 30px rgba(28,117,190,.15),inset 0 0 0 1px rgba(162,212,255,.08),inset 0 1px rgba(255,255,255,.13);transform:translateY(-2px)}
+.btn:hover:not(:disabled)::before,.btn:focus-visible::before{height:58%;opacity:1;transform:translateX(0) translateY(-50%)}
+.btn:active:not(:disabled){transform:translateY(0) scale(.985)}
+.btn.primary{color:#081b2b;background:linear-gradient(125deg,#a9ddff,#6ab9f6);border-color:#89cdfc;box-shadow:0 8px 28px rgba(62,147,209,.21),inset 0 1px #ffffff6b}
+.btn.primary:hover:not(:disabled){color:#041523;background:linear-gradient(125deg,#d0edff,#87c9ff);box-shadow:0 13px 36px rgba(87,182,244,.29),inset 0 1px #ffffff88;border-color:#c1e8ff}
+.btn.primary::before{background:#e2f7ff;box-shadow:0 0 13px rgba(232,248,255,.8)}
+.btn.mint{color:#102c25;background:linear-gradient(120deg,#8fdfbe,#68cfa4);border-color:#9ee3c6}
+.btn.mint:hover:not(:disabled){background:#a6e8cf;border-color:#c2f0df}
+.btn.warn,.btn.danger{color:#ffb6c4;border-color:rgba(226,121,147,.38);background:rgba(87,45,61,.18)}
+.btn.warn:hover,.btn.danger:hover{background:rgba(108,51,66,.38);border-color:#e89dad}
+/* Shared input polish */
+.field label{color:#adc4db}
+.field input,.field select,.field textarea,.search,.select{border-color:rgba(129,173,205,.29);background:rgba(12,27,40,.68);color:#eaf4ff;box-shadow:inset 0 1px 3px rgba(4,11,19,.15);transition:background-color .2s,border-color .2s,box-shadow .2s,transform .2s}
+.field input:hover,.field select:hover,.field textarea:hover,.search:hover,.select:hover{border-color:rgba(123,192,243,.46);background:rgba(19,42,60,.85)}
+.field input:focus,.field select:focus,.field textarea:focus,.search:focus-within,.select:focus{outline:none;border-color:#77bdf4;background:rgba(17,39,57,.95);box-shadow:0 0 0 3px rgba(67,150,219,.17),0 0 26px rgba(54,132,203,.10)}
+.field input::placeholder,.field textarea::placeholder,.search input::placeholder{color:#8298aa}
+input:autofill,input:-webkit-autofill{-webkit-text-fill-color:#eaf4ff;-webkit-box-shadow:0 0 0 1000px #12283b inset}
+select option{background:#1b2c3b;color:#ecf6ff}
+/* Respect slower devices and reduced-motion preferences. */
+@media(prefers-reduced-motion:reduce){body::before,body::after{animation:none!important}.btn,.tab,.card,.metric,.request,.candidate{transition:none!important}}
+@media(max-width:760px){body::before,body::after{filter:blur(60px);animation-duration:40s;opacity:.65}}
+
+/* Role management page */
+.header,main,.footer{position:relative;z-index:1}
+.header{border-bottom:1px solid rgba(137,187,224,.2);background:rgba(16,27,39,.82);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 8px 30px #03111b25}
+.brand{color:#ecf7ff}.badge-logo{filter:drop-shadow(0 3px 15px rgba(93,177,252,.24))}
+.nav a{color:#bed5e7}.nav a:hover{color:#9fdaff;text-decoration:none}
+.hero{padding-top:68px}.eyebrow{color:#83bde7}.hero h1{color:#eef7ff;text-shadow:0 9px 34px rgba(47,125,198,.2)}.hero p{color:#aac3d6}
+.side h2{color:#eaf5ff}.side p{color:#aac0d4}
+.grid{gap:54px}.card{position:relative;isolation:isolate;border:1px solid rgba(139,187,223,.28);border-radius:19px;background:linear-gradient(137deg,rgba(37,58,77,.86),rgba(21,38,53,.88));box-shadow:0 24px 77px rgba(3,13,25,.23),inset 0 1px rgba(255,255,255,.055);backdrop-filter:blur(19px);-webkit-backdrop-filter:blur(19px);overflow:visible}
+.card::before{content:"";position:absolute;left:-2px;top:50%;width:3px;height:0;opacity:0;background:linear-gradient(180deg,#b4e5ff,#5ebaff);border-radius:6px;box-shadow:0 0 20px rgba(86,183,251,.77);transform:translate(-5px,-50%);transition:height .3s,opacity .25s,transform .3s}
+.card:hover{background:linear-gradient(137deg,rgba(42,69,93,.91),rgba(25,44,62,.94));border-color:rgba(147,205,248,.54);box-shadow:0 28px 85px rgba(3,15,29,.33),0 0 34px rgba(62,146,216,.085),inset 0 1px rgba(255,255,255,.09);transform:translateY(-2px)}
+.card:hover::before{height:25%;opacity:1;transform:translate(0,-50%)}
+.scope-lines{gap:13px}.scope-line{position:relative;border:1px solid transparent;border-radius:12px;background:rgba(30,48,65,.35);padding:11px 14px;color:#adcadf;overflow:visible;cursor:default}
+.scope-line::before{content:"";position:absolute;left:-2px;top:50%;width:3px;height:0;opacity:0;border-radius:5px;background:#79caff;box-shadow:0 0 13px rgba(90,182,250,.7);transform:translate(-4px,-50%);transition:.26s}
+.scope-line:hover{border-color:rgba(120,190,239,.34);background:rgba(45,78,100,.69);transform:translateX(3px);color:#f1faff}
+.scope-line:hover::before{height:56%;opacity:1;transform:translate(0,-50%)}
+.scope-line i{color:#bce3ff;background:rgba(68,123,165,.3);border:1px solid rgba(124,186,234,.23)}
+.tabs{border-bottom-color:rgba(149,186,215,.25);gap:11px}.tab{position:relative;color:#99b5cb;padding:11px 15px;border-radius:9px 9px 0 0;border-bottom:2px solid transparent;transition:.25s}
+.tab:hover{color:#d6efff;background:rgba(57,100,136,.25)}.tab.active{color:#c3e9ff;border-bottom-color:#77c5ff;background:rgba(66,122,168,.22)}
+.tab::before{content:"";position:absolute;left:0;top:50%;height:0;width:3px;opacity:0;border-radius:4px;background:#8fd2ff;box-shadow:0 0 12px rgba(99,185,245,.8);transform:translateY(-50%);transition:height .25s,opacity .25s}
+.tab:hover::before{height:46%;opacity:1}
+.identity-name{color:#ecf6ff}.identity-role{color:#a5c0d5}
+.section{border-top:1px solid rgba(140,181,217,.24)}.section h3{color:#e9f5ff}.compact,.minimal{color:#aec3d6}.notice{color:#a3c3dc}.bootstrap{border-color:rgba(135,175,207,.22)}.bootstrap summary{color:#afd2ed}
+.candidate,.request{position:relative;border-bottom:1px solid rgba(148,187,217,.18);border-radius:6px;padding-inline:11px;margin-inline:-11px}
+.candidate:hover,.request:hover{background:rgba(65,126,168,.16);box-shadow:inset 3px 0 #78c6fc,0 8px 22px rgba(6,16,27,.1);transform:translateX(3px)}
+.candidate small,.request small{color:#a1b9cb}.selected{color:#9fd2f8}.pill{color:#bed2e3;background:rgba(76,105,130,.3)}.pill.yes{color:#b1e9c9;background:rgba(49,121,83,.27)}
+.error{color:#ffb3c0}.ok{color:#98e9c8}
+.footer{color:#95adc2;border-top-color:rgba(140,181,217,.21)}.footer a:hover{color:#acdfff}
+@media(max-width:850px){.grid{gap:26px}.card{padding:21px}.hero{padding-top:44px}}
+@media(prefers-reduced-motion:reduce){.card:hover,.candidate:hover,.request:hover,.scope-line:hover{transform:none!important}}
+
+</style></head>
 <body><header class="header"><div class="wrap top-inner"><a class="brand" href="index.html"><img class="badge-logo" src="pd_photo.png" alt=""> POLICE DEPARTMENT</a><nav class="nav"><a href="index.html">Реестр</a><a href="#login" id="topAccount">Войти</a></nav></div></header>
 <main class="wrap"><section class="hero"><div class="eyebrow">Личный кабинет</div><h1 id="heading">Доступ к реестру</h1><p id="heroSubtitle">Управление сотрудниками и назначениями</p></section>
 <div class="grid"><aside class="side"><h2>Роли и доступ</h2><p>Вход по аккаунту World Script.</p><div class="scope-lines"><div class="scope-line"><i>01</i> Вход</div><div class="scope-line"><i>02</i> Назначения</div><div class="scope-line"><i>03</i> Заявки</div></div></aside>
