@@ -33,9 +33,9 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 .avatar-photo{position:absolute;inset:17px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:radial-gradient(circle at 30% 15%,#2f5a76,#0a1726 72%);box-shadow:inset 0 3px 15px #0008}
 .avatar-photo img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar-ring-art{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.card-identity{display:flex;justify-content:center;align-items:center;gap:8px;width:100%;min-height:49px;margin:6px 0 14px}
-.person-name{font-size:15.5px;line-height:1.2;letter-spacing:-.01em;font-weight:850;text-shadow:0 2px 10px #000;overflow-wrap:anywhere;flex:1;min-width:0;text-align:right}
-.social-links{display:flex;gap:4px;align-items:center;flex:0 0 auto;margin-right:0}
+.card-identity{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:9px;width:100%;min-height:55px;margin:0 0 14px}
+.person-name{font-size:15.5px;line-height:1.2;letter-spacing:-.01em;font-weight:850;text-shadow:0 2px 10px #000;overflow-wrap:anywhere;flex:1;min-width:0;text-align:center}
+.social-links{display:flex;justify-content:center;gap:8px;align-items:center;flex:0 0 auto;margin-right:0}
 .social-btn{width:36px;height:36px;border:1px solid color-mix(in srgb,var(--c) 45%,#1c3954);background:#071c30d6;border-radius:10px;display:grid;place-items:center;transition:transform .2s,background .2s,border-color .2s;box-shadow:0 6px 14px #0005}
 .social-btn img{width:27px;height:27px;object-fit:contain;display:block}
 .social-btn:not(.unavailable):hover{transform:translateY(-2px);border-color:var(--c);background:#16324f}
@@ -50,14 +50,15 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 @media(max-width:550px){.shell{width:calc(100% - 26px)}header.top{height:74px;min-height:74px}.topin{gap:10px}.brand{gap:9px}.brand img{width:34px;height:37px}.brand strong{font-size:12px}.brand small{font-size:8px}.top-tag{display:none}main{padding:32px 0 52px}.main-title{margin-bottom:26px}.main-title h1{font-size:clamp(16px,4.85vw,28px);letter-spacing:-.055em}.title-accent{margin-top:16px}.leadership-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.person-card{padding:17px 7px 12px;min-height:270px;border-radius:13px}.avatar-frame{width:clamp(100px,27vw,135px);height:clamp(100px,27vw,135px)}.avatar-photo{inset:11%}.card-identity{display:block;margin:4px 0 9px;min-height:63px}.person-name{display:block;text-align:center;font-size:12px;min-height:27px;padding:0 3px}.social-links{justify-content:center;margin-top:2px}.social-btn{width:29px;height:29px;border-radius:8px}.social-btn img{width:22px;height:22px}.role-tag{font-size:9.5px;min-height:40px;padding:6px 3px;gap:4px}.role-tag img{height:17px;width:17px}.card-index{font-size:9px}.footinner{justify-content:center;text-align:center}.links{justify-content:center}}
 @media(max-width:360px){.main-title h1{font-size:15px}.person-card{padding-inline:4px}.person-name{font-size:11px}.role-tag{font-size:9px;letter-spacing:-.02em}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+.vacant-section{margin-top:58px;padding-top:27px;border-top:1px solid #7a97b74d}.vacant-section h2{font-size:clamp(22px,3vw,35px);letter-spacing:.07em;text-align:center;margin:0 0 27px;color:#c2d2e2}.person-card[data-slot^="swat_"]{--c:#ae75f1}
 </style>
 </head>
 <body>
-<header class="top"><div class="shell topin"><a class="brand" href="police.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><span><strong>POLICE DEPARTMENT</strong><small>РУКОВОДСТВО</small></span></a><span class="top-tag">ABSOLUTE ROLE PLAY</span></div></header>
+<header class="top"><div class="shell topin"><a class="brand" href="police.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><span><strong>POLICE DEPARTMENT</strong><small>РУКОВОДСТВО</small></span></a></div></header>
 <main class="shell">
 <section class="main-title"><h1><span class="title-blue">РУКОВОДСТВО</span> <span class="title-red">ПОЛИЦИИ</span></h1><div class="title-accent" aria-hidden="true"></div></section>
 <div id="loading" role="status" aria-live="polite"></div>
-<section id="leadershipGrid" class="leadership-grid" aria-label="Руководство полиции"></section>
+<section id="leadershipGrid" class="leadership-grid" aria-label="Руководство полиции"></section><section id="vacantSection" class="vacant-section" hidden><h2>НЕ НАЗНАЧЕНО</h2><div id="vacantGrid" class="leadership-grid"></div></section>
 </main>
 <footer class="footer"><div class="shell footinner"><p>© marsellex · С 2024 по настоящее время</p><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a><button type="button" id="privacyBtn">Конфиденциальность</button></nav></div></footer>
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>На странице отображаются игровые имена, должности и изображения руководства полиции. Данные обновляются через Police Department.</p><button class="close-privacy" type="button" id="closePrivacy">Закрыть</button></div></dialog>
@@ -65,7 +66,7 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 (()=>{'use strict';
 const API='https://police-api-b2y4.onrender.com';
 const ASSET='leadership_police/';
-const grid=document.getElementById('leadershipGrid');
+const grid=document.getElementById('leadershipGrid');const vacant=document.getElementById('vacantGrid'),vacantSection=document.getElementById('vacantSection');
 const status=document.getElementById('loading');
 const slots=[
  {id:'responsible',label:'Ответственный за PD',bg:'01_responsible_city.webp',color:'purple',badge:'badge_responsible_purple.png'},
@@ -75,22 +76,24 @@ const slots=[
  {id:'minister',label:'Министр внутренних дел',bg:'05_minister_briefing.webp',color:'cyan',badge:'badge_minister_cyan.png'},
  {id:'leader_lspd',label:'Лидер LSPD',bg:'06_leader_lspd_station.webp',color:'lime',badge:'badge_leader_lime.png'},
  {id:'leader_sfpd',label:'Лидер SFPD',bg:'07_leader_sfpd_station.webp',color:'blue',badge:'badge_leader_blue.png'},
- {id:'leader_lvpd',label:'Лидер LVPD',bg:'08_leader_lvpd_station.webp',color:'red',badge:'badge_leader_red.png'}
+ {id:'leader_lvpd',label:'Лидер LVPD',bg:'08_leader_lvpd_station.webp',color:'red',badge:'badge_leader_red.png'},
+ {id:'swat_deputy',label:'Заместитель SWAT',bg:'09_swat_deputy.webp',color:'purple',badge:'badge_responsible_purple.png'},
+ {id:'swat_commander',label:'Командир SWAT',bg:'10_swat_commander.webp',color:'purple',badge:'badge_responsible_purple.png'}
 ];
 function element(tag,cls,text){const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=text;return x}
 function safeImage(u){if(typeof u!=='string'||!u.trim())return '';try{const x=new URL(u);return x.protocol==='https:'&&!x.username&&!x.password?x.href:''}catch{return ''}}
 function safeLink(u,vkOnly=false){const url=safeImage(u);if(!url)return '';if(vkOnly&&!['vk.com','m.vk.com','vk.ru'].includes(new URL(url).hostname))return '';return url}
 function title(s,item){return s.id==='responsible'&&item.gender==='female'?'Ответственная за PD':s.label}
 function social(kind,href,color,nick){const a=element(href?'a':'span','social-btn'+(href?'':' unavailable'));const label=kind==='vk'?'ВКонтакте':'Форум';a.title=href?label:'Ссылка не указана';a.setAttribute('aria-label',href?`${label}: ${nick}`:`${label}: ссылка не указана`);if(href){a.href=href;a.target='_blank';a.rel='noopener noreferrer'}const ico=element('img');ico.src=ASSET+kind+'_'+color+'.png';ico.alt='';ico.loading='lazy';a.append(ico);return a}
-function draw(items){const map=new Map(items.map(item=>[item.slot,item]));grid.replaceChildren(...slots.map((s,i)=>{
+function draw(items){const map=new Map(items.map(item=>[item.slot,item]));const active=[],inactive=[];slots.forEach((s,i)=>{
  const item=map.get(s.id)||{};const nick=String(item.nickname||'').trim()||'Не назначен';
  const card=element('article','person-card');card.dataset.slot=s.id;card.style.setProperty('--scene',`url("${ASSET+s.bg}")`);
  const count=element('div','card-index',String(i+1).padStart(2,'0'));card.append(count);
  const frame=element('div','avatar-frame');const photoFrame=element('div','avatar-photo');const photo=element('img');photo.loading='lazy';photo.decoding='async';photo.referrerPolicy='no-referrer';photo.alt=nick==='Не назначен'?'Пустая аватарка':'Аватар: '+nick;photo.src=safeImage(item.avatar_url)||'png_police_site/profile.png';photo.onerror=()=>{photo.onerror=null;photo.src='png_police_site/profile.png'};photoFrame.append(photo);frame.append(photoFrame);const ring=element('img','avatar-ring-art');ring.src=ASSET+'ring_'+s.color+'.png';ring.alt='';ring.loading='lazy';frame.append(ring);card.append(frame);
  const identity=element('div','card-identity');identity.append(element('strong','person-name',nick));const socials=element('div','social-links');socials.append(social('vk',safeLink(item.vk_url,true),s.color,nick),social('forum',safeLink(item.forum_url),s.color,nick));identity.append(socials);card.append(identity);
  const plaque=element('div','role-tag');const icon=element('img');icon.alt='';icon.src=ASSET+s.badge;icon.loading='lazy';plaque.append(icon,element('span','',title(s,item)));card.append(plaque);
- return card;
- }))}
+ (item.nickname?.trim()&&item.vk_url?.trim()&&item.forum_url?.trim()?active:inactive).push(card);
+ });grid.replaceChildren(...active);vacant.replaceChildren(...inactive);vacantSection.hidden=!inactive.length;}
 draw([]);status.textContent='Загрузка...';
 async function load(){try{const controller=new AbortController();const tid=setTimeout(()=>controller.abort(),15000);let response;try{response=await fetch(API+'/api/portal/leadership',{headers:{Accept:'application/json'},cache:'no-store',signal:controller.signal})}finally{clearTimeout(tid)}if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!data||!data.ok||!Array.isArray(data.items))throw new Error('Некорректный ответ');draw(data.items);status.textContent=''}catch{status.textContent='Не удалось обновить руководство'}}
 load();
