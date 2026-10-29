@@ -120,7 +120,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 .roster .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}.roster .person{min-width:0}.roster .person strong{white-space:normal}.chief-card-row{display:flex;align-items:center;gap:12px;margin:12px 0;padding:10px 11px;border:1px solid #294b6688;border-radius:11px;background:#0c243795}.chief-card-row img{width:47px;height:47px;border:1px solid #4e7296;border-radius:10px;object-fit:cover}.chief-card-row div{min-width:0;flex:1}.chief-card-row strong{display:block;font-size:12px}.chief-card-row small{display:block;color:#9ebfd5;font-size:10px;margin-top:3px}.chief-card-row b{font-size:11px;color:#7bc2ff}
 @media(max-width:900px){.pd-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.pd-admin-layout,.pd-admin-grid{grid-template-columns:1fr}.pd-admin-section{scroll-margin-top:75px}.pd-admin-heading{align-items:flex-start}.pd-admin-heading h2{font-size:26px}.pd-admin-tabs button{flex:1;padding:10px 7px;font-size:11px}.pd-admin-grid{gap:11px}}
-</style>
+body:not(.pd-admin-only) #pdAdminSection{display:none!important}</style>
 </head>
 <body>
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -206,8 +206,8 @@ let toastTimer;
 function toast(text){const el=$('toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3000)}
 function activateTabs(parent,btn){parent.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn))}
 let portalLeadership=[];let portalChiefs=[];
-const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD']};
-const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd']};
+const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD'],swat_deputy:['Заместитель SWAT'],swat_commander:['Командир SWAT']};
+const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd','swat_deputy','swat_commander']};
 const leaderFallback='png_police_site/profile.png';
 function renderRoster(kind){
  if(kind==='senior'){$('roster').innerHTML=roster.senior.map(([name,desc,initial,href])=>`<div class="person"><div class="avatar">${initial}</div><div><strong>${name}</strong><small>${desc}</small></div><div class="contact"><a href="${href}" target="_blank" rel="noopener noreferrer" title="VK">VK</a></div></div>`).join('');return;}
@@ -287,7 +287,7 @@ restore();
 (()=>{'use strict';
 const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
 const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD'};
+const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT'};
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const defaultAvatar='png_police_site/profile.png';
 let users=[],selected=null,leadership=[],chiefs=[],currentTab='users';
@@ -308,8 +308,8 @@ async function openAdmin(){
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
 }
-$('pdAdminOpen').onclick=openAdmin;
-$('pdAdminClose').onclick=()=>{$('pdAdminSection').classList.add('hidden');$('pdProfileMenu').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+$('pdAdminOpen').onclick=()=>{location.href='admin.html'};
+$('pdAdminClose').onclick=()=>{location.href='police.html'};
 async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
  const text=$('pdUserSearch').value.trim().toLowerCase();
@@ -351,6 +351,21 @@ function setupEditors(parent,save){
  parent.querySelectorAll('img').forEach(img=>image(img,img.getAttribute('src')));
  parent.querySelectorAll('form[data-pd-save]').forEach(form=>{
  const avatar=form.elements.namedItem('avatar_url'),preview=form.closest('.pd-admin-card').querySelector('.pd-edit-avatar img');
+ if(avatar&&form.closest('#pdLeadershipEditor')){
+   const picker=document.createElement('input');picker.type='file';picker.accept='image/png,image/jpeg';picker.setAttribute('aria-label','Выбрать аватарку (не более 300 КБ)');
+   const hint=document.createElement('span');hint.className='pd-hint';hint.textContent='PNG или JPG · не более 300 КБ';
+   avatar.before(picker,hint);
+   picker.onchange=async()=>{
+      const file=picker.files?.[0];if(!file)return;
+      if(file.size>300*1024||!['image/png','image/jpeg'].includes(file.type)){error('Разрешены PNG/JPG размером не более 300 КБ');picker.value='';return}
+      picker.disabled=true;error('');
+      try{const base64=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result).split(',')[1]);reader.onerror=reject;reader.readAsDataURL(file)});
+        const r=await req('/api/portal/admin/leadership/avatar','POST',{slot:form.dataset.pdSave,mime:file.type,base64});
+        avatar.value=r.avatar_url;image(preview,r.avatar_url);showMessage('Аватарка загружена — сохраните карточку');
+      }catch(e){error(e.message)}finally{picker.disabled=false;picker.value=''}
+   };
+ }
+
  if(avatar)avatar.addEventListener('input',()=>{const v=avatar.value.trim();if(!v||/^https:\/\//i.test(v))image(preview,v)});
  form.onsubmit=async e=>{e.preventDefault();error('');const data=Object.fromEntries(new FormData(form));const btn=form.querySelector('button[type=submit]');btn.disabled=true;
  try{await save(form.dataset.pdSave,data);showMessage('Изменения сохранены');window.pdRefreshPeople?.();}catch(x){error(x.message)}finally{btn.disabled=false}
