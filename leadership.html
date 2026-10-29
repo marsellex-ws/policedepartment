@@ -51,6 +51,20 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 @media(max-width:360px){.main-title h1{font-size:15px}.person-card{padding-inline:4px}.person-name{font-size:11px}.role-tag{font-size:9px;letter-spacing:-.02em}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 .vacant-section{margin-top:58px;padding-top:27px;border-top:1px solid #7a97b74d}.vacant-section h2{font-size:clamp(22px,3vw,35px);letter-spacing:.07em;text-align:center;margin:0 0 27px;color:#c2d2e2}.person-card[data-slot^="swat_"]{--c:#ae75f1}
+/* Decorative corners anchor to the left or right edge of each category row. */
+.leadership-groups{display:flex;flex-direction:column;gap:49px}
+.leadership-category{--accent:#5adeaa;position:relative;padding-top:34px}
+.leadership-category.leaders{--accent:#5aaeff}
+.leadership-category.swat{--accent:#b687ff}
+.category-heading{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:12px;min-height:28px}
+.category-heading::before{content:"";display:block;width:66px;height:2px;flex-shrink:0;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.category-title{font-weight:950;font-size:clamp(15px,2vw,21px);letter-spacing:.15em;color:var(--accent);text-shadow:0 0 17px color-mix(in srgb,var(--accent) 65%,transparent)}
+.category-heading::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.65}
+.leadership-category::before{content:"";position:absolute;top:0;left:0;width:2px;height:65px;background:linear-gradient(var(--accent),transparent);box-shadow:0 0 14px var(--accent)}
+.leadership-category.leaders .category-heading{flex-direction:row-reverse}
+.leadership-category.leaders .category-heading::after{background:linear-gradient(270deg,var(--accent),transparent)}
+.leadership-category.leaders::before{left:auto;right:0}
+@media(max-width:550px){.leadership-groups{gap:31px}.leadership-category{padding-top:30px}.category-heading::before{width:30px}.category-heading{gap:7px}.category-title{font-size:13px;letter-spacing:.09em}.leadership-category::before{height:51px}}
 </style>
 </head>
 <body>
@@ -58,7 +72,7 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 <main class="shell">
 <section class="main-title"><h1><span class="title-blue">РУКОВОДСТВО</span> <span class="title-red">ПОЛИЦИИ</span></h1><div class="title-accent" aria-hidden="true"></div></section>
 <div id="loading" role="status" aria-live="polite"></div>
-<section id="leadershipGrid" class="leadership-grid" aria-label="Руководство полиции"></section><section id="vacantSection" class="vacant-section" hidden><h2>НЕ НАЗНАЧЕНО</h2><div id="vacantGrid" class="leadership-grid"></div></section>
+<div id="leadershipGroups" class="leadership-groups" aria-label="Действующее руководство"></div><section id="vacantSection" class="vacant-section" hidden><h2>НЕ НАЗНАЧЕНО</h2><div id="vacantGrid" class="leadership-grid"></div></section>
 </main>
 <footer class="footer"><div class="shell footinner"><p>© marsellex · С 2024 по настоящее время</p><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a><button type="button" id="privacyBtn">Конфиденциальность</button></nav></div></footer>
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>На странице отображаются игровые имена, должности и изображения руководства полиции. Данные обновляются через Police Department.</p><button class="close-privacy" type="button" id="closePrivacy">Закрыть</button></div></dialog>
@@ -66,7 +80,7 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 (()=>{'use strict';
 const API='https://police-api-b2y4.onrender.com';
 const ASSET='leadership_police/';
-const grid=document.getElementById('leadershipGrid');const vacant=document.getElementById('vacantGrid'),vacantSection=document.getElementById('vacantSection');
+const groups=document.getElementById('leadershipGroups');const vacant=document.getElementById('vacantGrid'),vacantSection=document.getElementById('vacantSection');
 const status=document.getElementById('loading');
 const slots=[
  {id:'responsible',label:'Ответственный за PD',bg:'01_responsible_city.webp',color:'purple',badge:'badge_responsible_purple.png'},
@@ -78,22 +92,39 @@ const slots=[
  {id:'leader_sfpd',label:'Лидер SFPD',bg:'07_leader_sfpd_station.webp',color:'blue',badge:'badge_leader_blue.png'},
  {id:'leader_lvpd',label:'Лидер LVPD',bg:'08_leader_lvpd_station.webp',color:'red',badge:'badge_leader_red.png'},
  {id:'swat_deputy',label:'Заместитель SWAT',bg:'09_swat_deputy.webp',color:'purple',badge:'badge_responsible_purple.png'},
- {id:'swat_commander',label:'Командир SWAT',bg:'10_swat_commander.webp',color:'purple',badge:'badge_responsible_purple.png'}
+ {id:'swat_commander',label:'Командир SWAT',bg:'10_swat_commander.webp',color:'purple',badge:'badge_responsible_purple.png'},
+ {id:'swat_deputy_2',label:'Заместитель SWAT II',bg:'09_swat_deputy.webp',color:'purple',badge:'badge_responsible_purple.png'}
 ];
 function element(tag,cls,text){const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=text;return x}
 function safeImage(u){if(typeof u!=='string'||!u.trim())return '';try{const x=new URL(u);return x.protocol==='https:'&&!x.username&&!x.password?x.href:''}catch{return ''}}
 function safeLink(u,vkOnly=false){const url=safeImage(u);if(!url)return '';if(vkOnly&&!['vk.com','m.vk.com','vk.ru'].includes(new URL(url).hostname))return '';return url}
 function title(s,item){return s.id==='responsible'&&item.gender==='female'?'Ответственная за PD':s.label}
 function social(kind,href,color,nick){const a=element(href?'a':'span','social-btn'+(href?'':' unavailable'));const label=kind==='vk'?'ВКонтакте':'Форум';a.title=href?label:'Ссылка не указана';a.setAttribute('aria-label',href?`${label}: ${nick}`:`${label}: ссылка не указана`);if(href){a.href=href;a.target='_blank';a.rel='noopener noreferrer'}const ico=element('img');ico.src=ASSET+kind+'_'+color+'.png';ico.alt='';ico.loading='lazy';a.append(ico);return a}
-function draw(items){const map=new Map(items.map(item=>[item.slot,item]));const active=[],inactive=[];slots.forEach((s,i)=>{
+function draw(items){const map=new Map(items.map(item=>[item.slot,item]));const active=new Map(),inactive=[];
+ const appointed=id=>{const x=map.get(id)||{};return Boolean(String(x.nickname||'').trim()&&String(x.vk_url||'').trim()&&String(x.forum_url||'').trim())};
+ const allCurators=['responsible','curator_lspd','curator_sfpd','curator_lvpd'].every(appointed);
+ const categories=[
+  {key:'curators',name:'CURATORS',ids:['responsible','curator_lspd','curator_sfpd','curator_lvpd',...(allCurators?[]:['minister'])]},
+  {key:'leaders',name:'LEADERS',ids:[...(allCurators?['minister']:[]),'leader_lspd','leader_sfpd','leader_lvpd']},
+  {key:'swat',name:'COMMANDER SWAT',ids:['swat_commander','swat_deputy','swat_deputy_2']}
+ ];
+ const groupFor=id=>categories.find(c=>c.ids.includes(id))?.key||'curators';
+ slots.forEach((s,i)=>{
  const item=map.get(s.id)||{};const nick=String(item.nickname||'').trim()||'Не назначен';
  const card=element('article','person-card');card.dataset.slot=s.id;card.style.setProperty('--scene',`url("${ASSET+s.bg}")`);
  const count=element('div','card-index',String(i+1).padStart(2,'0'));card.append(count);
  const frame=element('div','avatar-frame');const photoFrame=element('div','avatar-photo');const photo=element('img');photo.loading='lazy';photo.decoding='async';photo.referrerPolicy='no-referrer';photo.alt=nick==='Не назначен'?'Пустая аватарка':'Аватар: '+nick;photo.src=safeImage(item.avatar_url)||'png_police_site/profile.png';photo.onerror=()=>{photo.onerror=null;photo.src='png_police_site/profile.png'};photoFrame.append(photo);frame.append(photoFrame);const ring=element('img','avatar-ring-art');ring.src=ASSET+'ring_'+s.color+'.png';ring.alt='';ring.loading='lazy';frame.append(ring);card.append(frame);
  const identity=element('div','card-identity');identity.append(element('strong','person-name',nick));const socials=element('div','social-links');socials.append(social('vk',safeLink(item.vk_url,true),s.color,nick),social('forum',safeLink(item.forum_url),s.color,nick));identity.append(socials);card.append(identity);
  const plaque=element('div','role-tag');const icon=element('img');icon.alt='';icon.src=ASSET+s.badge;icon.loading='lazy';plaque.append(icon,element('span','',title(s,item)));card.append(plaque);
- (item.nickname?.trim()&&item.vk_url?.trim()&&item.forum_url?.trim()?active:inactive).push(card);
- });grid.replaceChildren(...active);vacant.replaceChildren(...inactive);vacantSection.hidden=!inactive.length;}
+ if(appointed(s.id)){const key=groupFor(s.id);if(!active.has(key))active.set(key,[]);active.get(key).push(card)}else inactive.push(card);
+ });
+ groups.replaceChildren(...categories.map(c=>{
+   const section=element('section','leadership-category '+c.key);section.setAttribute('aria-label',c.name);
+   const heading=element('div','category-heading');heading.append(element('span','category-title',c.name));section.append(heading);
+   const cards=element('div','leadership-grid');cards.append(...(active.get(c.key)||[]));section.append(cards);
+   if(!(active.get(c.key)||[]).length)section.hidden=true;
+   return section;
+ }));vacant.replaceChildren(...inactive);vacantSection.hidden=!inactive.length;}
 draw([]);status.textContent='Загрузка...';
 async function load(){try{const controller=new AbortController();const tid=setTimeout(()=>controller.abort(),15000);let response;try{response=await fetch(API+'/api/portal/leadership',{headers:{Accept:'application/json'},cache:'no-store',signal:controller.signal})}finally{clearTimeout(tid)}if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(!data||!data.ok||!Array.isArray(data.items))throw new Error('Некорректный ответ');draw(data.items);status.textContent=''}catch{status.textContent='Не удалось обновить руководство'}}
 load();
