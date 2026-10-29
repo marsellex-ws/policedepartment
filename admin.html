@@ -206,8 +206,8 @@ let toastTimer;
 function toast(text){const el=$('toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3000)}
 function activateTabs(parent,btn){parent.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn))}
 let portalLeadership=[];let portalChiefs=[];
-const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD'],swat_deputy:['Заместитель SWAT'],swat_commander:['Командир SWAT']};
-const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd','swat_deputy','swat_commander']};
+const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD'],swat_deputy:['Заместитель SWAT'],swat_commander:['Командир SWAT'],swat_deputy_2:['Заместитель SWAT II']};
+const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd','swat_commander','swat_deputy','swat_deputy_2']};
 const leaderFallback='png_police_site/profile.png';
 function renderRoster(kind){
  if(kind==='senior'){$('roster').innerHTML=roster.senior.map(([name,desc,initial,href])=>`<div class="person"><div class="avatar">${initial}</div><div><strong>${name}</strong><small>${desc}</small></div><div class="contact"><a href="${href}" target="_blank" rel="noopener noreferrer" title="VK">VK</a></div></div>`).join('');return;}
@@ -287,7 +287,7 @@ restore();
 (()=>{'use strict';
 const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
 const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT'};
+const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT',swat_deputy_2:'Заместитель SWAT II'};
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const defaultAvatar='png_police_site/profile.png';
 let users=[],selected=null,leadership=[],chiefs=[],currentTab='users';
