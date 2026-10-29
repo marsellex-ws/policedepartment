@@ -84,6 +84,42 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 .head-actions .account{font:inherit;cursor:pointer}.pd-profile{position:relative;display:flex;align-items:center;gap:9px;border:1px solid #49749a;border-radius:12px;background:#0b2135bd;padding:5px 9px;min-height:45px}.pd-profile.hidden,.pd-profile-menu.hidden{display:none!important}.pd-profile>img{width:35px;height:35px;object-fit:cover;border-radius:50%;border:1px solid #6aaae3}.pd-profile-toggle{display:flex;align-items:center;gap:8px;color:#e4f3ff;background:none;border:none;cursor:pointer;text-align:left;padding:0}.pd-profile-toggle strong{font-size:12px;display:block;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pd-profile-toggle small{color:#8ec1e3;font-size:10px;display:block}.pd-profile-toggle span{font-size:17px;color:#8ac7ff}.pd-profile-menu{position:absolute;right:0;top:calc(100% + 8px);width:205px;z-index:60;display:grid;padding:7px;background:#0d253b;border:1px solid #366187;border-radius:12px;box-shadow:0 16px 40px #000b}.pd-profile-menu a,.pd-profile-menu button{text-align:left;display:block;color:#d5eafa;text-decoration:none;padding:11px 12px;background:transparent;border:0;border-radius:8px;font-size:12px;cursor:pointer}.pd-profile-menu a:hover,.pd-profile-menu button:hover{background:#194569}
 .pd-login-dialog{border:1px solid #36678e;border-radius:18px;background:linear-gradient(145deg,#102b42,#061521);color:#e4f3ff;width:min(430px,calc(100vw - 26px));padding:0;box-shadow:0 25px 90px #000d}.pd-login-dialog::backdrop{background:#010711c7;backdrop-filter:blur(7px)}.pd-login-dialog form{padding:27px;display:grid;gap:10px}.pd-login-heading{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.16em;color:#82bfff;font-weight:850}.pd-login-heading button{background:none;color:#dff3ff;font-size:24px;border:0;cursor:pointer}.pd-login-dialog h2{font-size:25px;margin:7px 0 15px}.pd-login-dialog label{font-size:12px;color:#b7d1e5;font-weight:700}.pd-login-dialog input{padding:13px 14px;border:1px solid #365b78;border-radius:10px;background:#051524;color:white;font:inherit;outline:none}.pd-login-dialog input:focus{border-color:#66b8ff}.pd-submit-login{padding:14px;background:#1874ce;border:1px solid #5dbeff;color:white;border-radius:10px;font-weight:800;cursor:pointer}.pd-login-error{color:#ff8c9b;font-size:12px;min-height:17px;margin:0}.pd-login-bottom{display:flex;justify-content:space-between;gap:10px}.pd-login-bottom a{font-size:11px;color:#8cc7f4}
 @media(max-width:620px){.head-actions #openLogin.account:before{content:"Войти"}.pd-profile-toggle strong{max-width:100px;font-size:10px}.pd-profile-toggle small{font-size:9px}.pd-profile{padding:3px 5px;gap:5px}.pd-profile>img{height:31px;width:31px}}
+
+/* Police Department · administration */
+.hidden{display:none!important}
+.pd-admin-section:not(.hidden)+.shell .quick{margin-top:10px}
+.pd-admin-section{padding:28px 0 10px;scroll-margin-top:98px}
+.pd-admin-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:5px 0 22px}
+.pd-admin-heading h2{font-size:clamp(25px,3.5vw,40px);letter-spacing:-.04em;margin:4px 0;color:#e9f6ff;font-weight:950}
+.pd-eyebrow{font-size:10px;letter-spacing:.23em;font-weight:850;color:#70bafa}
+.pd-admin-tabs{display:flex;align-items:center;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+.pd-admin-tabs button{border:1px solid #345677;border-radius:10px;background:#0d2135;color:#aec6dc;padding:12px 18px;font-size:12px;font-weight:800;cursor:pointer}
+.pd-admin-tabs button.selected{color:#fff;border-color:#50aeff;background:#174a73;box-shadow:0 0 25px #197de329}
+.pd-admin-layout{display:grid;grid-template-columns:minmax(250px,360px) 1fr;gap:15px}
+.pd-admin-card{background:linear-gradient(145deg,#0f2842,#081b2e);border:1px solid #315672;border-radius:15px;padding:19px;min-width:0;box-shadow:0 16px 42px #020b1780}
+.pd-admin-card-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #35516a7a;padding-bottom:13px;margin-bottom:14px}
+.pd-admin-card-head h3{margin:0;font-size:16px}.pd-admin-card-head small{color:#84abd0;font-size:11px;margin-left:6px}
+.pd-admin-card input,.pd-admin-card select,.pd-admin-card textarea,.pd-admin-subcard input,.pd-admin-subcard select{width:100%;min-width:0;border:1px solid #385b7b;background:#071a2c;color:#e5f4ff;padding:11px 12px;border-radius:9px;outline:none}
+.pd-admin-card input:focus,.pd-admin-card select:focus{border-color:#60b9ff}
+.pd-users-list{max-height:500px;overflow:auto;margin-top:13px;display:grid;gap:7px;align-content:start}
+.pd-user-option{display:flex;gap:11px;align-items:center;text-align:left;border:1px solid #2e506e;background:#0b2238;padding:9px;border-radius:10px;color:#e1effc;cursor:pointer;width:100%}
+.pd-user-option:hover,.pd-user-option.active{background:#164063;border-color:#58afff}
+.pd-user-option img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#102d46}
+.pd-user-option strong{display:block;font-size:12px}.pd-user-option small{display:block;font-size:10px;color:#91b2c9;margin-top:2px}
+.pd-user-identity{display:flex;gap:15px;align-items:center;margin:0 0 18px}.pd-user-identity img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:2px solid #5c9dcc}.pd-user-identity strong{display:block;font-size:20px}.pd-user-identity span{color:#98b7cc;font-size:11px}
+.pd-admin-subcard{padding:18px;background:#081a2be6;border:1px solid #30516c;border-radius:12px;margin-top:13px;display:grid;gap:12px}
+.pd-admin-subcard h4{font-size:14px;margin:0;color:#f1f8ff}.pd-admin-subcard label{font-size:11px;font-weight:700;color:#a8c7dc}.pd-hint{font-size:11px;color:#9cb8d0;margin:0;line-height:1.6}
+.pd-admin-btn{border:1px solid #477399;border-radius:9px;background:#143a57;color:#e8f6ff;padding:10px 15px;font:700 12px Inter,Segoe UI,sans-serif;cursor:pointer;text-align:center}
+.pd-admin-btn:hover{filter:brightness(1.17)}.pd-admin-primary{background:linear-gradient(110deg,#1667b8,#197fe2);border-color:#57b6ff}.pd-admin-danger{background:#50233a;border-color:#b54f65;color:#ffe2e8}.pd-admin-ghost{background:#10293e}
+.pd-temp-password{background:#0f3148;padding:12px;border:1px solid #4b9cd4;border-radius:10px}.pd-temp-password label{display:block;margin-bottom:5px}.pd-password-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.pd-password-row code{overflow-wrap:anywhere;font-size:13px;flex:1;color:#aee9ff}
+.pd-admin-error{color:#ffaeb7;font-size:12px;min-height:0;margin:0 0 6px}.pd-admin-error:empty{display:none}
+.pd-admin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.pd-admin-grid .pd-admin-card h3{font-size:16px}
+.pd-edit-avatar{display:flex;gap:12px;align-items:center;margin:8px 0}.pd-edit-avatar img{width:58px;height:58px;object-fit:cover;border-radius:12px;border:1px solid #46789e;background:#0a1e30}.pd-edit-avatar span{color:#aac8de;font-size:11px}
+.pd-admin-form{display:grid;gap:10px}.pd-admin-form label{font-size:11px;color:#abc9dc;font-weight:750}.pd-admin-form input,.pd-admin-form select{width:100%;background:#06192a;color:#fff;border:1px solid #355c7e;border-radius:9px;padding:10px}
+.pd-admin-form .pd-admin-btn{margin-top:6px}.pd-empty{font-size:12px;color:#95b4cd;line-height:1.7;padding:12px 4px}
+.roster .avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}.roster .person{min-width:0}.roster .person strong{white-space:normal}.chief-card-row{display:flex;align-items:center;gap:12px;margin:12px 0;padding:10px 11px;border:1px solid #294b6688;border-radius:11px;background:#0c243795}.chief-card-row img{width:47px;height:47px;border:1px solid #4e7296;border-radius:10px;object-fit:cover}.chief-card-row div{min-width:0;flex:1}.chief-card-row strong{display:block;font-size:12px}.chief-card-row small{display:block;color:#9ebfd5;font-size:10px;margin-top:3px}.chief-card-row b{font-size:11px;color:#7bc2ff}
+@media(max-width:900px){.pd-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.pd-admin-layout,.pd-admin-grid{grid-template-columns:1fr}.pd-admin-section{scroll-margin-top:75px}.pd-admin-heading{align-items:flex-start}.pd-admin-heading h2{font-size:26px}.pd-admin-tabs button{flex:1;padding:10px 7px;font-size:11px}.pd-admin-grid{gap:11px}}
 </style>
 </head>
 <body>
@@ -109,12 +145,33 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 <header class="header"><div class="shell header-inner">
   <a class="brand" href="#top"><div class="badge-logo"><img src="png_police_site/police_badge.png" alt="Герб полиции" width="44" height="44"></div><div><div class="brand-title">POLICE DEPARTMENT</div><div class="brand-sub">PLATINUM ROLE PLAY</div></div></a>
   <nav class="nav" id="nav"></nav>
-  <div class="head-actions"><button type="button" class="head-search" id="headerSearch" title="Найти раздел" aria-label="Найти раздел" aria-haspopup="dialog" aria-controls="searchOverlay"><img src="png_police_site/search.png" class="button-icon" alt="" width="22" height="22"></button><button class="icon-btn" id="bellBtn" aria-label="Уведомления"><img class="button-icon" src="png_police_site/notifications.png" alt="" width="21" height="21"></button><button class="account" id="openLogin" type="button"><img class="button-icon" src="png_police_site/profile.png" alt="" width="18" height="18">Войти</button><div class="pd-profile hidden" id="pdProfile"><img src="png_police_site/profile.png" id="pdAvatar" alt="Аватар"><button id="pdProfileToggle" class="pd-profile-toggle" type="button" aria-expanded="false"><strong id="pdNick"></strong><small id="pdRole"></small><span>⌄</span></button><div id="pdProfileMenu" class="pd-profile-menu hidden"><a href="entrance.html">Личный кабинет</a><a href="exams.html">Электронные экзамены</a><button id="pdLogout" type="button">Выйти</button></div></div></div>
+  <div class="head-actions"><button type="button" class="head-search" id="headerSearch" title="Найти раздел" aria-label="Найти раздел" aria-haspopup="dialog" aria-controls="searchOverlay"><img src="png_police_site/search.png" class="button-icon" alt="" width="22" height="22"></button><button class="icon-btn" id="bellBtn" aria-label="Уведомления"><img class="button-icon" src="png_police_site/notifications.png" alt="" width="21" height="21"></button><button class="account" id="openLogin" type="button"><img class="button-icon" src="png_police_site/profile.png" alt="" width="18" height="18">Войти</button><div class="pd-profile hidden" id="pdProfile"><img src="png_police_site/profile.png" id="pdAvatar" alt="Аватар"><button id="pdProfileToggle" class="pd-profile-toggle" type="button" aria-expanded="false"><strong id="pdNick"></strong><small id="pdRole"></small><span>⌄</span></button><div id="pdProfileMenu" class="pd-profile-menu hidden"><button id="pdAdminOpen" type="button" class="hidden">⚙ Админка</button><button id="pdLogout" type="button">Выйти</button></div></div></div>
 </div></header>
 <main id="top">
 <section class="hero"><div class="hero-art" aria-hidden="true"><span class="emergency blue"></span><span class="emergency red"></span></div>
 <div class="shell hero-content"><div class="hero-copy"><div class="eyebrow">ЕДИНЫЙ ПОЛИЦЕЙСКИЙ ПОРТАЛ</div><h1>POLICE <span>DEPARTMENT</span></h1></div><div class="hero-shine">LSPD · SFPD · LVPD<b>POLICE DEPARTMENT</b></div></div>
 </section>
+
+<section id="pdAdminSection" class="shell pd-admin-section hidden" aria-labelledby="pdAdminTitle">
+  <div class="pd-admin-heading"><div><div class="pd-eyebrow">POLICE DEPARTMENT · ADMINISTRATION</div><h2 id="pdAdminTitle">Панель управления</h2></div><button id="pdAdminClose" class="pd-admin-btn pd-admin-ghost" type="button">← На главную</button></div>
+  <nav class="pd-admin-tabs" aria-label="Разделы админки">
+    <button type="button" class="selected" data-pd-tab="users">Пользователи</button>
+    <button type="button" data-pd-tab="chiefs">Активность шефов</button>
+    <button type="button" data-pd-tab="leadership">Руководство полиции</button>
+  </nav>
+  <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
+  <div id="pdAdminUsers" class="pd-admin-layout">
+    <aside class="pd-admin-card pd-users-card"><div class="pd-admin-card-head"><h3>Пользователи <small id="pdUsersCount"></small></h3></div><input type="search" id="pdUserSearch" placeholder="Ник или логин" autocomplete="off" aria-label="Поиск пользователей"><div class="pd-users-list" id="pdUsersList"><p class="pd-empty">Загрузка...</p></div></aside>
+    <section class="pd-admin-card"><div class="pd-admin-card-head"><h3>Управление профилем</h3></div><div id="pdUserEmpty" class="pd-empty">Выберите пользователя из списка.</div>
+    <div id="pdUserDetails" class="hidden"><div class="pd-user-identity"><img id="pdUserAvatar" alt="Аватар" src="png_police_site/profile.png"><div><strong id="pdUserNick"></strong><span id="pdUserMeta"></span></div></div>
+    <div class="pd-admin-subcard"><h4>Пароль пользователя</h4><p class="pd-hint">Старые сеансы будут завершены. Новый пароль появится после подтверждения.</p><button id="pdResetPassword" type="button" class="pd-admin-btn pd-admin-danger">Сменить пароль</button><div id="pdPasswordResult" class="pd-temp-password hidden"><label>Новый пароль</label><div class="pd-password-row"><code id="pdPasswordValue"></code><button type="button" id="pdCopyPassword" class="pd-admin-btn pd-admin-ghost">Копировать</button></div></div></div>
+    <form id="pdVkForm" class="pd-admin-subcard"><h4>Привязка VK</h4><label for="pdVkUrl">Ссылка на страницу</label><input type="url" id="pdVkUrl" placeholder="https://vk.com/id123456" autocomplete="url"><button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить привязку</button></form>
+    </div></section>
+  </div>
+  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
+  <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
+</section>
+
 <div class="shell"><section class="quick" id="services" aria-label="Разделы">
 <a class="feature" style="--accent:#fc718b" href="https://marsellex.ru/"><img class="feature-bg" src="png_police_site/01_registry.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/registry.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Реестр наказаний</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#64baff" href="exams.html"><img class="feature-bg" src="png_police_site/02_exams.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/exams.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Электронные экзамены</strong></span><span class="arrow">↗</span></span></a>
@@ -128,7 +185,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 <a class="feature" id="drawings" style="--accent:#fa83b4" href="#drawings" data-soon="Розыгрыши"><img class="feature-bg" src="png_police_site/10_giveaways.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/giveaways.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Розыгрыши / рулетка</strong></span><span class="arrow">↗</span></span></a>
 </section>
 <section class="dashboard">
-<div class="panel" id="staff"><div class="panel-head"><h2><img class="panel-png" src="png_police_site/staff.png" alt="" width="21" height="21"> Руководство полиции</h2><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer" class="panel-link">Связаться ↗</a></div><div class="tabs" id="staffTabs"><button class="active" data-staff="watchers">Следящие</button><button data-staff="leaders">Лидеры</button><button data-staff="senior">Старший состав</button></div><div class="roster" id="roster"></div></div>
+<div class="panel" id="staff"><div class="panel-head"><h2><img class="panel-png" src="png_police_site/staff.png" alt="" width="21" height="21"> Руководство полиции</h2><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer" class="panel-link">Связаться ↗</a></div><div class="tabs" id="staffTabs"><button class="active" data-staff="watchers">Руководство</button><button data-staff="leaders">Лидеры</button></div><div class="roster" id="roster"></div></div>
 <div class="panel" id="ratings"><div class="panel-head"><h2><img class="panel-png" src="png_police_site/top_employees.png" alt="" width="21" height="21"> Топ сотрудников</h2><a href="#analytics" class="panel-link">Все показатели ↗</a></div><div class="tabs" id="ratingTabs"><button class="active" data-rating="thefts">Угоны</button><button data-rating="arrests">Ликвы / КПЗ</button><button data-rating="fines">Штрафы</button><button data-rating="points">Баллы</button></div><div class="ranking" id="ranking"></div></div>
 <div class="panel news-panel" id="news"><div class="panel-head"><h2><img class="panel-png" src="png_police_site/news.png" alt="" width="21" height="21"> Новости</h2><a href="#news" class="panel-link">Все новости ↗</a></div><div class="news-list"><div class="news-card" data-article="Новые возможности реестра"><div class="news-thumb"><img src="png_police_site/news_police.webp" alt="" loading="lazy" decoding="async"></div><div><span class="tag">РЕЕСТР</span><strong>Новые возможности реестра</strong><small>Удобное управление взысканиями и доступом.</small></div></div><div class="news-card" data-article="Электронная аттестация"><div class="news-thumb"><img src="png_police_site/news_exams.webp" alt="" loading="lazy" decoding="async"></div><div><span class="tag red">ЭКЗАМЕНЫ</span><strong>Электронная аттестация</strong><small>Проверка знаний сотрудников полиции.</small></div></div><div class="news-card" data-article="Задания для руководящего состава"><div class="news-thumb"><img src="png_police_site/news_staff.webp" alt="" loading="lazy" decoding="async"></div><div><span class="tag green">КВЕСТЫ</span><strong>Задания для руководящего состава</strong><small>Новые форматы активности и достижений.</small></div></div></div></div>
 </section>
@@ -148,10 +205,34 @@ const stats={today:[['Сотрудников',247,'users'],['Угонов',58,'c
 let toastTimer;
 function toast(text){const el=$('toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),3000)}
 function activateTabs(parent,btn){parent.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn))}
-function renderRoster(kind){$('roster').innerHTML=roster[kind].map(([name,desc,initial,href])=>`<div class="person"><div class="avatar">${initial}</div><div><strong>${name}</strong><small>${desc}</small></div><div class="contact"><a href="${href}" target="_blank" rel="noopener noreferrer" title="Контакт VK">VK</a></div></div>`).join('')}
+let portalLeadership=[];let portalChiefs=[];
+const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD']};
+const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd']};
+const leaderFallback='png_police_site/profile.png';
+function renderRoster(kind){
+ if(kind==='senior'){$('roster').innerHTML=roster.senior.map(([name,desc,initial,href])=>`<div class="person"><div class="avatar">${initial}</div><div><strong>${name}</strong><small>${desc}</small></div><div class="contact"><a href="${href}" target="_blank" rel="noopener noreferrer" title="VK">VK</a></div></div>`).join('');return;}
+ $('roster').innerHTML=(leadershipGroups[kind]||[]).map(slot=>{
+  const x=portalLeadership.find(v=>v.slot===slot)||{},title=slot==='responsible'&&x.gender==='female'?leadershipLabels[slot][1]:leadershipLabels[slot][0];
+  const nick=x.nickname||'Не назначен',href=x.vk_url||'',avatar=x.avatar_url||leaderFallback;
+  return `<div class="person"><div class="avatar"><img loading="lazy" src="${escapeHTML(avatar)}" alt="" onerror="this.src='png_police_site/profile.png'"></div><div><strong>${escapeHTML(nick)}</strong><small>${escapeHTML(title)} · ${escapeHTML(x.nickname?(x.status_label||'—'):'Вакантно')}</small></div><div class="contact">${href?`<a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer" title="VK">VK</a>`:''}</div></div>`;
+ }).join('');
+}
 function renderRank(type){$('ranking').innerHTML=ranking[type].map(([name,count],i)=>`<div class="rank-row"><span class="rank-index">${i+1}</span><div><strong>${name}</strong><small>Absolute Platinum</small></div><span class="score">${count.toLocaleString('ru-RU')}</span></div>`).join('')}
 function renderStats(period){$('statsGrid').innerHTML=stats[period].map(([label,value,icon])=>`<div class="stat"><img class="stat-png" src="png_police_site/${({users:'staff',car:'car_thefts',file:'registry',shield:'arrests'}[icon]||'statistics')}.png" alt=""><small>${label}</small><strong>${value.toLocaleString('ru-RU')}</strong><em>Показатель</em></div>`).join('')}
-function renderChiefs(){const values=[['LSPD',92],['SFPD',78],['LVPD',71]];$('chiefsList').innerHTML=values.map(([dept,value])=>`<div class="chief"><b>${dept}</b><div class="bar"><i style="--value:${value}%"></i></div><span>${value}%</span></div>`).join('')}
+function renderChiefs(){
+ const depts=['LSPD','SFPD','LVPD'];
+ $('chiefsList').innerHTML=depts.map(dept=>{
+  const x=portalChiefs.find(v=>v.department===dept)||{};
+  return `<div class="chief-card-row"><img src="${escapeHTML(x.avatar_url||leaderFallback)}" alt="" onerror="this.src='png_police_site/profile.png'"><div><strong>${escapeHTML(x.nickname||'Не назначен')}</strong><small>${x.account_number?'Аккаунт № '+escapeHTML(x.account_number):'Лидер департамента'}</small></div><b>${dept}</b></div>`;
+ }).join('');
+}
+async function refreshPublicPeople(){
+ try{const [a,b]=await Promise.all([fetch('https://police-api-b2y4.onrender.com/api/portal/leadership'),fetch('https://police-api-b2y4.onrender.com/api/portal/chiefs')]);if(!a.ok||!b.ok)return;
+ const [x,y]=await Promise.all([a.json(),b.json()]);portalLeadership=x.items||[];portalChiefs=y.items||[];
+ renderRoster(document.querySelector('[data-staff].active')?.dataset.staff||'watchers');renderChiefs();
+ }catch{}
+}
+window.pdRefreshPeople=refreshPublicPeople;
 $('staffTabs').addEventListener('click',e=>{const b=e.target.closest('[data-staff]');if(!b)return;activateTabs($('staffTabs'),b);renderRoster(b.dataset.staff)});
 $('ratingTabs').addEventListener('click',e=>{const b=e.target.closest('[data-rating]');if(!b)return;activateTabs($('ratingTabs'),b);renderRank(b.dataset.rating)});
 document.querySelectorAll('[data-period]').forEach(b=>b.onclick=()=>{activateTabs(b.parentElement,b);renderStats(b.dataset.period)});
@@ -168,7 +249,7 @@ $('headerSearch').onclick=showSearch;$('globalSearch').oninput=e=>renderSearch(e
 $('searchResults').onclick=e=>{if(e.target.closest('a'))hideSearch()};
 $('searchOverlay').addEventListener('click',e=>{if(e.target===$('searchOverlay'))hideSearch()});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();showSearch()}if(e.key==='Escape')hideSearch()});
-renderRoster('watchers');renderRank('thefts');renderStats('today');renderChiefs();
+renderRoster('watchers');renderRank('thefts');renderStats('today');renderChiefs();refreshPublicPeople();
 })();
 </script>
 <script>
@@ -187,7 +268,7 @@ function readSharedSession(){
 let token=readSharedSession(),user=null;
 const roles={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const dialog=$('pdLoginDialog');
-function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}}
+function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
 async function api(path,opts={}){const headers={'Accept':'application/json'};if(opts.data!==undefined)headers['Content-Type']='application/json';if(opts.auth)headers.Authorization='Bearer '+token;
 const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Error(json.error||'Ошибка сервера ('+response.status+')');return json;}
 async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;}catch{clearSharedSession();token=null;user=null;}render();}
@@ -199,6 +280,109 @@ document.addEventListener('click',e=>{if(!$('pdProfile').contains(e.target)){$('
 $('pdLogout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST',auth:true});}catch{}clearSharedSession();token=null;user=null;$('pdProfileMenu').classList.add('hidden');render();};
 window.addEventListener('pageshow',()=>{const latest=readSharedSession();if(latest!==token){token=latest;user=null;restore();}});
 restore();
+})();
+</script>
+
+<script>
+(()=>{'use strict';
+const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
+const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD'};
+const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
+const defaultAvatar='png_police_site/profile.png';
+let users=[],selected=null,leadership=[],chiefs=[],currentTab='users';
+const error=msg=>$('pdAdminError').textContent=msg||'';
+async function req(path,method='GET',data){
+ const token=localStorage.getItem('pd_site_token')||sessionStorage.getItem('pd_site_token');
+ if(!token)throw Error('Войдите в профиль');
+ const headers={Authorization:'Bearer '+token,Accept:'application/json'};
+ if(data!==undefined)headers['Content-Type']='application/json';
+ const r=await fetch(API+path,{method,headers,body:data===undefined?undefined:JSON.stringify(data),cache:'no-store'});
+ let j={};try{j=await r.json()}catch{}
+ if(!r.ok||j.ok===false)throw Error(j.error||'Ошибка запроса ('+r.status+')');
+ return j;
+}
+function image(img,url){img.src=url||defaultAvatar;img.onerror=()=>{img.onerror=null;img.src=defaultAvatar};}
+async function openAdmin(){
+ error('');$('pdAdminSection').classList.remove('hidden');$('pdProfileMenu').classList.add('hidden');
+ $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
+ try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
+}
+$('pdAdminOpen').onclick=openAdmin;
+$('pdAdminClose').onclick=()=>{$('pdAdminSection').classList.add('hidden');$('pdProfileMenu').classList.add('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
+function renderUsers(){
+ const text=$('pdUserSearch').value.trim().toLowerCase();
+ const filtered=users.filter(u=>[u.login,u.nickname,u.department].some(x=>String(x||'').toLowerCase().includes(text)));
+ $('pdUsersList').innerHTML=filtered.length?filtered.map(u=>`<button type="button" class="pd-user-option ${selected?.login===u.login?'active':''}" data-pd-user="${escape(u.login)}"><img loading="lazy" src="${escape(u.avatar_url||defaultAvatar)}" alt=""><span><strong>${escape(u.nickname)}</strong><small>${escape(u.login)} · ${escape(u.department)}</small></span></button>`).join(''):'<p class="pd-empty">Пользователи не найдены.</p>';
+ $('pdUsersList').querySelectorAll('[data-pd-user]').forEach(btn=>btn.onclick=()=>selectUser(btn.dataset.pdUser));
+ $('pdUsersList').querySelectorAll('img').forEach(img=>image(img,img.getAttribute('src')));
+}
+$('pdUserSearch').addEventListener('input',renderUsers);
+function selectUser(login){
+ selected=users.find(u=>u.login===login)||null;if(!selected)return;
+ $('pdUserEmpty').classList.add('hidden');$('pdUserDetails').classList.remove('hidden');
+ $('pdUserNick').textContent=selected.nickname;$('pdUserMeta').textContent=selected.login+' · '+(roleLabels[selected.role]||'Пользователь')+' · '+selected.department;
+ image($('pdUserAvatar'),selected.avatar_url);$('pdVkUrl').value=selected.vk_url||'';
+ $('pdPasswordResult').classList.add('hidden');$('pdPasswordValue').textContent='';
+ $('pdResetPassword').disabled=selected.role==='developer'||(selected.role==='admin'&&$('pdRole').textContent!=='Разработчик');
+ renderUsers();
+}
+$('pdResetPassword').onclick=async()=>{
+ if(!selected)return;const login=selected.login;
+ if(!confirm('Сменить пароль пользователя '+selected.nickname+'? Все его активные сессии будут завершены.'))return;
+ const btn=$('pdResetPassword');btn.disabled=true;error('');
+ try{const r=await req('/api/portal/admin/users/'+encodeURIComponent(login)+'/password','POST',{confirm:true});
+ if(selected?.login===login){$('pdPasswordValue').textContent=r.temporary_password;$('pdPasswordResult').classList.remove('hidden');}}
+ catch(e){error(e.message)}finally{btn.disabled=false}
+};
+$('pdCopyPassword').onclick=async()=>{const text=$('pdPasswordValue').textContent;try{await navigator.clipboard.writeText(text);$('pdCopyPassword').textContent='Скопировано';setTimeout(()=>$('pdCopyPassword').textContent='Копировать',1800)}catch{error('Скопируйте пароль вручную')}};
+$('pdVkForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;
+ error('');try{const r=await req('/api/portal/admin/users/'+encodeURIComponent(selected.login)+'/vk','PUT',{vk_url:$('pdVkUrl').value.trim()});selected.vk_url=r.vk_url;showMessage('Привязка VK сохранена');}catch(x){error(x.message)}
+};
+function showMessage(text){error('');const toast=$('toast');toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}
+async function loadChiefs(){const r=await req('/api/portal/chiefs');chiefs=r.items||[];renderChiefEditors()}
+async function loadLeadership(){const r=await req('/api/portal/leadership');leadership=r.items||[];renderLeadershipEditors()}
+function editor({id,name,avatar_url='',extra='',fields,save}){
+ const html=fields.map(f=>`<label for="${id}-${f.key}">${escape(f.label)}</label>${f.type==='select'?`<select id="${id}-${f.key}" name="${f.key}">${f.options.map(o=>`<option value="${o[0]}" ${o[0]===f.value?'selected':''}>${escape(o[1])}</option>`).join('')}</select>`:`<input id="${id}-${f.key}" name="${f.key}" type="${f.type||'text'}" maxlength="${f.max||100}" value="${escape(f.value??'')}" ${f.placeholder?`placeholder="${escape(f.placeholder)}"`:''}>`}`).join('');
+ return `<div class="pd-admin-card"><div class="pd-admin-card-head"><h3>${escape(name)}</h3></div><div class="pd-edit-avatar"><img src="${escape(avatar_url||defaultAvatar)}" alt=""><span>${escape(extra)}</span></div><form class="pd-admin-form" data-pd-save="${id}">${html}<button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить</button></form></div>`;
+}
+function setupEditors(parent,save){
+ parent.querySelectorAll('img').forEach(img=>image(img,img.getAttribute('src')));
+ parent.querySelectorAll('form[data-pd-save]').forEach(form=>{
+ const avatar=form.elements.namedItem('avatar_url'),preview=form.closest('.pd-admin-card').querySelector('.pd-edit-avatar img');
+ if(avatar)avatar.addEventListener('input',()=>{const v=avatar.value.trim();if(!v||/^https:\/\//i.test(v))image(preview,v)});
+ form.onsubmit=async e=>{e.preventDefault();error('');const data=Object.fromEntries(new FormData(form));const btn=form.querySelector('button[type=submit]');btn.disabled=true;
+ try{await save(form.dataset.pdSave,data);showMessage('Изменения сохранены');window.pdRefreshPeople?.();}catch(x){error(x.message)}finally{btn.disabled=false}
+ };
+ });
+}
+function renderChiefEditors(){
+ $('pdChiefEditor').innerHTML=['LSPD','SFPD','LVPD'].map(d=>{
+ const x=chiefs.find(c=>c.department===d)||{};
+ return editor({id:d,name:'Лидер '+d,avatar_url:x.avatar_url,extra:'Активность шефов',fields:[
+ {key:'nickname',label:'Ник',value:x.nickname||'',max:64},
+ {key:'account_number',label:'Номер аккаунта',value:x.account_number||'',max:20},
+ {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||'',type:'url',max:700,placeholder:'https://...'}
+ ]});}).join('');
+ setupEditors($('pdChiefEditor'),async(dept,data)=>{const r=await req('/api/portal/admin/chiefs/'+dept,'PUT',data);const i=chiefs.findIndex(x=>x.department===dept);if(i>=0)chiefs[i]=r.item;renderChiefEditors();});
+}
+function renderLeadershipEditors(){
+ $('pdLeadershipEditor').innerHTML=Object.entries(labels).map(([slot,label])=>{
+ const x=leadership.find(c=>c.slot===slot)||{};
+ return editor({id:slot,name:label,avatar_url:x.avatar_url,extra:'Руководство полиции',fields:[
+ {key:'nickname',label:'Ник',value:x.nickname||'',max:64},
+ {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||'',type:'url',max:700},
+ {key:'vk_url',label:'VK',value:x.vk_url||'',type:'url',max:250},
+ ...(slot==='responsible'?[{key:'gender',label:'Обращение',type:'select',value:x.gender||'male',options:[['male','Ответственный'],['female','Ответственная']]}]:[]),
+ {key:'status_label',label:'Статус',value:x.status_label||'На должности',max:100}
+ ]});}).join('');
+ setupEditors($('pdLeadershipEditor'),async(slot,data)=>{data.gender=data.gender||leadership.find(x=>x.slot===slot)?.gender||'male';const r=await req('/api/portal/admin/leadership/'+slot,'PUT',data);const i=leadership.findIndex(x=>x.slot===slot);if(i>=0)leadership[i]=r.item;renderLeadershipEditors();});
+}
+function setTab(tab){currentTab=tab;document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('selected',b.dataset.pdTab===tab));
+ $('pdAdminUsers').classList.toggle('hidden',tab!=='users');$('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');$('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');error('')}
+document.querySelectorAll('[data-pd-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.pdTab));
+window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
 </script>
 </body>
