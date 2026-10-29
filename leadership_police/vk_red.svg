@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 128 128">
+  <defs><radialGradient id="b" cx=".3" cy=".1" r="1"><stop offset="0" stop-color="#ff557a" stop-opacity=".34"/><stop offset=".7" stop-color="#06162c" stop-opacity=".96"/></radialGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>
+  <circle cx="64" cy="64" r="57" fill="#ff557a" opacity=".25" filter="url(#glow)"/>
+  <rect x="7" y="7" width="114" height="114" rx="29" fill="url(#b)" stroke="#ff557a" stroke-width="3.2"/>
+  <g><text x="63" y="75" font-size="46" font-weight="900" font-style="normal" font-family="DejaVu Sans, Arial, sans-serif" text-anchor="middle" fill="white" letter-spacing="-5">VK</text></g>
+</svg>
