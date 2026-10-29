@@ -53,7 +53,7 @@ header.top{height:88px;min-height:88px;position:sticky;top:0;z-index:30;backgrou
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>Экзамены используют указанный игровой ник и сохраняют ответы и результаты в базе Police Department. Учётная запись требуется только для управления.</p><button type="button" class="btn primary" id="closePrivacy">Закрыть</button></div></dialog><div class="toast hidden" id="toast" role="status"></div>
 <script>
 'use strict';
-const API='https://police-api-b2y4.onrender.com';
+const API='https://api.police-department.ru';
 const KEY='pd_site_token';
 const AUTH_EXPIRES='pd_site_token_expires_at', AUTH_TTL=24*60*60*1000;
 function clearSharedSession(){localStorage.removeItem(KEY);localStorage.removeItem(AUTH_EXPIRES);sessionStorage.removeItem(KEY);}
