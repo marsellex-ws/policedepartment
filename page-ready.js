@@ -1,141 +1,122 @@
-/* Police Department: initial data readiness gate + request diagnostics */
+/* Police Department: link preloading with a slim bottom progress indicator. */
 (() => {
   'use strict';
-  if (window.__pdBootReadyInstalled) return;
-  window.__pdBootReadyInstalled = true;
-  const origin = 'https://police-api-b2y4.onrender.com';
-  const original = window.fetch.bind(window);
-  const state = { pending: 0, started: 0, domReady: false, resolved: false,
-    failures: new Set(), results: [], lastActivity: performance.now() };
-  let idleTimer = null;
-  let hardTimer = null;
-  const now = () => Math.round(performance.now());
-  const isInitial = () => !state.resolved;
+  if (window.PoliceNavigation) return;
+  const API = 'https://police-api-b2y4.onrender.com';
+  const CACHE = 'pd_navigation_prefetch_v2';
+  const TTL = 25_000;
+  const publicByPage = {
+    'index.html': ['/api/portal/leadership', '/api/portal/chiefs'],
+    'admin.html': ['/api/portal/leadership', '/api/portal/chiefs'],
+    'leadership.html': ['/api/portal/leadership'],
+    'reestr.html': ['/api/punishments?limit=100&offset=0'],
+    'exams.html': ['/api/exams'],
+    'entrance.html': []
+  };
+  const allowedAPI = new Set(Object.values(publicByPage).flat());
+  const nativeFetch = window.fetch.bind(window);
+  let navigating = false;
+  const css = document.createElement('style');
+  css.textContent = `
+    #pd-nav-line {position:fixed;bottom:0;left:0;right:0;height:3px;z-index:2147483001;
+      pointer-events:none;overflow:hidden;opacity:0;transition:opacity .2s ease;background:#0b2a44aa}
+    #pd-nav-line.pd-nav-visible{opacity:1}
+    #pd-nav-line::after{content:"";position:absolute;top:0;bottom:0;width:36%;left:-38%;
+      background:linear-gradient(90deg,transparent,#6ccaff 40%,#ddf5ff 70%,transparent);
+      box-shadow:0 0 14px #56baff;animation:pdNavTravel 1.05s ease-in-out infinite}
+    @keyframes pdNavTravel{to{transform:translateX(390%)}}
+    #pd-nav-error{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);z-index:2147483002;
+      background:#0b2238;color:#e9f7ff;border:1px solid #5c8bb6;border-radius:12px;
+      padding:11px 14px;max-width:calc(100vw - 30px);font:13px Inter,'Segoe UI',sans-serif;
+      box-shadow:0 10px 30px #0008;display:flex;align-items:center;gap:12px}
+    #pd-nav-error button{border:1px solid #5c8bb6;background:#17486d;color:white;
+      border-radius:8px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+    @media(prefers-reduced-motion:reduce){#pd-nav-line::after{animation-duration:2s}}
+  `;
+  document.head.appendChild(css);
 
-  function text(msg, isFailure = false) {
-    const node = document.getElementById('pd-boot-message');
-    if (node) node.textContent = msg;
-    const retry = document.getElementById('pd-boot-retry');
-    const spinner = document.getElementById('pd-boot-spinner');
-    if (retry) retry.hidden = !isFailure;
-    if (spinner) spinner.hidden = isFailure;
-  }
-  function done() {
-    if (state.resolved) return;
-    state.resolved = true;
-    clearTimeout(hardTimer);
-    clearTimeout(idleTimer);
-    document.documentElement.classList.remove('pd-boot-loading');
-    const overlay = document.getElementById('pd-boot-overlay');
-    if (overlay) {
-      overlay.classList.add('pd-boot-exit');
-      setTimeout(() => overlay.remove(), 320);
-    }
-    if (window.__pdBootFallback) clearTimeout(window.__pdBootFallback);
-    console.info('[Police] Начальная загрузка завершена', state.results);
-  }
-  function fail() {
-    if (state.resolved) return;
-    clearTimeout(idleTimer);
-    const paths = Array.from(state.failures);
-    console.warn('[Police] Первоначальные запросы не загрузились:', paths, state.results);
-    text('Не удалось получить данные. Нажми «Повторить загрузку».', true);
-  }
-  function check() {
-    if (!state.domReady || state.resolved) return;
-    clearTimeout(idleTimer);
-    if (state.pending > 0) {
-      text('Получаем актуальные данные…');
-      return;
-    }
-    // Allow inline UI rendering and immediately chained requests to complete.
-    idleTimer = setTimeout(() => {
-      if (state.pending !== 0 || state.resolved) return;
-      if (state.failures.size > 0) fail(); else done();
-    }, 320);
-  }
-  function record(url, ms, status) {
-    state.results.push({url, duration_ms: ms, status});
-    console.debug(`[Police] GET ${url}: ${status} (${ms} мс)`);
-  }
-  window.fetch = function pdBootFetch(input, init) {
-    const method = String(init?.method || (typeof input === 'object' && input?.method) || 'GET').toUpperCase();
-    let url;
-    try { url = new URL(typeof input === 'string' ? input : input.url, location.href); }
-    catch { return original(input, init); }
-    if (!isInitial() || method !== 'GET' || url.origin !== origin) return original(input, init);
-    const path = url.pathname;
-    const start = now();
-    state.pending++;
-    state.started++;
-    state.lastActivity = performance.now();
-    clearTimeout(idleTimer);
-    let request;
-    try { request = original(input, init); }
-    catch (error) {
-      state.pending--;
-      state.failures.add(path);
-      record(path, now() - start, error?.name || 'NetworkError');
-      check();
-      throw error;
-    }
-    return Promise.resolve(request).then(
-      response => {
-        state.pending--;
-        record(path, now()-start, response.status);
-        if (response.status >= 500 || response.status === 429) state.failures.add(path);
-        else state.failures.delete(path);
-        check();
-        return response;
-      },
-      error => {
-        state.pending--;
-        record(path, now()-start, error?.name || 'NetworkError');
-        // A user-initiated AbortController abort can be part of normal navigation.
-        if (error?.name !== 'AbortError') state.failures.add(path);
-        else state.failures.add(path);
-        check();
-        throw error;
+  // Fulfil only previously prefetched, short-lived PUBLIC GET responses.
+  // Session credentials or private API data are never persisted here.
+  window.fetch = function(input, init) {
+    try {
+      const url = new URL(typeof input === 'string' ? input : input.url, location.href);
+      const method = String(init?.method || (typeof input === 'object' && input?.method) || 'GET').toUpperCase();
+      const headers = new Headers(init?.headers || (typeof input === 'object' && input?.headers) || {});
+      if (method === 'GET' && url.origin === API && !headers.has('Authorization') && allowedAPI.has(url.pathname + url.search)) {
+        const saved = JSON.parse(sessionStorage.getItem(CACHE) || '{}');
+        const match = saved[url.pathname + url.search];
+        if (match && match.expires > Date.now()) {
+          delete saved[url.pathname + url.search]; // one-time use; fresh on next visit
+          sessionStorage.setItem(CACHE, JSON.stringify(saved));
+          return Promise.resolve(new Response(JSON.stringify(match.payload), {
+            status: 200, headers: {'Content-Type':'application/json'}
+          }));
+        }
       }
-    );
+    } catch (error) { console.debug('[Police] Prefetch cache skipped', error); }
+    return nativeFetch(input, init);
   };
 
-  function mount() {
-    if (state.domReady) return;
-    state.domReady = true;
-    const overlay = document.createElement('div');
-    overlay.id = 'pd-boot-overlay';
-    overlay.setAttribute('role', 'status');
-    overlay.setAttribute('aria-live', 'polite');
-    overlay.innerHTML = `
-      <div class="pd-boot-content">
-        <div class="pd-boot-tag">ABSOLUTE ROLE PLAY</div>
-        <div class="pd-boot-heading">POLICE <span>DEPARTMENT</span></div>
-        <div id="pd-boot-spinner" class="pd-boot-spinner" aria-hidden="true"></div>
-        <div id="pd-boot-message" class="pd-boot-message">Загружаем данные…</div>
-        <button id="pd-boot-retry" type="button" hidden>Повторить загрузку</button>
-      </div>`;
-    document.body.appendChild(overlay);
-    document.getElementById('pd-boot-retry').onclick = async () => {
-      const publicOnly = state.failures.size > 0 &&
-        Array.from(state.failures).every(p => p === '/api/portal/leadership' || p === '/api/portal/chiefs');
-      if (!publicOnly || typeof window.pdRefreshPeople !== 'function') {
-        location.reload(); return;
-      }
-      const button = document.getElementById('pd-boot-retry');
-      if (button.disabled || state.pending > 0) return;
-      button.disabled = true;
-      text('Повторно получаем данные…');
-      try { await window.pdRefreshPeople(); }
-      finally { button.disabled = false; check(); }
-    };
-    hardTimer = setTimeout(() => {
-      if (state.resolved) return;
-      console.warn('[Police] Начальная загрузка превысила 18 секунд', state.results);
-      text('Сервер не ответил вовремя. Попробуй загрузить данные повторно.', true);
-    }, 8500);
-    check();
+  function line() {
+    let el = document.getElementById('pd-nav-line');
+    if (!el) { el=document.createElement('div'); el.id='pd-nav-line';document.body.appendChild(el); }
+    return el;
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, {once:true});
-  else mount();
+  function showError(url) {
+    document.getElementById('pd-nav-error')?.remove();
+    const el = document.createElement('div');
+    el.id='pd-nav-error';el.setAttribute('role','alert');
+    const message=document.createElement('span');message.textContent='Не удалось загрузить страницу. Проверь соединение.';
+    const retry=document.createElement('button');retry.type='button';retry.textContent='Повторить';retry.onclick=()=>{el.remove();go(url)};
+    const cancel=document.createElement('button');cancel.type='button';cancel.textContent='Закрыть';cancel.onclick=()=>el.remove();
+    el.append(message,retry,cancel);document.body.appendChild(el);
+  }
+  async function go(href) {
+    if (navigating) return;
+    const to = new URL(href, location.href);
+    if (to.origin !== location.origin) { location.assign(to.href);return; }
+    const page = to.pathname.split('/').pop() || 'index.html';
+    if (!Object.hasOwn(publicByPage,page)) { location.assign(to.href);return; }
+    navigating = true;
+    const bar = line();bar.classList.add('pd-nav-visible');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8500);
+    try {
+      // Start HTML and public API requests together, not sequentially.
+      const htmlRequest = nativeFetch(to.href, {method:'GET', credentials:'same-origin', signal:controller.signal});
+      const paths = publicByPage[page];
+      const apiRequest = Promise.all(paths.map(async path => {
+        const r = await nativeFetch(API + path, {headers:{Accept:'application/json'}, signal:controller.signal, cache:'no-store'});
+        if (!r.ok) throw new Error('API '+path+' HTTP '+r.status);
+        const payload = await r.json();
+        if (!payload || payload.ok !== true) throw new Error('API '+path+' returned invalid data');
+        return [path, {payload, expires: Date.now() + TTL}];
+      }));
+      const [response, results] = await Promise.all([htmlRequest, apiRequest]);
+      if (!response.ok) throw new Error('Страница HTTP '+response.status);
+      const cache=Object.fromEntries(results);
+      sessionStorage.setItem(CACHE, JSON.stringify(cache));
+      location.assign(to.href); // full-page transition only after the public data is ready
+      return;
+    } catch (error) {
+      navigating = false;
+      console.warn('[Police] Navigation preload failed:', error);
+      bar.classList.remove('pd-nav-visible');
+      showError(to.href);
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  document.addEventListener('click', event => {
+    if (event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const anchor = event.target.closest?.('a[href]');
+    if (!anchor || anchor.hasAttribute('download') || (anchor.target && anchor.target !== '_self') || anchor.dataset.noPreload !== undefined) return;
+    const url=new URL(anchor.href,location.href);
+    if (url.origin!==location.origin || (url.pathname===location.pathname && url.search===location.search)) return;
+    const page = url.pathname.split('/').pop() || 'index.html';
+    if (!Object.hasOwn(publicByPage,page)) return;
+    event.preventDefault();
+    go(url.href);
+  }, true);
+  window.PoliceNavigation = Object.freeze({go});
 })();

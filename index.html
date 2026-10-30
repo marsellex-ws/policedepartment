@@ -1,28 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<style id="pd-boot-style">
-html.pd-boot-loading body > :not(#pd-boot-overlay) {visibility:hidden!important}
-html.pd-boot-loading body {overflow:hidden!important}
-#pd-boot-overlay {position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;
-  padding:24px;color:#e8f6ff;background:radial-gradient(ellipse 58% 35% at 50% 43%,#16446d 0%,#071829 55%,#040d17 100%);
-  font-family:Inter,'Segoe UI',Arial,sans-serif;text-align:center;transition:opacity .26s ease,visibility .26s ease}
-#pd-boot-overlay.pd-boot-exit {opacity:0;visibility:hidden}
-.pd-boot-content {width:min(440px,100%);display:grid;justify-items:center;gap:16px}
-.pd-boot-tag {font-size:10px;letter-spacing:.32em;color:#82b3d9;font-weight:700}
-.pd-boot-heading {font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:.08em;line-height:1.2}
-.pd-boot-heading span {color:#65bfff}
-.pd-boot-spinner {width:42px;height:42px;margin:12px auto 1px;border:3px solid #355570;
-  border-top-color:#78c8ff;border-right-color:#78c8ff;border-radius:50%;animation:pdBootSpin .72s linear infinite}
-.pd-boot-message {color:#b8ccdf;font-size:13px;line-height:1.5;min-height:22px}
-#pd-boot-retry {border:1px solid #599dd5;background:#134b73;color:#e9f7ff;border-radius:9px;
-  font:600 13px Inter,'Segoe UI',Arial,sans-serif;padding:12px 22px;cursor:pointer}
-#pd-boot-retry:hover {background:#1a6696}
-@keyframes pdBootSpin {to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.pd-boot-spinner{animation-duration:1.8s}}
-</style>
-<script>document.documentElement.classList.add('pd-boot-loading');
-window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
 <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
@@ -147,6 +125,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 body:not(.pd-admin-only) #pdAdminSection{display:none!important}</style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
+  <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
 </head>
 <body>
@@ -297,15 +276,9 @@ renderRoster('watchers');renderRank('thefts');renderStats('today');renderChiefs(
 (()=>{'use strict';
 const $=id=>document.getElementById(id), KEY='pd_site_token', API='https://police-api-b2y4.onrender.com';
 const AUTH_TTL=24*60*60*1000,AUTH_EXPIRES='pd_site_token_expires_at';
-function clearSharedSession(){localStorage.removeItem(KEY);localStorage.removeItem(AUTH_EXPIRES);sessionStorage.removeItem(KEY);}
-function saveSharedSession(value){const until=Date.now()+AUTH_TTL;localStorage.setItem(KEY,value);localStorage.setItem(AUTH_EXPIRES,String(until));sessionStorage.setItem(KEY,value);}
-function readSharedSession(){
- let value=localStorage.getItem(KEY),expires=Number(localStorage.getItem(AUTH_EXPIRES)||0);
- if(value){if(!expires||expires<=Date.now()){clearSharedSession();return null;}sessionStorage.setItem(KEY,value);return value;}
- value=sessionStorage.getItem(KEY);
- if(value){saveSharedSession(value);return value;}
- return null;
-}
+function clearSharedSession(){PoliceSession.clear();}
+function saveSharedSession(value,expiresAt){PoliceSession.save(value,expiresAt);}
+function readSharedSession(){return PoliceSession.get();}
 let token=readSharedSession(),user=null;
 const roles={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const dialog=$('pdLoginDialog');
@@ -315,7 +288,7 @@ const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts
 async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;restore.failures=0;}catch(e){if(e.status===401){clearSharedSession();token=null;user=null;restore.failures=0;}else{console.warn('[Police] Не удалось проверить сессию, авторизация сохранена:',e.message);restore.failures=(restore.failures||0)+1;if(restore.failures<=3)setTimeout(()=>{if(token&&!user)restore()},2500*restore.failures);}}render();}window.addEventListener('online',()=>{if(token&&!user){restore.failures=0;restore()}});
 $('openLogin').onclick=()=>{dialog.showModal();$('pdLoginName').focus();};
 $('pdLoginClose').onclick=()=>dialog.close();dialog.onclick=e=>{if(e.target===dialog)dialog.close();};
-$('pdLoginForm').onsubmit=async e=>{e.preventDefault();$('pdLoginError').textContent='';const btn=e.target.querySelector('button[type=submit]');btn.disabled=true;try{const x=await api('/api/auth/login',{method:'POST',data:{login:$('pdLoginName').value.trim().toLowerCase(),password:$('pdLoginPassword').value}});token=x.session_token;saveSharedSession(token);try{user=(await api('/api/auth/me',{auth:true})).user;}catch(checkError){if(checkError.status===401)throw checkError;dialog.close();render();setTimeout(restore,750);return;}$('pdLoginPassword').value='';dialog.close();render();}catch(err){$('pdLoginError').textContent=err.message;}finally{btn.disabled=false;}};
+$('pdLoginForm').onsubmit=async e=>{e.preventDefault();$('pdLoginError').textContent='';const btn=e.target.querySelector('button[type=submit]');btn.disabled=true;try{const x=await api('/api/auth/login',{method:'POST',data:{login:$('pdLoginName').value.trim().toLowerCase(),password:$('pdLoginPassword').value}});token=x.session_token;saveSharedSession(token,x.expires_at);try{user=(await api('/api/auth/me',{auth:true})).user;}catch(checkError){if(checkError.status===401)throw checkError;dialog.close();render();setTimeout(restore,750);return;}$('pdLoginPassword').value='';dialog.close();render();}catch(err){$('pdLoginError').textContent=err.message;}finally{btn.disabled=false;}};
 $('pdProfileToggle').onclick=()=>{const menu=$('pdProfileMenu');menu.classList.toggle('hidden');$('pdProfileToggle').setAttribute('aria-expanded',String(!menu.classList.contains('hidden')));};
 document.addEventListener('click',e=>{if(!$('pdProfile').contains(e.target)){$('pdProfileMenu').classList.add('hidden');$('pdProfileToggle').setAttribute('aria-expanded','false');}});
 $('pdLogout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST',auth:true});}catch{}clearSharedSession();token=null;user=null;$('pdProfileMenu').classList.add('hidden');render();};
@@ -334,7 +307,7 @@ const defaultAvatar='png_police_site/profile.png';
 let users=[],selected=null,leadership=[],chiefs=[],currentTab='users';
 const error=msg=>$('pdAdminError').textContent=msg||'';
 async function req(path,method='GET',data){
- const token=localStorage.getItem('pd_site_token')||sessionStorage.getItem('pd_site_token');
+ const token=PoliceSession.get();
  if(!token)throw Error('Войдите в профиль');
  const headers={Authorization:'Bearer '+token,Accept:'application/json'};
  if(data!==undefined)headers['Content-Type']='application/json';
@@ -349,8 +322,8 @@ async function openAdmin(){
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
 }
-$('pdAdminOpen').onclick=()=>{location.href='admin.html'};
-$('pdAdminClose').onclick=()=>{location.href='index.html'};
+$('pdAdminOpen').onclick=()=>{PoliceNavigation.go('admin.html')};
+$('pdAdminClose').onclick=()=>{PoliceNavigation.go('index.html')};
 async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
  const text=$('pdUserSearch').value.trim().toLowerCase();

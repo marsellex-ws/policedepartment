@@ -2,28 +2,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<style id="pd-boot-style">
-html.pd-boot-loading body > :not(#pd-boot-overlay) {visibility:hidden!important}
-html.pd-boot-loading body {overflow:hidden!important}
-#pd-boot-overlay {position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;
-  padding:24px;color:#e8f6ff;background:radial-gradient(ellipse 58% 35% at 50% 43%,#16446d 0%,#071829 55%,#040d17 100%);
-  font-family:Inter,'Segoe UI',Arial,sans-serif;text-align:center;transition:opacity .26s ease,visibility .26s ease}
-#pd-boot-overlay.pd-boot-exit {opacity:0;visibility:hidden}
-.pd-boot-content {width:min(440px,100%);display:grid;justify-items:center;gap:16px}
-.pd-boot-tag {font-size:10px;letter-spacing:.32em;color:#82b3d9;font-weight:700}
-.pd-boot-heading {font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:.08em;line-height:1.2}
-.pd-boot-heading span {color:#65bfff}
-.pd-boot-spinner {width:42px;height:42px;margin:12px auto 1px;border:3px solid #355570;
-  border-top-color:#78c8ff;border-right-color:#78c8ff;border-radius:50%;animation:pdBootSpin .72s linear infinite}
-.pd-boot-message {color:#b8ccdf;font-size:13px;line-height:1.5;min-height:22px}
-#pd-boot-retry {border:1px solid #599dd5;background:#134b73;color:#e9f7ff;border-radius:9px;
-  font:600 13px Inter,'Segoe UI',Arial,sans-serif;padding:12px 22px;cursor:pointer}
-#pd-boot-retry:hover {background:#1a6696}
-@keyframes pdBootSpin {to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.pd-boot-spinner{animation-duration:1.8s}}
-</style>
-<script>document.documentElement.classList.add('pd-boot-loading');
-window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
 <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
@@ -885,6 +863,7 @@ dialog[open] { animation: appear .22s ease; }
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
+  <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
 </head>
 <body>
@@ -1184,7 +1163,7 @@ const statuses = {
   cancelled:'Отменено'
 };
 const state = {
-  token:sessionStorage.getItem('pd_site_token'),
+  token:PoliceSession.get(),
   user:null,
   items:[],
   dept:'ALL',
@@ -1454,7 +1433,7 @@ $('logoutBtn').onclick = async()=>{
   try {
     await api('/api/auth/logout',{method:'POST',auth:true});
   } catch {} finally {
-    sessionStorage.removeItem('pd_site_token');
+    PoliceSession.clear();
     state.token = null;
     state.user = null;
     updateAuth();
@@ -1750,7 +1729,7 @@ async function restoreUser(){
     const data = await api('/api/auth/me',{auth:true});
     state.user = data.user;restoreUser.failures=0;
    } catch(e) {
-     if(e.status===401){sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;}
+     if(e.status===401){PoliceSession.clear();state.token=null;state.user=null;}
      else {restoreUser.failures=(restoreUser.failures||0)+1;if(restoreUser.failures<=3)setTimeout(()=>{if(state.token&&!state.user)restoreUser();},2500*restoreUser.failures);}
    }
 

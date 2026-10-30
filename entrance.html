@@ -1,28 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<style id="pd-boot-style">
-html.pd-boot-loading body > :not(#pd-boot-overlay) {visibility:hidden!important}
-html.pd-boot-loading body {overflow:hidden!important}
-#pd-boot-overlay {position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;
-  padding:24px;color:#e8f6ff;background:radial-gradient(ellipse 58% 35% at 50% 43%,#16446d 0%,#071829 55%,#040d17 100%);
-  font-family:Inter,'Segoe UI',Arial,sans-serif;text-align:center;transition:opacity .26s ease,visibility .26s ease}
-#pd-boot-overlay.pd-boot-exit {opacity:0;visibility:hidden}
-.pd-boot-content {width:min(440px,100%);display:grid;justify-items:center;gap:16px}
-.pd-boot-tag {font-size:10px;letter-spacing:.32em;color:#82b3d9;font-weight:700}
-.pd-boot-heading {font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:.08em;line-height:1.2}
-.pd-boot-heading span {color:#65bfff}
-.pd-boot-spinner {width:42px;height:42px;margin:12px auto 1px;border:3px solid #355570;
-  border-top-color:#78c8ff;border-right-color:#78c8ff;border-radius:50%;animation:pdBootSpin .72s linear infinite}
-.pd-boot-message {color:#b8ccdf;font-size:13px;line-height:1.5;min-height:22px}
-#pd-boot-retry {border:1px solid #599dd5;background:#134b73;color:#e9f7ff;border-radius:9px;
-  font:600 13px Inter,'Segoe UI',Arial,sans-serif;padding:12px 22px;cursor:pointer}
-#pd-boot-retry:hover {background:#1a6696}
-@keyframes pdBootSpin {to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.pd-boot-spinner{animation-duration:1.8s}}
-</style>
-<script>document.documentElement.classList.add('pd-boot-loading');
-window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
 <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
   <meta charset="utf-8">
@@ -47,6 +25,7 @@ main{padding:42px 0 76px}.center-shell{display:flex;align-items:center;justify-c
   </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
+  <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
 </head>
 <body><div class="grid-noise" aria-hidden="true"></div><header class="header"><div class="wrap top-inner"><a class="brand" href="index.html"><img src="pd_photo.png" alt=""> POLICE DEPARTMENT</a><nav class="nav"><a href="reestr.html">Реестр</a><a href="#login" id="topAccount">Войти</a></nav></div></header><div class="police-ribbon" aria-hidden="true"></div>
@@ -54,7 +33,7 @@ main{padding:42px 0 76px}.center-shell{display:flex;align-items:center;justify-c
 <script>
 (()=>{'use strict';
 const API='https://police-api-b2y4.onrender.com';const $=id=>document.getElementById(id);const KEY='pd_site_token';
-let token=sessionStorage.getItem(KEY),user=null,selected=null,searchItems=[];
+let token=PoliceSession.get(),user=null,selected=null,searchItems=[];
 const escapeHtml=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 function toast(message,bad=false){const root=$('toastZone');if(!root)return;const node=document.createElement('div');node.className='toast'+(bad?' bad':'');node.textContent=message;root.appendChild(node);requestAnimationFrame(()=>node.classList.add('show'));setTimeout(()=>{node.classList.remove('show');node.classList.add('hide');setTimeout(()=>node.remove(),260);},3600);}
@@ -64,10 +43,10 @@ function failure(e){return e.status===401?'Проверь логин и паро
 function tab(which){clear();$('tabLogin').classList.toggle('active',which==='login');$('tabRegister').classList.toggle('active',which==='register');$('loginForm').classList.toggle('hide',which!=='login');$('registerForm').classList.toggle('hide',which!=='register');}
 $('tabLogin').onclick=()=>{location.hash='login';tab('login');};$('tabRegister').onclick=()=>{location.hash='register';tab('register');};
 $('registerForm').onsubmit=async e=>{e.preventDefault();clear();const btn=e.target.querySelector('button[type="submit"]');btn.disabled=true;try{await api('/api/auth/register',{method:'POST',auth:false,body:{login:$('registerLogin').value.trim().toLowerCase(),nickname:$('registerNick').value.trim(),password:$('registerPassword').value,department:$('registerDept').value,bank_account:$('registerBank').value.trim()}});$('registerForm').reset();tab('login');error('authSuccess','');toast('Аккаунт создан');}catch(x){const msg=x.status===409?'Логин занят':failure(x);error('authError',msg);toast(msg,true);}finally{btn.disabled=false;}};
-$('loginForm').onsubmit=async e=>{e.preventDefault();clear();const btn=e.target.querySelector('button[type="submit"]');btn.disabled=true;try{const data=await api('/api/auth/login',{method:'POST',auth:false,body:{login:$('login').value.trim(),password:$('password').value}});token=data.session_token;sessionStorage.setItem(KEY,token);$('password').value='';await refreshMe();toast('Вход выполнен');}catch(x){const msg=failure(x);error('authError',msg);toast(msg,true);}finally{btn.disabled=false;}};
-$('logout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST'});}catch{}token=null;user=null;sessionStorage.removeItem(KEY);selected=null;showAuth();toast('Вы вышли');};
+$('loginForm').onsubmit=async e=>{e.preventDefault();clear();const btn=e.target.querySelector('button[type="submit"]');btn.disabled=true;try{const data=await api('/api/auth/login',{method:'POST',auth:false,body:{login:$('login').value.trim(),password:$('password').value}});token=data.session_token;PoliceSession.save(token,data.expires_at);$('password').value='';await refreshMe();toast('Вход выполнен');}catch(x){const msg=failure(x);error('authError',msg);toast(msg,true);}finally{btn.disabled=false;}};
+$('logout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST'});}catch{}token=null;user=null;PoliceSession.clear();selected=null;showAuth();toast('Вы вышли');};
 function showAuth(){$('authBox').classList.remove('hide');$('cabinet').classList.add('hide');$('topAccount').textContent='Войти';$('topAccount').href='#login';}
-async function refreshMe(){if(!token){showAuth();return;}try{const r=await api('/api/auth/me');user=r.user;refreshMe.failures=0;renderCabinet();}catch(e){if(e.status===401){token=null;sessionStorage.removeItem(KEY);user=null;showAuth();}else{console.warn('[Police] Сессия сохранена, профиль временно недоступен');refreshMe.failures=(refreshMe.failures||0)+1;if(refreshMe.failures<=3)setTimeout(()=>{if(token&&!user)refreshMe()},2500*refreshMe.failures);}}}
+async function refreshMe(){if(!token){showAuth();return;}try{const r=await api('/api/auth/me');user=r.user;refreshMe.failures=0;renderCabinet();}catch(e){if(e.status===401){token=null;PoliceSession.clear();user=null;showAuth();}else{console.warn('[Police] Сессия сохранена, профиль временно недоступен');refreshMe.failures=(refreshMe.failures||0)+1;if(refreshMe.failures<=3)setTimeout(()=>{if(token&&!user)refreshMe()},2500*refreshMe.failures);}}}
 function renderCabinet(){clear();$('authBox').classList.add('hide');$('cabinet').classList.remove('hide');$('topAccount').textContent='Кабинет';$('topAccount').href='#manage';$('displayNick').textContent=user.nickname||user.login;$('displayRole').textContent=(roleLabels[user.role]||'Пользователь')+(user.role_department&&user.role_department!=='ALL'?' · '+user.role_department:'');const manager=['developer','admin','minister'].includes(user.role);$('developerBootstrap').classList.toggle('hide',user.role!=='admin');$('noRole').classList.toggle('hide',manager||!!user.role);$('manager').classList.toggle('hide',!manager);if(manager){setupRoles();}}
 function setupRoles(){
 const vals=user.role==='developer'
