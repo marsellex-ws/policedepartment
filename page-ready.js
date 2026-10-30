@@ -16,6 +16,9 @@
   const allowedAPI = new Set(Object.values(publicByPage).flat());
   const nativeFetch = window.fetch.bind(window);
   let navigating = false;
+  let navGeneration = 0;
+  let activeController = null;
+  let activeTimeout = null;
   const css = document.createElement('style');
   css.textContent = `
     #pd-nav-line {position:fixed;bottom:0;left:0;right:0;height:3px;z-index:2147483001;
@@ -62,6 +65,20 @@
     if (!el) { el=document.createElement('div'); el.id='pd-nav-line';document.body.appendChild(el); }
     return el;
   }
+  // When the browser goes Back/Forward it may restore this entire document from
+  // the back-forward cache, including JS variables and the progress bar.
+  function resetNavigation() {
+    navGeneration++;
+    navigating = false;
+    if (activeTimeout !== null) clearTimeout(activeTimeout);
+    activeTimeout = null;
+    if (activeController) activeController.abort();
+    activeController = null;
+    document.getElementById('pd-nav-line')?.classList.remove('pd-nav-visible');
+    document.getElementById('pd-nav-error')?.remove();
+  }
+  window.addEventListener('pagehide', resetNavigation);
+  window.addEventListener('pageshow', resetNavigation);
   function showError(url) {
     document.getElementById('pd-nav-error')?.remove();
     const el = document.createElement('div');
@@ -78,9 +95,12 @@
     const page = to.pathname.split('/').pop() || 'index.html';
     if (!Object.hasOwn(publicByPage,page)) { location.assign(to.href);return; }
     navigating = true;
+    const thisNavigation = ++navGeneration;
     const bar = line();bar.classList.add('pd-nav-visible');
     const controller = new AbortController();
+    activeController = controller;
     const timeout = setTimeout(() => controller.abort(), 8500);
+    activeTimeout = timeout;
     try {
       // Start HTML and public API requests together, not sequentially.
       const htmlRequest = nativeFetch(to.href, {method:'GET', credentials:'same-origin', signal:controller.signal});
@@ -93,18 +113,23 @@
         return [path, {payload, expires: Date.now() + TTL}];
       }));
       const [response, results] = await Promise.all([htmlRequest, apiRequest]);
+      if (thisNavigation !== navGeneration || controller.signal.aborted) return;
       if (!response.ok) throw new Error('Страница HTTP '+response.status);
       const cache=Object.fromEntries(results);
       sessionStorage.setItem(CACHE, JSON.stringify(cache));
       location.assign(to.href); // full-page transition only after the public data is ready
       return;
     } catch (error) {
+      // Ignore an abandoned request after Back/Forward restores a cached page.
+      if (thisNavigation !== navGeneration) return;
       navigating = false;
       console.warn('[Police] Navigation preload failed:', error);
       bar.classList.remove('pd-nav-visible');
       showError(to.href);
     } finally {
       clearTimeout(timeout);
+      if (activeTimeout === timeout) activeTimeout = null;
+      if (activeController === controller) activeController = null;
     }
   }
   document.addEventListener('click', event => {
