@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<style id="pd-boot-style">
+html.pd-boot-loading body > :not(#pd-boot-overlay) {visibility:hidden!important}
+html.pd-boot-loading body {overflow:hidden!important}
+#pd-boot-overlay {position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;
+  padding:24px;color:#e8f6ff;background:radial-gradient(ellipse 58% 35% at 50% 43%,#16446d 0%,#071829 55%,#040d17 100%);
+  font-family:Inter,'Segoe UI',Arial,sans-serif;text-align:center;transition:opacity .26s ease,visibility .26s ease}
+#pd-boot-overlay.pd-boot-exit {opacity:0;visibility:hidden}
+.pd-boot-content {width:min(440px,100%);display:grid;justify-items:center;gap:16px}
+.pd-boot-tag {font-size:10px;letter-spacing:.32em;color:#82b3d9;font-weight:700}
+.pd-boot-heading {font-size:clamp(22px,5vw,32px);font-weight:900;letter-spacing:.08em;line-height:1.2}
+.pd-boot-heading span {color:#65bfff}
+.pd-boot-spinner {width:42px;height:42px;margin:12px auto 1px;border:3px solid #355570;
+  border-top-color:#78c8ff;border-right-color:#78c8ff;border-radius:50%;animation:pdBootSpin .72s linear infinite}
+.pd-boot-message {color:#b8ccdf;font-size:13px;line-height:1.5;min-height:22px}
+#pd-boot-retry {border:1px solid #599dd5;background:#134b73;color:#e9f7ff;border-radius:9px;
+  font:600 13px Inter,'Segoe UI',Arial,sans-serif;padding:12px 22px;cursor:pointer}
+#pd-boot-retry:hover {background:#1a6696}
+@keyframes pdBootSpin {to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.pd-boot-spinner{animation-duration:1.8s}}
+</style>
+<script>document.documentElement.classList.add('pd-boot-loading');
+window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
+<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07111e">
@@ -121,8 +145,9 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 @media(max-width:900px){.pd-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.pd-admin-layout,.pd-admin-grid{grid-template-columns:1fr}.pd-admin-section{scroll-margin-top:75px}.pd-admin-heading{align-items:flex-start}.pd-admin-heading h2{font-size:26px}.pd-admin-tabs button{flex:1;padding:10px 7px;font-size:11px}.pd-admin-grid{gap:11px}}
 body.pd-admin-only main > .shell:not(#pdAdminSection),body.pd-admin-only .nav,body.pd-admin-only .hero,body.pd-admin-only .footer{display:none!important}body.pd-admin-only #pdAdminSection{display:block!important;padding-top:35px}body.pd-admin-only #pdAdminSection.hidden{display:block!important}body.pd-admin-only main{min-height:85vh} </style>
-  <script defer src="api-fetch-retry.js"></script>
-  <script defer src="ui-pending.js"></script>
+  <script src="api-fetch-retry.js"></script>
+  <script src="ui-pending.js"></script>
+  <script src="page-ready.js"></script>
 </head>
 <body class="pd-admin-only">
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -256,7 +281,7 @@ document.querySelectorAll('[data-soon]').forEach(el=>el.addEventListener('click'
 document.querySelectorAll('[data-article]').forEach(el=>el.addEventListener('click',()=>toast(el.dataset.article)));
 $('bellBtn').onclick=()=>toast('Новых уведомлений нет');
 $('nav').addEventListener('click',()=> $('nav').classList.remove('open'));
-const searchable=[['Реестр наказаний','https://police-department.ru/'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','#chiefs'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Розыгрыши','#drawings'],['Личный кабинет','https://police-department.ru/entrance.html']];
+const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','#chiefs'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Розыгрыши','#drawings'],['Личный кабинет','https://police-department.ru/entrance.html']];
 const escapeHTML=t=>t.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showSearch(){ $('searchOverlay').classList.add('open');$('globalSearch').value='';renderSearch('');setTimeout(()=>$('globalSearch').focus(),10)}
 function hideSearch(){$('searchOverlay').classList.remove('open')}
