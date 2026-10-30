@@ -1398,13 +1398,14 @@ async function load(){
       offset = data.next_offset;
     }
     state.items = items;
-    state.page = 0;
+     load.failures=0;
+     state.page = 0;
     setCounts();
   } catch {
     if(id!==state.requestId) return;
-    state.items = [];
-    setCounts();
-    notify('Не удалось обновить',true);
+    notify('Не удалось обновить. Показываем последние загруженные данные.',true);
+     load.failures=(load.failures||0)+1;
+     if(load.failures<=2)setTimeout(()=>{if(!state.loading)load();},2500*load.failures);
   } finally {
     if(id===state.requestId){
       state.loading = false;
@@ -1722,14 +1723,13 @@ async function restoreUser(){
 
   try {
     const data = await api('/api/auth/me',{auth:true});
-    state.user = data.user;
-  } catch {
-    sessionStorage.removeItem('pd_site_token');
-    state.token = null;
-    state.user = null;
-  }
+    state.user = data.user;restoreUser.failures=0;
+   } catch(e) {
+     if(e.status===401){sessionStorage.removeItem('pd_site_token');state.token=null;state.user=null;}
+     else {restoreUser.failures=(restoreUser.failures||0)+1;if(restoreUser.failures<=3)setTimeout(()=>{if(state.token&&!state.user)restoreUser();},2500*restoreUser.failures);}
+   }
 
-  updateAuth();
+   updateAuth();
 }
 
 updateAuth();

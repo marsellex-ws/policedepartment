@@ -79,7 +79,7 @@ async function api(path,{method='GET',data,auth=false}={}){
  if(auth){const active=readSharedSession();if(!active||active!==token)throw Error('Сессия закончилась. Войди на главной странице полиции');headers.Authorization='Bearer '+token;}
  const res=await fetch(API+path,{method,headers,body:data===undefined?undefined:JSON.stringify(data)});
  let obj={};try{obj=await res.json()}catch{};
- if(!res.ok||obj.ok===false)throw Error(obj.error||'Ошибка запроса ('+res.status+')');return obj;
+ if(!res.ok||obj.ok===false)throw Object.assign(new Error(obj.error||'Ошибка запроса ('+res.status+')'),{status:res.status});return obj;
 }
 function refreshExamProfile(){
  $('manageBtn').classList.toggle('hidden',!user||!['admin','developer'].includes(user.role));
@@ -87,9 +87,7 @@ function refreshExamProfile(){
 async function initAuth(){
  token=readSharedSession();
  if(!token){user=null;refreshExamProfile();return;}
- try{const r=await api('/api/auth/me',{auth:true});user=r.user;}
- catch{user=null;token=null;clearSharedSession();}
- refreshExamProfile();
+ try{const r=await api('/api/auth/me',{auth:true});user=r.user;initAuth.failures=0;}catch(e){if(e.status===401){user=null;token=null;clearSharedSession();}else{initAuth.failures=(initAuth.failures||0)+1;if(initAuth.failures<=3)setTimeout(()=>{if(token&&!user)initAuth()},2500*initAuth.failures);}}refreshExamProfile();
 }
 window.addEventListener('pageshow',()=>{if(readSharedSession()!==token)initAuth();});
 window.addEventListener('storage',event=>{if(event.key===KEY||event.key===AUTH_EXPIRES)initAuth();});

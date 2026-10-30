@@ -229,10 +229,24 @@ function renderChiefs(){
  }).join('');
 }
 async function refreshPublicPeople(){
- try{const [a,b]=await Promise.all([fetch('https://api.police-department.ru/api/portal/leadership'),fetch('https://api.police-department.ru/api/portal/chiefs')]);if(!a.ok||!b.ok)return;
- const [x,y]=await Promise.all([a.json(),b.json()]);portalLeadership=x.items||[];portalChiefs=y.items||[];
- renderRoster(document.querySelector('[data-staff].active')?.dataset.staff||'watchers');renderChiefs();
- }catch{}
+  const endpoints=['/api/portal/leadership','/api/portal/chiefs'];
+  const results=await Promise.allSettled(endpoints.map(async path=>{
+    const response=await fetch('https://api.police-department.ru'+path);
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(!data||!Array.isArray(data.items))throw new Error('Некорректный ответ');
+    return data.items;
+  }));
+  if(results[0].status==='fulfilled')portalLeadership=results[0].value;
+  if(results[1].status==='fulfilled')portalChiefs=results[1].value;
+  if(results.some(r=>r.status==='fulfilled')){
+    renderRoster(document.querySelector('[data-staff].active')?.dataset.staff||'watchers');renderChiefs();
+  }
+  if(results.some(r=>r.status==='rejected')){
+    console.warn('[Police] Не все публичные блоки загрузились');
+    refreshPublicPeople.failures=(refreshPublicPeople.failures||0)+1;
+    if(refreshPublicPeople.failures<=2)setTimeout(refreshPublicPeople,3000*refreshPublicPeople.failures);
+  }else refreshPublicPeople.failures=0;
 }
 window.pdRefreshPeople=refreshPublicPeople;
 $('staffTabs').addEventListener('click',e=>{const b=e.target.closest('[data-staff]');if(!b)return;activateTabs($('staffTabs'),b);renderRoster(b.dataset.staff)});
@@ -272,11 +286,11 @@ const roles={developer:'Разработчик',admin:'Администрато�
 const dialog=$('pdLoginDialog');
 function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
 async function api(path,opts={}){const headers={'Accept':'application/json'};if(opts.data!==undefined)headers['Content-Type']='application/json';if(opts.auth)headers.Authorization='Bearer '+token;
-const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Error(json.error||'Ошибка сервера ('+response.status+')');return json;}
-async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;}catch{clearSharedSession();token=null;user=null;}render();}
+const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Object.assign(new Error(json.error||'Ошибка сервера ('+response.status+')'),{status:response.status});return json;}
+async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;restore.failures=0;}catch(e){if(e.status===401){clearSharedSession();token=null;user=null;restore.failures=0;}else{console.warn('[Police] Не удалось проверить сессию, авторизация сохранена:',e.message);restore.failures=(restore.failures||0)+1;if(restore.failures<=3)setTimeout(()=>{if(token&&!user)restore()},2500*restore.failures);}}render();}window.addEventListener('online',()=>{if(token&&!user){restore.failures=0;restore()}});
 $('openLogin').onclick=()=>{dialog.showModal();$('pdLoginName').focus();};
 $('pdLoginClose').onclick=()=>dialog.close();dialog.onclick=e=>{if(e.target===dialog)dialog.close();};
-$('pdLoginForm').onsubmit=async e=>{e.preventDefault();$('pdLoginError').textContent='';const btn=e.target.querySelector('button[type=submit]');btn.disabled=true;try{const x=await api('/api/auth/login',{method:'POST',data:{login:$('pdLoginName').value.trim().toLowerCase(),password:$('pdLoginPassword').value}});token=x.session_token;saveSharedSession(token);user=(await api('/api/auth/me',{auth:true})).user;$('pdLoginPassword').value='';dialog.close();render();}catch(err){$('pdLoginError').textContent=err.message;}finally{btn.disabled=false;}};
+$('pdLoginForm').onsubmit=async e=>{e.preventDefault();$('pdLoginError').textContent='';const btn=e.target.querySelector('button[type=submit]');btn.disabled=true;try{const x=await api('/api/auth/login',{method:'POST',data:{login:$('pdLoginName').value.trim().toLowerCase(),password:$('pdLoginPassword').value}});token=x.session_token;saveSharedSession(token);try{user=(await api('/api/auth/me',{auth:true})).user;}catch(checkError){if(checkError.status===401)throw checkError;dialog.close();render();setTimeout(restore,750);return;}$('pdLoginPassword').value='';dialog.close();render();}catch(err){$('pdLoginError').textContent=err.message;}finally{btn.disabled=false;}};
 $('pdProfileToggle').onclick=()=>{const menu=$('pdProfileMenu');menu.classList.toggle('hidden');$('pdProfileToggle').setAttribute('aria-expanded',String(!menu.classList.contains('hidden')));};
 document.addEventListener('click',e=>{if(!$('pdProfile').contains(e.target)){$('pdProfileMenu').classList.add('hidden');$('pdProfileToggle').setAttribute('aria-expanded','false');}});
 $('pdLogout').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST',auth:true});}catch{}clearSharedSession();token=null;user=null;$('pdProfileMenu').classList.add('hidden');render();};
