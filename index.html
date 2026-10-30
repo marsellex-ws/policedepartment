@@ -269,9 +269,9 @@ async function refreshPublicPeople(){
   }
   if(results.some(r=>r.status==='rejected')){
     console.warn('[Police] Не все публичные блоки загрузились');
-    refreshPublicPeople.failures=(refreshPublicPeople.failures||0)+1;
-    if(refreshPublicPeople.failures<=2)setTimeout(refreshPublicPeople,3000*refreshPublicPeople.failures);
-  }else refreshPublicPeople.failures=0;
+    // Повторы и тайм-ауты обрабатываются общим api-fetch-retry.js.
+    // Не запускаем скрытые дополнительные загрузки страницы.
+  }
 }
 window.pdRefreshPeople=refreshPublicPeople;
 $('staffTabs').addEventListener('click',e=>{const b=e.target.closest('[data-staff]');if(!b)return;activateTabs($('staffTabs'),b);renderRoster(b.dataset.staff)});

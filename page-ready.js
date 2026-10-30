@@ -39,7 +39,7 @@
     clearTimeout(idleTimer);
     const paths = Array.from(state.failures);
     console.warn('[Police] Первоначальные запросы не загрузились:', paths, state.results);
-    text('Не удалось получить данные сервера. Проверь соединение и повтори попытку.', true);
+    text('Не удалось получить данные. Нажми «Повторить загрузку».', true);
   }
   function check() {
     if (!state.domReady || state.resolved) return;
@@ -116,12 +116,24 @@
         <button id="pd-boot-retry" type="button" hidden>Повторить загрузку</button>
       </div>`;
     document.body.appendChild(overlay);
-    document.getElementById('pd-boot-retry').onclick = () => location.reload();
+    document.getElementById('pd-boot-retry').onclick = async () => {
+      const publicOnly = state.failures.size > 0 &&
+        Array.from(state.failures).every(p => p === '/api/portal/leadership' || p === '/api/portal/chiefs');
+      if (!publicOnly || typeof window.pdRefreshPeople !== 'function') {
+        location.reload(); return;
+      }
+      const button = document.getElementById('pd-boot-retry');
+      if (button.disabled || state.pending > 0) return;
+      button.disabled = true;
+      text('Повторно получаем данные…');
+      try { await window.pdRefreshPeople(); }
+      finally { button.disabled = false; check(); }
+    };
     hardTimer = setTimeout(() => {
       if (state.resolved) return;
       console.warn('[Police] Начальная загрузка превысила 18 секунд', state.results);
-      text('Сервер отвечает слишком долго. Попробуй ещё раз.', true);
-    }, 18000);
+      text('Сервер не ответил вовремя. Попробуй загрузить данные повторно.', true);
+    }, 8500);
     check();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount, {once:true});
