@@ -3,7 +3,7 @@
   'use strict';
   if (window.__pdBootReadyInstalled) return;
   window.__pdBootReadyInstalled = true;
-  const origin = 'https://api.police-department.ru';
+  const origin = 'https://police-api-b2y4.onrender.com';
   const original = window.fetch.bind(window);
   const state = { pending: 0, started: 0, domReady: false, resolved: false,
     failures: new Set(), results: [], lastActivity: performance.now() };

@@ -23,7 +23,7 @@ html.pd-boot-loading body {overflow:hidden!important}
 </style>
 <script>document.documentElement.classList.add('pd-boot-loading');
 window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
-<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -131,7 +131,7 @@ main{padding:47px 0 80px;min-height:calc(100vh - 190px)}
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>На странице отображаются игровые имена, должности и изображения руководства полиции. Данные обновляются через Police Department.</p><button class="close-privacy" type="button" id="closePrivacy">Закрыть</button></div></dialog>
 <script>
 (()=>{'use strict';
-const API='https://api.police-department.ru';
+const API='https://police-api-b2y4.onrender.com';
 const ASSET='leadership_police/';
 const groups=document.getElementById('leadershipGroups');const vacant=document.getElementById('vacantGrid'),vacantSection=document.getElementById('vacantSection');
 const status=document.getElementById('loading');

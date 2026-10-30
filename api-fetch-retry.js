@@ -7,7 +7,7 @@
   window.__policeApiRetryInstalled = true;
 
   const originalFetch = window.fetch.bind(window);
-  const API_ORIGIN = 'https://api.police-department.ru';
+  const API_ORIGIN = 'https://police-api-b2y4.onrender.com';
   const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
   const MAX_ATTEMPTS = 2;
   const PER_ATTEMPT_MS = 3200;

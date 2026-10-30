@@ -23,7 +23,7 @@ html.pd-boot-loading body {overflow:hidden!important}
 </style>
 <script>document.documentElement.classList.add('pd-boot-loading');
 window.__pdBootFallback=setTimeout(()=>{if(!window.__pdBootReadyInstalled){document.documentElement.classList.remove('pd-boot-loading');console.warn('[Police] Скрипт загрузки недоступен');}},15000);</script>
-<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -256,7 +256,7 @@ function renderChiefs(){
 async function refreshPublicPeople(){
   const endpoints=['/api/portal/leadership','/api/portal/chiefs'];
   const results=await Promise.allSettled(endpoints.map(async path=>{
-    const response=await fetch('https://api.police-department.ru'+path);
+    const response=await fetch('https://police-api-b2y4.onrender.com'+path);
     if(!response.ok)throw new Error('HTTP '+response.status);
     const data=await response.json();
     if(!data||!Array.isArray(data.items))throw new Error('Некорректный ответ');
@@ -295,7 +295,7 @@ renderRoster('watchers');renderRank('thefts');renderStats('today');renderChiefs(
 </script>
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id), KEY='pd_site_token', API='https://api.police-department.ru';
+const $=id=>document.getElementById(id), KEY='pd_site_token', API='https://police-api-b2y4.onrender.com';
 const AUTH_TTL=24*60*60*1000,AUTH_EXPIRES='pd_site_token_expires_at';
 function clearSharedSession(){localStorage.removeItem(KEY);localStorage.removeItem(AUTH_EXPIRES);sessionStorage.removeItem(KEY);}
 function saveSharedSession(value){const until=Date.now()+AUTH_TTL;localStorage.setItem(KEY,value);localStorage.setItem(AUTH_EXPIRES,String(until));sessionStorage.setItem(KEY,value);}
@@ -326,7 +326,7 @@ restore();
 
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id),API='https://api.police-department.ru';
+const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
 const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT',swat_deputy_2:'Заместитель SWAT II'};
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
