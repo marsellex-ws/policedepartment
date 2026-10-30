@@ -121,6 +121,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 @media(max-width:900px){.pd-admin-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.pd-admin-layout,.pd-admin-grid{grid-template-columns:1fr}.pd-admin-section{scroll-margin-top:75px}.pd-admin-heading{align-items:flex-start}.pd-admin-heading h2{font-size:26px}.pd-admin-tabs button{flex:1;padding:10px 7px;font-size:11px}.pd-admin-grid{gap:11px}}
 body.pd-admin-only main > .shell:not(#pdAdminSection),body.pd-admin-only .nav,body.pd-admin-only .hero,body.pd-admin-only .footer{display:none!important}body.pd-admin-only #pdAdminSection{display:block!important;padding-top:35px}body.pd-admin-only #pdAdminSection.hidden{display:block!important}body.pd-admin-only main{min-height:85vh} </style>
+  <script defer src="api-fetch-retry.js"></script>
+  <script defer src="ui-pending.js"></script>
 </head>
 <body class="pd-admin-only">
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -173,7 +175,7 @@ body.pd-admin-only main > .shell:not(#pdAdminSection),body.pd-admin-only .nav,bo
 </section>
 
 <div class="shell"><section class="quick" id="services" aria-label="Разделы">
-<a class="feature" style="--accent:#fc718b" href="https://police-department.ru/"><img class="feature-bg" src="png_police_site/01_registry.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/registry.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Реестр наказаний</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#fc718b" href="reestr.html"><img class="feature-bg" src="png_police_site/01_registry.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/registry.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Реестр наказаний</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#64baff" href="exams.html"><img class="feature-bg" src="png_police_site/02_exams.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/exams.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Электронные экзамены</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ff637e" href="#" data-soon="Угонки"><img class="feature-bg" src="png_police_site/03_car_thefts.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/car_thefts.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Угонки</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#b494ff" href="#" data-soon="Справочник полиции"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
@@ -309,7 +311,7 @@ async function openAdmin(){
  try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
 }
 $('pdAdminOpen').onclick=openAdmin;
-$('pdAdminClose').onclick=()=>{location.href='police.html'};
+$('pdAdminClose').onclick=()=>{location.href='index.html'};
 async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
  const text=$('pdUserSearch').value.trim().toLowerCase();
