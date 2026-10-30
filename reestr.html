@@ -933,11 +933,16 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
 @media (max-width:380px) {
   header.header a.brand.pd-unified-brand strong,header.top a.brand.pd-unified-brand strong {font-size:12px !important;letter-spacing:0 !important;}
 }
+/* Registry uses the same role identity card as other sections. */
+header.top .headright > #username, header.top .headright > #loginBtn,
+header.top .headright > #registerBtn, header.top .headright > #logoutBtn {display:none!important}
+header.top .headright > #manageBtn {display:none!important}
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
+  <script src="role-ui.js"></script>
 </head>
 <body>
 
@@ -951,10 +956,11 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
       </span>
     </a>
     <div class="headright">
+      <div data-police-user-slot class="pd-header-user-slot"></div>
       <span id="username" class="user"></span>
       <a id="loginBtn" class="btn primary" href="entrance.html#login">Войти</a>
       <a id="registerBtn" class="btn" href="entrance.html#register">Регистрация</a>
-      <a id="manageBtn" class="btn hidden" href="entrance.html#manage">Управление</a>
+      <a id="manageBtn" class="btn hidden" href="admin.html#roles">Выдача ролей</a>
       <button id="logoutBtn" class="btn hidden" type="button">Выйти</button>
     </div>
   </div>
@@ -1455,7 +1461,7 @@ function updateAuth(){
   $('loginBtn').classList.toggle('hidden',!!u);
   $('registerBtn').classList.toggle('hidden',!!u);
   $('logoutBtn').classList.toggle('hidden',!u);
-  $('manageBtn').classList.toggle('hidden',!u);
+  $('manageBtn').classList.toggle('hidden',!u||!['developer','admin','minister'].includes(u.role));
   $('username').textContent = u?(u.nickname||u.login):'';
   $('addBtn').hidden = !anyEdit();
   draw();

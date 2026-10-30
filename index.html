@@ -243,6 +243,7 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
+  <script src="role-ui.js"></script>
 </head>
 <body>
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -398,7 +399,7 @@ function readSharedSession(){return PoliceSession.get();}
 let token=readSharedSession(),user=null;
 const roles={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const dialog=$('pdLoginDialog');
-function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
+function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';PoliceRoleUI.decorateExisting(user);$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer','minister'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
 async function api(path,opts={}){const headers={'Accept':'application/json'};if(opts.data!==undefined)headers['Content-Type']='application/json';if(opts.auth)headers.Authorization='Bearer '+token;
 const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Object.assign(new Error(json.error||'Ошибка сервера ('+response.status+')'),{status:response.status});return json;}
 async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;restore.failures=0;}catch(e){if(e.status===401){clearSharedSession();token=null;user=null;restore.failures=0;}else{console.warn('[Police] Не удалось проверить сессию, авторизация сохранена:',e.message);restore.failures=(restore.failures||0)+1;if(restore.failures<=3)setTimeout(()=>{if(token&&!user)restore()},2500*restore.failures);}}render();}window.addEventListener('online',()=>{if(token&&!user){restore.failures=0;restore()}});
@@ -438,7 +439,7 @@ async function openAdmin(){
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
 }
-$('pdAdminOpen').onclick=()=>{PoliceNavigation.go('admin.html')};
+$('pdAdminOpen').onclick=()=>{PoliceNavigation.go(user?.role==='minister'?'admin.html#roles':'admin.html')};
 $('pdAdminClose').onclick=()=>{PoliceNavigation.go('index.html')};
 async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
