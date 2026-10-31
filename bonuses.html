@@ -4,85 +4,52 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#06101e">
-<meta name="description" content="Бонусы Police Department — интерактивная бильярдная рулетка и конкурсы">
+<meta name="description" content="Бонусы Police Department — интерактивная городская рулетка и конкурсы">
 <title>Бонусы</title>
 <link rel="icon" href="pd_photo.png?v=2" type="image/png">
-<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 <script src="api-fetch-retry.js"></script>
 <script src="site-session.js"></script>
 <script src="page-ready.js"></script>
 <script src="role-ui.js" defer></script>
 <style>
-:root{color-scheme:dark;--bg:#030b16;--text:#eff8ff;--soft:#98b9d2;--line:#234c64;--cyan:#57ddeb;--mint:#48edba;--pink:#ff4d98;--gold:#ffcf6c}
+:root{color-scheme:dark;--bg:#030b16;--text:#eff8ff;--soft:#9cbbd5;--cyan:#58dcff;--mint:#4ee6b9;--pink:#ff5caa;--gold:#ffcf75}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
-button{font:inherit;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible{outline:2px solid #78defd;outline-offset:4px}img{max-width:100%;display:block}
-.sky{position:fixed;inset:0;z-index:-2;pointer-events:none;background:linear-gradient(180deg,rgba(2,9,22,.84),rgba(2,13,25,.83) 53%,rgba(2,8,18,.94)),url('png_police_site/10_giveaways.webp') center 38%/cover no-repeat}
-.sky:before{content:"";position:absolute;inset:-30%;background:radial-gradient(ellipse at 24% 31%,#13b6af2d,transparent 35%),radial-gradient(ellipse at 83% 33%,#de357b31,transparent 29%);filter:blur(38px);animation:ambient 17s ease-in-out infinite alternate}
-.sky:after{content:"";position:absolute;inset:0;background-image:linear-gradient(#78d1ff0a 1px,transparent 1px),linear-gradient(90deg,#78d1ff0a 1px,transparent 1px);background-size:70px 70px;opacity:.65;mask-image:linear-gradient(180deg,transparent,#000 30%,#000 85%,transparent)}
-.shell{width:min(1380px,calc(100% - 46px));margin-inline:auto}
-header.top{height:78px;position:sticky;top:0;z-index:60;background:linear-gradient(90deg,#04111feb,#061525dc 50%,#04111ff0),url('reestr_shapk.png') center/cover;border-bottom:1px solid #3157767b;backdrop-filter:blur(16px);box-shadow:0 12px 45px #0005}
-.topin{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:43px;height:46px;object-fit:contain;filter:drop-shadow(0 0 13px #4fa9ff7a)}.brand strong{display:block;font-size:clamp(13px,1.35vw,17px);font-weight:950;letter-spacing:.045em;white-space:nowrap}
-.headright{margin-left:auto;display:flex;justify-content:flex-end;align-items:center;min-width:0}
-main{position:relative;z-index:1;min-height:calc(100vh - 170px)}
-.eyebrow{display:flex;justify-content:center;align-items:center;gap:13px;margin-top:37px;font-size:11px;font-weight:900;letter-spacing:.28em;color:#70e6d0}
-.eyebrow:before,.eyebrow:after{content:"";width:53px;height:1px;background:linear-gradient(90deg,transparent,#6ee8d7)}.eyebrow:after{transform:scaleX(-1)}
-.title{margin:12px auto 7px;text-align:center;font-size:clamp(46px,6.5vw,90px);line-height:1.04;font-weight:1000;letter-spacing:-.065em;color:#f7faff;text-shadow:0 12px 40px #0009}
-.title span{background:linear-gradient(94deg,#68eddf 8%,#79ddff 42%,#e291ff 72%,#ff579e);background-clip:text;-webkit-background-clip:text;color:transparent}
-.intro{margin:5px auto 25px;text-align:center;color:#9bbcd4;font-weight:650;font-size:12px;letter-spacing:.13em;text-transform:uppercase}
-.tabs{position:relative;display:flex;gap:30px;width:max-content;max-width:100%;justify-content:center;align-items:center;margin:0 auto 18px;border-bottom:1px solid #4f77935a}
-.tabs button{padding:13px 16px 17px;background:none;border:0;color:#92adcb;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;position:relative;transition:color .18s}
-.tabs button:hover,.tabs button[aria-selected="true"]{color:#f0fbff}.tabs button[aria-selected="true"]:after{content:"";position:absolute;left:10%;bottom:-2px;width:80%;height:3px;border-radius:8px;background:linear-gradient(90deg,#49d9ca,#6cd0ff,#fa68ac);box-shadow:0 0 17px #69d3ff88}
-.panel[hidden]{display:none!important}
-.roulette-content{position:relative;max-width:1380px;margin:auto}
-.info-line{margin:0 auto 12px;display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap}
-.pill{display:inline-flex;align-items:center;gap:9px;border-radius:100px;border:1px solid #466a8275;background:#07192baf;color:#b8d4e5;padding:8px 14px;font-weight:850;font-size:11px;letter-spacing:.04em}
-.pill .dot{height:7px;width:7px;border-radius:50%;background:#5be4b3;box-shadow:0 0 11px #54f5c2}
-.pill.demo{border-color:#e8b66c4a;color:#ffdeb1}.pill.demo .dot{background:#ffb46f;box-shadow:0 0 8px #ffb46f}
-.arena{position:relative;isolation:isolate;margin:0 auto;max-width:1280px;min-height:650px;padding:24px 10px 20px;overflow:hidden;border-radius:28px;border:1px solid #345e795c;background:radial-gradient(ellipse at 50% 64%,#16475b5b,transparent 54%),linear-gradient(160deg,#0713268c,#040e20b3);box-shadow:inset 0 0 70px #0006,0 28px 70px #0004}
-.arena:before{content:"";pointer-events:none;position:absolute;inset:0;background:radial-gradient(circle at 15% 38%,#2fccc71d,transparent 25%),radial-gradient(circle at 90% 46%,#fe5a9e1b,transparent 30%)}
-.arena-name{position:relative;z-index:3;text-align:center;margin:9px 0 7px;color:#8db9ce;font-size:11px;letter-spacing:.27em;font-weight:900}
-.arena-name strong{color:#d8f7ff;font-size:15px;letter-spacing:.2em;display:block;margin-top:6px}
-.table-area{width:100%;height:510px;position:relative;display:grid;place-items:center;perspective:1200px;overflow:visible}
-.table-floor{position:absolute;left:15%;right:15%;bottom:38px;height:120px;transform:perspective(600px) rotateX(61deg);border-radius:50%;background:radial-gradient(ellipse,#000d 5%,#0ad3b826 30%,transparent 68%);filter:blur(16px)}
-.table-shell{position:relative;width:1020px;height:560px;transform-origin:center center;transform-style:preserve-3d;transform:rotateX(43deg) rotateZ(-3deg) scale(.86);z-index:2;filter:drop-shadow(4px 34px 25px rgba(0,0,0,.54))}
-.table-shell:before{content:"";position:absolute;left:3%;right:3%;bottom:-57px;height:70px;transform:translateZ(-16px) rotateX(-70deg);background:linear-gradient(180deg,#8b5427,#342018 45%,#0d1222);border:2px solid #bd8453;border-radius:0 0 26px 26px;box-shadow:inset 0 -20px 18px #090d16aa}
-.table-shell:after{content:"";position:absolute;left:60px;right:60px;bottom:-44px;height:20px;border-radius:0 0 10px 10px;background:linear-gradient(90deg,#d8b36f,#3d2c2a 25%,#bd986b 50%,#2e2027 77%,#b7804e);opacity:.85}
-.table-rim{position:absolute;inset:0;border-radius:43px;padding:37px;background:linear-gradient(135deg,#b98044 0%,#57311c 18%,#160f18 48%,#915f35 77%,#edb96d 100%);box-shadow:0 0 0 5px #261722,0 0 0 7px #dfa66d8c,0 0 55px #19ffd326,inset 0 0 0 4px #dfaa60a8,inset 0 0 0 16px #27171c}
-.table-rim:after{content:"";position:absolute;inset:15px;border-radius:31px;pointer-events:none;border:2px solid #f7d58a51;box-shadow:inset 0 0 0 2px #130c15a6}
-.table-felt{position:relative;width:100%;height:100%;border-radius:17px;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#14785a 0%,#0d5548 53%,#062d2a 100%);box-shadow:inset 0 0 65px #020d15bd,0 0 0 3px #030e1a;border:1px solid #24705b}
-.table-felt:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent,#ffffff05 37%,transparent 46%),repeating-linear-gradient(45deg,#fff1 0 1px,transparent 1px 7px);opacity:.4;mix-blend-mode:screen}
-#poolCanvas{position:relative;width:100%;height:100%;display:block;z-index:1}
-.pocket{position:absolute;width:64px;height:64px;border-radius:50%;z-index:5;pointer-events:none;background:radial-gradient(circle at center,#01040a 43%,#080d17 57%,#b3824e 68%,#361b12 80%);box-shadow:inset 0 4px 11px #000,0 1px 6px #0009}
-.pocket.tl{top:14px;left:14px}.pocket.tr{top:14px;right:14px}.pocket.bl{bottom:14px;left:14px}.pocket.br{bottom:14px;right:14px}.pocket.tm{top:10px;left:50%;transform:translateX(-50%)}.pocket.bm{bottom:10px;left:50%;transform:translateX(-50%)}
-.table-stamp{position:absolute;left:50%;top:7px;transform:translateX(-50%);z-index:6;color:#ffdaa1a0;font-size:12px;font-weight:900;letter-spacing:.18em;white-space:nowrap;pointer-events:none}
-.progress{position:absolute;top:56%;left:50%;transform:translate(-50%,-50%);z-index:7;pointer-events:none;opacity:0;transition:opacity .25s;padding:14px 25px;border:1px solid #71f3d76c;background:#061b22d6;border-radius:16px;box-shadow:0 0 30px #28e9bb48;color:#e2fff9;font-weight:900;font-size:13px;letter-spacing:.1em}.progress.active{opacity:1}
-.action-line{position:relative;z-index:5;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin:0 auto 21px;transform:translateY(-10px)}
-.spin{position:relative;isolation:isolate;display:inline-flex;justify-content:center;align-items:center;gap:11px;min-width:215px;min-height:60px;padding:15px 30px;border-radius:15px;border:1px solid #b5ffeab9;color:#031b26;background:linear-gradient(100deg,#62f4c2 0%,#7cdeff 52%,#e1aaff 100%);font-size:17px;font-weight:1000;letter-spacing:.055em;text-transform:uppercase;box-shadow:0 0 0 3px #0d485c7a,0 12px 30px #1ee6ca4b;transition:transform .2s,filter .2s}
-.spin:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.1)}.spin:disabled{opacity:.6;cursor:wait}.spin-icon{font-size:22px;line-height:1}
-.reset{min-height:55px;padding:12px 19px;border:1px solid #4c7b9691;border-radius:14px;background:#0b2639b5;color:#d5edff;font-weight:800}.reset:hover:not(:disabled){background:#19445b}.reset:disabled{opacity:.5;cursor:not-allowed}
-.status-text{text-align:center;color:#aac8df;font-size:12px;font-weight:700;min-height:20px;margin:0 14px}
-.rules{display:grid;grid-template-columns:1fr 1.6fr;gap:18px;margin:24px auto 50px}
-.note,.prize-list{border-radius:20px;border:1px solid #3760796a;background:linear-gradient(145deg,#0a2334d5,#081829da);padding:22px;box-shadow:0 15px 30px #0003}
-.note h2,.prize-list h2{margin:0 0 12px;font-size:15px;letter-spacing:.08em}.note p{margin:0;color:#a0bed3;font-size:12px;line-height:1.8}.note .light{color:#73e5ce;font-weight:800}
-.prize-chips{display:flex;gap:8px;flex-wrap:wrap}.prize-chip{display:inline-flex;align-items:center;gap:8px;border-radius:100px;border:1px solid #426d8066;background:#071b2edb;padding:8px 11px;font-size:11px;font-weight:800;color:#dcebf8}.prize-chip i{height:9px;width:9px;border-radius:50%;display:inline-block;background:var(--ball);box-shadow:0 0 8px var(--ball)}
-.contests{margin:40px auto 100px;display:grid;justify-items:center;text-align:center;gap:18px;min-height:390px;align-content:center;border:1px solid #31516a60;border-radius:26px;background:linear-gradient(135deg,#082135ba,#100e2cd0)}
-.contests-icon{width:86px;height:86px;display:grid;place-items:center;border-radius:23px;font-size:43px;border:1px solid #bb8eeb75;background:linear-gradient(130deg,#2b2245e0,#132949e0);box-shadow:0 0 38px #b452dd30}
-.contests h2{margin:2px 0 0;font-size:30px;font-weight:1000}.contests p{margin:0;color:#a4bfd9;max-width:460px;line-height:1.7;font-size:13px}
-footer.footer{position:relative;z-index:1;background:#06121eea;border-top:1px solid #284863;padding:31px 0}.footinner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}.footinner p{margin:0;font-size:12px;color:#a7c1d5}.links{display:flex;justify-content:flex-end;gap:12px 20px;flex-wrap:wrap}.links a{font-size:11px;color:#a7c1d5}.links a:hover{text-decoration:underline;color:#fff}
-.result-layer[hidden]{display:none!important}.result-layer{position:fixed;inset:0;z-index:350;background:#020b16cf;backdrop-filter:blur(16px);display:flex;justify-content:center;align-items:center;padding:20px;animation:reveal .25s ease-out}
-.result-card{position:relative;width:min(480px,100%);padding:34px 30px 27px;text-align:center;border-radius:28px;border:1px solid #72e6dc8f;background:linear-gradient(148deg,#0d2937,#09172d 59%,#21183a);box-shadow:0 0 80px #29eccd36,0 30px 90px #000b}
-.result-label{font-size:11px;letter-spacing:.25em;color:#86e7d5;font-weight:900}.result-ball{width:152px;height:152px;margin:24px auto 19px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:13px;position:relative;background:radial-gradient(circle at 30% 24%,#fff8,transparent 23%),radial-gradient(circle at 33% 32%,color-mix(in srgb,var(--winner-color),white 38%),var(--winner-color) 62%,#000 100%);box-shadow:inset -18px -22px 24px #0008,0 15px 24px #0008,0 0 45px var(--winner-color)}
-.result-ball span{font-size:16px;font-weight:1000;color:#fff;text-shadow:0 2px 5px #000f;overflow-wrap:anywhere;line-height:1.1}.result-ball:after{content:"";position:absolute;inset:10px;border:1px solid #ffffff33;border-radius:50%}
-.result-title{font-size:35px;line-height:1.2;font-weight:1000;margin:0 0 11px;overflow-wrap:anywhere}.result-copy{color:#b1c6d9;font-size:13px;line-height:1.65;margin:0 0 24px}.result-close{width:100%;padding:14px;border:1px solid #65e6d7b0;border-radius:12px;background:linear-gradient(95deg,#166c75,#245c86);color:#fff;font-weight:900}.result-close:hover{filter:brightness(1.14)}
-.confetti{position:absolute;inset:0;overflow:hidden;pointer-events:none}.confetti b{position:absolute;top:-30px;width:8px;height:18px;border-radius:2px;animation:confetti 3s linear forwards}
-@keyframes reveal{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@keyframes ambient{to{transform:translate(2%,-2%) scale(1.03)}}@keyframes confetti{to{transform:translateY(590px) rotate(920deg);opacity:0}}
-@media(max-width:1150px){.arena{min-height:570px}.table-area{height:440px}.table-shell{transform:rotateX(43deg) rotateZ(-3deg) scale(.70)}}
-@media(max-width:800px){.shell{width:calc(100% - 24px)}.arena{min-height:515px;padding:14px 4px 20px}.table-area{height:380px}.table-shell{transform:rotateX(37deg) rotateZ(-3deg) scale(.52)}.rules{grid-template-columns:1fr}.topin{gap:10px}.brand img{width:38px;height:40px}.brand strong{font-size:13px}}
-@media(max-width:560px){header.top{height:74px}.eyebrow{margin-top:23px}.eyebrow:before,.eyebrow:after{width:20px}.title{font-size:clamp(41px,13vw,62px)}.intro{font-size:10px;letter-spacing:.07em;margin-bottom:20px}.tabs{gap:12px}.tabs button{padding:12px 15px 14px;font-size:12px}.arena{border-radius:18px;min-height:410px}.arena-name{font-size:9px}.arena-name strong{font-size:11px}.table-area{height:278px}.table-shell{transform:rotateX(31deg) rotateZ(-3deg) scale(.32)}.action-line{margin-bottom:14px;transform:none}.spin{min-width:175px;min-height:54px;font-size:14px}.reset{min-height:50px;font-size:12px;padding:10px 13px}.table-floor{bottom:11px}.progress{font-size:10px;padding:10px 15px}.rules{margin-top:16px}.note,.prize-list{padding:18px}.footinner,.links{justify-content:center;text-align:center}}
-@media(prefers-reduced-motion:reduce){.sky:before{animation:none}.spin,.tabs button{transition:none}.confetti b{animation-duration:.01s}}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:#030b16;color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}button:disabled{cursor:wait}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible{outline:2px solid #8fd8ff;outline-offset:4px}img{max-width:100%;display:block}
+.sky{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(180deg,#020912df 0%,#041127d4 42%,#030b18f5 100%),url('chiefs_assets/city-night.webp') center/cover no-repeat}
+.sky::after{content:"";position:absolute;inset:-20%;background:radial-gradient(ellipse at 23% 37%,#167eaa28,transparent 37%),radial-gradient(ellipse at 82% 43%,#d3398225,transparent 35%);filter:blur(35px);animation:ambient 17s ease-in-out infinite alternate}
+.shell{width:min(1400px,calc(100% - 42px));margin-inline:auto}
+header.top{height:78px;position:sticky;top:0;z-index:70;background:linear-gradient(90deg,#04111fec,#061525e5 50%,#04111ff0),url('reestr_shapk.png') center/cover;border-bottom:1px solid #3157767b;backdrop-filter:blur(17px);box-shadow:0 12px 35px #0005}
+.topin{height:100%;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:43px;height:46px;object-fit:contain;filter:drop-shadow(0 0 13px #4fa9ff7a)}.brand strong{font-size:clamp(13px,1.3vw,17px);font-weight:950;letter-spacing:.045em;white-space:nowrap}.headright{margin-left:auto;display:flex;justify-content:flex-end;align-items:center;min-width:0}
+main{position:relative;z-index:1;min-height:calc(100vh - 167px)}
+.eyebrow{display:flex;justify-content:center;align-items:center;gap:13px;margin-top:33px;font-size:11px;font-weight:900;letter-spacing:.25em;color:#77c7ff}.eyebrow::before,.eyebrow::after{content:"";width:47px;height:1px;background:linear-gradient(90deg,transparent,#55baff)}.eyebrow::after{transform:scaleX(-1)}
+h1.title{margin:9px 0 6px;text-align:center;font-weight:1000;line-height:1.04;letter-spacing:-.065em;font-size:clamp(46px,6.5vw,88px);text-shadow:0 12px 38px #0009}.title span{background:linear-gradient(90deg,#58dfff 12%,#77aaff 47%,#ffa3d8 100%);background-clip:text;-webkit-background-clip:text;color:transparent}
+.intro{text-align:center;color:#9bbad8;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin:6px auto 22px}
+.tabs{display:flex;width:max-content;max-width:100%;gap:26px;justify-content:center;margin:0 auto 19px;border-bottom:1px solid #5987a85c}.tabs button{border:0;background:none;padding:12px 18px 16px;color:#96abc8;position:relative;text-transform:uppercase;font-size:13px;font-weight:900;letter-spacing:.08em}.tabs button:hover,.tabs button[aria-selected=true]{color:#f6fbff}.tabs button[aria-selected=true]::after{content:"";position:absolute;left:10%;bottom:-2px;width:80%;height:3px;border-radius:4px;background:linear-gradient(90deg,#2eafff,#d478ff,#ff4a96);box-shadow:0 0 18px #67bcff85}.panel[hidden]{display:none!important}
+.demo-strip{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 13px}.chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 14px;border:1px solid #4777a560;background:#06192bca;color:#bed8f3;font-size:11px;font-weight:850;letter-spacing:.055em}.chip i{height:7px;width:7px;background:#51eabd;border-radius:100%;box-shadow:0 0 12px #51eabd}.chip.demo{color:#ffd99b;border-color:#d8a96265}.chip.demo i{background:#ffd074;box-shadow:0 0 12px #ffd074}
+.city-frame{border:1px solid rgba(97,162,239,.29);background:radial-gradient(ellipse at 50% 48%,rgba(17,61,112,.35),transparent 67%),linear-gradient(155deg,rgba(7,20,45,.87),rgba(2,10,23,.98));border-radius:27px;min-height:790px;box-shadow:inset 0 0 80px #03081393,0 32px 80px #0006;position:relative;isolation:isolate;overflow:hidden;padding:22px 22px 18px}
+.city-frame:before{content:"";pointer-events:none;position:absolute;inset:0;background:radial-gradient(circle at 9% 61%,#1b88cd21,transparent 31%),radial-gradient(circle at 88% 44%,#e92c8023,transparent 30%)}
+.frame-heading{position:relative;z-index:4;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 6px -5px}
+.frame-heading strong{display:block;font-size:12px;font-weight:1000;letter-spacing:.18em}.frame-heading small{display:block;margin-top:6px;color:#87aac6;font-size:10px;font-weight:850;letter-spacing:.16em}.frame-side{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:900;color:#7cecd6;letter-spacing:.09em}.radar-dot{width:9px;height:9px;background:#67edc3;box-shadow:0 0 13px #43f8d9;border-radius:50%;animation:blinker 1.4s ease-in-out infinite alternate}
+.map-viewport{position:relative;z-index:1;max-width:1350px;margin:0 auto;height:630px;display:grid;place-items:center;overflow:hidden}
+.map-viewport::before{content:"";position:absolute;left:13%;right:13%;bottom:9%;height:21%;border-radius:50%;filter:blur(26px);background:#030814b5;pointer-events:none}
+#cityCanvas{display:block;position:relative;z-index:2;width:100%;height:100%;max-width:1350px;object-fit:contain;filter:drop-shadow(0 12px 22px rgba(0,0,0,.22));touch-action:pan-y}
+.map-corner{position:absolute;z-index:3;pointer-events:none;padding:11px 14px;border:1px solid #3574a866;border-radius:13px;background:#071b35ac;backdrop-filter:blur(9px);box-shadow:0 10px 23px #0006}.map-corner.top-left{top:20px;left:20px}.map-corner.top-right{top:20px;right:20px;text-align:right}.map-corner strong{display:block;font-size:12px;font-weight:950;letter-spacing:.13em}.map-corner small{display:block;margin-top:3px;font-size:10px;color:#89aeca;letter-spacing:.06em}
+.map-corner.top-right strong{color:#84d6ff}
+.action-line{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:-15px 0 8px;position:relative;z-index:5}
+.spin{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:220px;min-height:60px;border:1px solid #9addffbc;border-radius:15px;padding:14px 28px;background:linear-gradient(105deg,#61e0ff,#5ba9ff 47%,#b48aff 100%);box-shadow:0 12px 33px #1479f84d,0 0 0 3px #0f38718a;color:#041c34;font-size:17px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;transition:transform .2s,filter .2s}.spin:not(:disabled):hover{transform:translateY(-3px);filter:brightness(1.12)}.spin:disabled{opacity:.64}.reset{display:inline-flex;align-items:center;justify-content:center;min-height:52px;border:1px solid #487da4b0;border-radius:13px;padding:12px 20px;background:#103250ac;color:#e0f1ff;font-weight:850}.reset:disabled{opacity:.45}.reset:not(:disabled):hover{background:#205075b8}
+#spinStatus{position:relative;z-index:3;min-height:23px;text-align:center;color:#a8cce3;font-size:12px;font-weight:750;margin:14px 0 9px}
+.prize-ribbon{position:relative;z-index:3;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:7px auto 0;max-width:1130px}.prize-tag{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid #4876a05a;background:#091c35b7;border-radius:999px;font-size:11px;font-weight:850;color:#c9e5fa}.prize-tag i{display:inline-block;height:8px;width:8px;border-radius:3px;background:var(--dot-color);box-shadow:0 0 10px var(--dot-color)}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:18px 0 40px}.rule{border:1px solid rgba(99,154,220,.22);background:linear-gradient(135deg,#0a2035ca,#071727d9);border-radius:19px;padding:21px 24px}.rule h2{font-size:13px;font-weight:1000;color:#9bd8ff;letter-spacing:.13em;margin:0 0 12px}.rule p{margin:0;color:#9fbad3;font-size:13px;line-height:1.8}.rule strong{color:#e0f6ff}
+.contests{max-width:1020px;min-height:470px;margin:0 auto 50px;display:grid;place-content:center;text-align:center;border:1px solid #4777a561;border-radius:26px;background:radial-gradient(ellipse at 50% 10%,#2a3b7342,transparent 70%),#071529cc;box-shadow:0 25px 55px #0004;padding:40px}.contests .icon{font-size:66px}.contests h2{font-size:33px;margin:19px 0 8px}.contests p{color:#a4bdd4;font-size:14px;line-height:1.75;max-width:530px;margin:auto}
+.footer{position:relative;z-index:2;border-top:1px solid #284863;background:#06121ee5;padding:33px 0;color:#a7c1d5}.footinner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}.footinner p{margin:0;font-size:12px}.links{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:12px 20px}.links a{font-size:11px;color:#a7c1d5}.links a:hover{color:white;text-decoration:underline}
+.result-layer[hidden]{display:none!important}.result-layer{position:fixed;inset:0;z-index:350;background:#020915dc;backdrop-filter:blur(15px);display:grid;place-items:center;padding:20px;animation:reveal .28s ease-out}.result-card{position:relative;width:min(500px,100%);padding:34px 31px 28px;text-align:center;border:1px solid #68c7ff8f;border-radius:26px;background:radial-gradient(ellipse at 50% 0,#163c67b8,transparent 55%),linear-gradient(145deg,#0b213d,#071526 57%,#221638);box-shadow:0 25px 80px #000b,0 0 64px #3da5ff35;overflow:hidden}.result-kicker{font-size:11px;color:#85d5ff;letter-spacing:.19em;font-weight:1000;text-transform:uppercase}.result-symbol{display:grid;place-items:center;height:128px;width:128px;border-radius:28px;margin:24px auto 15px;font-size:64px;background:radial-gradient(circle at 35% 22%,#ffffff40,transparent 29%),linear-gradient(145deg,color-mix(in srgb,var(--winner-color),#ffffff 22%),#122747 74%);border:1px solid #d0f6ff66;box-shadow:inset 0 0 25px #ffffff25,0 0 55px var(--winner-color)}.result-card h2{font-size:34px;margin:10px 0 12px;font-weight:1000;line-height:1.1}.result-card p{font-size:13px;color:#b4c9e0;line-height:1.7;margin:0 0 23px}.result-close{width:100%;border-radius:12px;padding:14px;border:1px solid #79c5ff80;background:linear-gradient(95deg,#184a86,#375c9a);color:white;font-weight:950}.result-close:hover{filter:brightness(1.1)}.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.confetti b{position:absolute;top:-20px;width:7px;height:16px;border-radius:3px;animation:confetti 3.2s linear forwards}
+@keyframes ambient{to{transform:translate(2%,-2%) scale(1.04)}}@keyframes blinker{to{opacity:.22}}@keyframes reveal{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}@keyframes confetti{to{transform:translateY(590px) rotate(960deg);opacity:0}}
+@media(max-width:1100px){.city-frame{min-height:720px}.map-viewport{height:550px}.map-corner{padding:8px 11px}.frame-heading{margin-bottom:2px}}
+@media(max-width:750px){.shell{width:calc(100% - 24px)}.city-frame{padding:12px 8px;min-height:600px;border-radius:20px}.map-viewport{height:435px}.rules{grid-template-columns:1fr}.map-corner{position:relative;top:auto!important;left:auto!important;right:auto!important;display:inline-block;margin:3px}.map-corner strong{font-size:10px}.map-corner small{font-size:9px}.map-viewport{display:flex;flex-direction:column;justify-content:center}.map-viewport:before{display:none}#cityCanvas{height:auto}.action-line{margin-top:8px}.frame-heading strong{font-size:10px}.frame-heading small{font-size:8px}.topin{gap:10px}.brand img{width:36px;height:40px}.brand strong{font-size:12px}}
+@media(max-width:540px){header.top{height:74px}.eyebrow{margin-top:24px}.eyebrow:before,.eyebrow:after{width:23px}.intro{font-size:10px;letter-spacing:.055em}.title{font-size:clamp(42px,12vw,67px)}.tabs{gap:8px}.tabs button{font-size:12px;padding:11px 12px 15px}.city-frame{min-height:0}.map-viewport{height:388px;display:block;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;scrollbar-color:#3d7bae66 transparent}.map-viewport::-webkit-scrollbar{height:4px}.map-viewport::-webkit-scrollbar-thumb{background:#3d7bae66;border-radius:4px}#cityCanvas{display:block;width:720px!important;min-width:720px;max-width:none;height:390px;object-fit:contain}.map-corner{display:none}.spin{min-width:180px;min-height:55px;font-size:14px}.reset{min-height:50px;font-size:12px}.prize-tag{padding:7px 9px;font-size:10px}.rule{padding:18px}.footinner,.links{justify-content:center;text-align:center}}
+@media(prefers-reduced-motion:reduce){.sky:after,.radar-dot{animation:none}.spin{transition:none}.confetti b{animation-duration:.01s}}
 </style>
 </head>
 <body>
@@ -91,209 +58,257 @@ footer.footer{position:relative;z-index:1;background:#06121eea;border-top:1px so
 <main class="shell">
   <div class="eyebrow">POLICE DEPARTMENT · REWARDS</div>
   <h1 class="title">ЗОНА <span>БОНУСОВ</span></h1>
-  <p class="intro">Испытай удачу · Последний шар решает всё</p>
+  <p class="intro">Три города · Один маршрут · Один приз</p>
   <div class="tabs" role="tablist" aria-label="Разделы бонусов">
     <button role="tab" type="button" id="tab-roulette" aria-controls="panel-roulette" aria-selected="true">✦ Рулетка</button>
     <button role="tab" type="button" id="tab-contests" aria-controls="panel-contests" aria-selected="false">♛ Конкурсы</button>
   </div>
-  <section class="panel roulette-content" id="panel-roulette" role="tabpanel" aria-labelledby="tab-roulette">
-    <div class="info-line"><span class="pill"><i class="dot"></i> БИЛЬЯРДНАЯ РУЛЕТКА · 12 ШАРОВ</span><span class="pill demo"><i class="dot"></i> ДЕМО-РЕЖИМ</span></div>
-    <div class="arena">
-      <div class="arena-name">WORLD SCRIPT · BONUS POOL<strong>ПОСЛЕДНИЙ ШАР — ТВОЙ ПРИЗ</strong></div>
-      <div class="table-area">
-        <div class="table-floor"></div>
-        <div class="table-shell" aria-label="Трёхмерный бильярдный стол с призовыми шарами">
-          <div class="table-rim">
-            <div class="table-felt"><canvas id="poolCanvas" width="1050" height="500" role="img" aria-label="Анимированная рулетка с 12 призовыми шарами"></canvas></div>
-            <div class="pocket tl"></div><div class="pocket tr"></div><div class="pocket bl"></div><div class="pocket br"></div><div class="pocket tm"></div><div class="pocket bm"></div>
-            <span class="table-stamp">POLICE DEPARTMENT · BONUS CLUB</span>
-          </div>
-        </div>
-      </div>
-      <div id="spinProgress" class="progress" aria-hidden="true">ШАРЫ В ИГРЕ · <span id="ballCount">12</span></div>
-      <div class="action-line"><button type="button" class="spin" id="spinBtn"><span class="spin-icon">✦</span> КРУТИТЬ!</button><button type="button" class="reset" id="resetBtn">↺ Перемешать</button></div>
-      <p class="status-text" id="status" role="status" aria-live="polite">На столе 12 шаров. Запусти рулетку — останется только один.</p>
+  <section class="panel" id="panel-roulette" role="tabpanel" aria-labelledby="tab-roulette">
+    <div class="demo-strip"><span class="chip"><i></i> ГОРОДСКАЯ РУЛЕТКА · NIGHT SHIFT</span><span class="chip demo"><i></i> ДЕМО-РЕЖИМ · БЕЗ НАЧИСЛЕНИЙ</span></div>
+    <div class="city-frame">
+      <div class="frame-heading"><div><strong>POLICE DEPARTMENT · SAN ANDREAS</strong><small>МАРШРУТ ПАТРУЛЯ · ОПЕРАЦИЯ «ФОРТУНА»</small></div><div class="frame-side"><i class="radar-dot"></i><span>СИСТЕМА ОНЛАЙН</span></div></div>
+      <div class="map-viewport"><div class="map-corner top-left"><strong>LOS SANTOS</strong><small>СЕКТОР A-12 · ПАТРУЛЬ</small></div><div class="map-corner top-right"><strong>LIVE GPS</strong><small id="gpsText">ОЖИДАНИЕ МАРШРУТА</small></div><canvas id="cityCanvas" width="1440" height="780" role="img" aria-label="Изометрическая ночная карта города, полицейская машина и призовые точки"></canvas></div>
+      <div class="action-line"><button class="spin" id="spinBtn" type="button"><span aria-hidden="true">✦</span> КРУТИТЬ!</button><button class="reset" id="resetBtn" type="button">↺ Новый маршрут</button></div>
+      <p id="spinStatus" role="status" aria-live="polite">Машина готова к выезду. Запусти ночной патруль и узнай свой приз.</p>
+      <div class="prize-ribbon" id="prizeRibbon" aria-label="Возможные призы"></div>
     </div>
-    <div class="rules">
-      <section class="note"><h2>◈ КАК ЭТО РАБОТАЕТ</h2><p>Все призовые шары начинают движение одновременно. Они сталкиваются с бортами и друг с другом, а затем по очереди выбывают через лузы. <span class="light">Последний шар на столе — победитель.</span><br>Сейчас рулетка демонстрационная: награды не выдаются и не сохраняются на сервере.</p></section>
-      <section class="prize-list"><h2>◈ ШАРЫ И ПРИЗЫ</h2><div class="prize-chips" id="prizeChips"></div></section>
-    </div>
+    <div class="rules"><section class="rule"><h2>◈ КАК ЭТО РАБОТАЕТ</h2><p>Машина выезжает на ночные улицы, проходит через случайные перекрёстки и постепенно замедляется у одной из светящихся призовых точек. <strong>Остановка определяет награду.</strong></p></section><section class="rule"><h2>◈ ПРАВИЛА ДЕМО-РЕЖИМА</h2><p>Сейчас это визуальная мини-игра: приз выбирается случайным образом на устройстве, а автомобиль показывает его маршрут. <strong>Реальные награды не выдаются.</strong> Для их начисления потребуется серверное подтверждение и ограничение попыток.</p></section></div>
   </section>
-  <section class="panel contests" id="panel-contests" role="tabpanel" aria-labelledby="tab-contests" hidden>
-    <div class="contests-icon">🏆</div><h2>КОНКУРСЫ</h2><p>Совсем скоро здесь появятся конкурсы, задания и отдельные призовые события для сотрудников полиции.</p>
-  </section>
+  <section class="panel contests" id="panel-contests" role="tabpanel" aria-labelledby="tab-contests" hidden><div class="icon">🏆</div><h2>КОНКУРСЫ</h2><p>Позже здесь появятся конкурсы, задания и отдельные призовые события для сотрудников полиции.</p></section>
 </main>
 <footer class="footer"><div class="shell footinner"><p>© marsellex · С 2024 по настоящее время</p><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a></nav></div></footer>
-<div id="resultLayer" class="result-layer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
- <div class="result-card"><div class="confetti" id="confetti" aria-hidden="true"></div><div class="result-label">✦ ПОСЛЕДНИЙ ШАР НА СТОЛЕ ✦</div><div class="result-ball" id="resultBall" style="--winner-color:#45e3c6"><span id="resultBallText">—</span></div><h2 class="result-title" id="resultTitle">—</h2><p class="result-copy">Твоя удача определила последний шар! Это демонстрационный результат, приз пока не начисляется.</p><button class="result-close" type="button" id="resultClose">Понятно · Вернуться к столу</button></div>
-</div>
+<div id="resultLayer" class="result-layer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card"><div id="confetti" class="confetti" aria-hidden="true"></div><div class="result-kicker">✦ ОПЕРАЦИЯ «ФОРТУНА» ЗАВЕРШЕНА ✦</div><div class="result-symbol" id="resultSymbol" style="--winner-color:#53d5ff" aria-hidden="true">✦</div><h2 id="resultTitle">—</h2><p>Патруль остановился у призовой точки. Это демонстрационный результат: награда пока не начисляется.</p><button type="button" class="result-close" id="resultClose">Вернуться на карту</button></div></div>
 <script>
-(()=>{'use strict';
- const PRIZES=[
-  {name:'Транспорт',color:'#2ccdec'},{name:'Деньги',color:'#ffd166'},
-  {name:'Птица',color:'#aa81ff'},{name:'VIP',color:'#ff6cae'},
-  {name:'Кейс',color:'#42df98'},{name:'Скин',color:'#fd9660'},
-  {name:'Опыт',color:'#4c99ff'},{name:'Бонус',color:'#9aea61'},
-  {name:'Подарок',color:'#ef7ede'},{name:'Купон',color:'#f17866'},
-  {name:'Аксессуар',color:'#60c9c8'},{name:'Сюрприз',color:'#e7ad4a'}
- ];
- const canvas=document.getElementById('poolCanvas'),ctx=canvas.getContext('2d');
- const W=1050,H=500,R=28,MIN=R+6,MAXX=W-MIN,MAXY=H-MIN;
- const POCKETS=[{x:25,y:25},{x:W/2,y:14},{x:W-25,y:25},{x:25,y:H-25},{x:W/2,y:H-14},{x:W-25,y:H-25}];
- const $=id=>document.getElementById(id);
- const rand=()=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296};
- const randRange=(a,b)=>a+(b-a)*rand();
- const shuffle=items=>{const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
- $('prizeChips').replaceChildren(...PRIZES.map(item=>{const chip=document.createElement('span');chip.className='prize-chip';const d=document.createElement('i');d.style.setProperty('--ball',item.color);chip.append(d,document.createTextNode(item.name));return chip;}));
- let balls=[],phase='idle',winner=null,sequence=[],frame=0,startTime=0,previousFrame=0,elapsed=0,finishedTime=0,lastAnnouncedCount=12;
- const setStatus=s=>$('status').textContent=s;
- function prepare(){
-  phase='idle';winner=null;sequence=[];elapsed=0;finishedTime=0;
-  balls=PRIZES.map((p,i)=>{
-   // Spaced arrangement ensures no accidental initial overlaps.
-   const cols=4,c=i%cols,row=Math.floor(i/cols);
-   return {...p,id:i,x:190+c*217+(row%2?39:0)+randRange(-10,10),y:135+row*114+randRange(-9,9),vx:0,vy:0,r:R,scale:1,state:'active',target:null,fallStart:0,removed:false};
-  });
-  $('spinBtn').disabled=false;$('resetBtn').disabled=false;
-  $('spinProgress').classList.remove('active');$('ballCount').textContent=String(balls.length);
-  setStatus('На столе 12 шаров. Запусти рулетку — останется только один.');
-  draw();
- }
- function start(){
-  if(phase==='spinning'||phase==='ending')return;
-  prepare();
-  winner=balls[Math.floor(rand()*balls.length)];
-  sequence=shuffle(balls.filter(b=>b!==winner));
-  for(const b of balls){const angle=randRange(0,Math.PI*2),speed=randRange(2.8,5.6);b.vx=Math.cos(angle)*speed;b.vy=Math.sin(angle)*speed;}
-  phase='spinning';startTime=performance.now();previousFrame=startTime;
-  $('spinBtn').disabled=true;$('resetBtn').disabled=true;
-  $('spinProgress').classList.add('active');$('ballCount').textContent='12';
-  setStatus('Шары пришли в движение! Следи, какой останется последним.');
- }
- function beginFall(ball,now){
-  if(ball.state!=='active')return;
-  ball.state='sinking';ball.fallStart=now;
-  const pockets=POCKETS.slice();
-  // Prefer nearby pockets but alternate them for a lively sequence.
-  pockets.sort((a,b)=>Math.hypot(a.x-ball.x,a.y-ball.y)-Math.hypot(b.x-ball.x,b.y-ball.y));
-  ball.target=pockets[Math.floor(rand()*Math.min(3,pockets.length))];
- }
- function update(dt,now){
-  const tick=Math.min(2.3,dt/16.667);
-  if(phase==='spinning'){
-   elapsed=now-startTime;
-   if(elapsed>=1300){
-    const idx=Math.floor((elapsed-1300)/720);
-    for(let i=0;i<=Math.min(idx,sequence.length-1);i++){
-     const ball=sequence[i];if(ball.state==='active')beginFall(ball,now);
+(() => {'use strict';
+  const $=id=>document.getElementById(id),canvas=$('cityCanvas'),ctx=canvas.getContext('2d',{alpha:true});
+  if(!ctx){$('spinStatus').textContent='Твой браузер не поддерживает Canvas. Для рулетки потребуется современный браузер.';return}
+  const W=1440,H=780,ORIGIN_X=720,ORIGIN_Y=112,SX=63,SY=26.5, ELEV=1;
+  const prizes=[
+    {name:'Транспорт',icon:'🚘',color:'#54c9ff',x:2,z:2},
+    {name:'Деньги',icon:'💸',color:'#6bffa7',x:4,z:2},
+    {name:'Птица',icon:'🕊️',color:'#d2a2ff',x:6,z:2},
+    {name:'VIP',icon:'👑',color:'#ffca73',x:8,z:2},
+    {name:'Кейс',icon:'🧰',color:'#ffa16d',x:2,z:6},
+    {name:'Скин',icon:'👤',color:'#ff7caa',x:4,z:6},
+    {name:'Опыт',icon:'⚡',color:'#7babff',x:6,z:6},
+    {name:'Подарок',icon:'🎁',color:'#f87bdf',x:8,z:6},
+    {name:'Аксессуар',icon:'💎',color:'#72ffe6',x:4,z:8},
+    {name:'Сюрприз',icon:'?',color:'#e9bf6f',x:8,z:8}
+  ];
+  const nodes=[];for(let x=0;x<=10;x+=2)for(let z=0;z<=10;z+=2)nodes.push({x,z});
+  const random=()=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296};
+  const ri=n=>Math.floor(random()*n);
+  const mix=(a,b,t)=>a+(b-a)*t;
+  const ease=t=>t*t*(3-2*t);
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+  const project=(x,z,y=0)=>({x:ORIGIN_X+(x-z)*SX,y:ORIGIN_Y+(x+z)*SY-y*ELEV});
+  const poly=(points,fill,stroke=null,width=1)=>{ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);for(let i=1;i<points.length;i++)ctx.lineTo(points[i].x,points[i].y);ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.lineWidth=width;ctx.strokeStyle=stroke;ctx.stroke()}};
+  const quad=(x0,z0,x1,z1,fill)=>poly([project(x0,z0),project(x1,z0),project(x1,z1),project(x0,z1)],fill);
+  const line=(a,b,stroke,width=2)=>{ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineWidth=width;ctx.strokeStyle=stroke;ctx.stroke()};
+  const rounded=(x,y,w,h,r)=>{const t=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+t,y);ctx.arcTo(x+w,y,x+w,y+h,t);ctx.arcTo(x+w,y+h,x,y+h,t);ctx.arcTo(x,y+h,x,y,t);ctx.arcTo(x,y,x+w,y,t);ctx.closePath()};
+  const glow=(x,y,r,color)=>{const grad=ctx.createRadialGradient(x,y,1,x,y,r);grad.addColorStop(0,color);grad.addColorStop(1,'#0000');ctx.fillStyle=grad;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill()};
+  const rgb=(hex)=>{const n=parseInt(hex.slice(1),16);return [(n>>16)&255,(n>>8)&255,n&255]};
+  const rgba=(hex,a)=>{const [r,g,b]=rgb(hex);return `rgba(${r},${g},${b},${a})`};
+  const format=(n)=>String(n).padStart(2,'0');
+  let buildings=[],cars=[],phase='idle',car={x:0,z:4,heading:0},route=[],routeIndex=0,segmentAt=0,segmentSpeed=0,chosen=null,startedAt=0,last=performance.now(),frame=0,remainingMs=0,paused=false,finishedAt=0,travelled=0;
+  let lastStaticState=0;const prefersReduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function initBuildings(){
+    buildings=[];for(let x=1;x<=9;x+=2)for(let z=1;z<=9;z+=2){
+      const seed=(x*71+z*193)%31, h=39+seed*3.9+(x>=7?13:0),w=.96+(seed%4)*.07;
+      const tone=x<4?'#4fcbb5':x<7?'#60a5ff':'#ff6baf';buildings.push({x,z,w,h,tone,seed});
     }
-   }
-   if(elapsed>15000){for(const b of sequence)if(b.state!=='gone')beginFall(b,now);}
+    buildings.sort((a,b)=>(a.x+a.z)-(b.x+b.z));
   }
-  for(const b of balls){
-   if(b.state==='gone')continue;
-   if(b.state==='sinking'){
-    const dx=b.target.x-b.x,dy=b.target.y-b.y,dist=Math.hypot(dx,dy)||1;
-    b.vx=b.vx*.85+(dx/dist)*.54*tick;
-    b.vy=b.vy*.85+(dy/dist)*.54*tick;
-    const speed=Math.hypot(b.vx,b.vy);
-    const max=9;if(speed>max){b.vx=b.vx/speed*max;b.vy=b.vy/speed*max;}
-    b.x+=b.vx*tick;b.y+=b.vy*tick;
-    if(dist<43||now-b.fallStart>1900){b.scale=Math.max(.05,b.scale-.12*tick);if(b.scale<=.08){b.state='gone';b.scale=0;}}
-    continue;
-   }
-   // The final ball remains on the field and gradually settles to a central point.
-   if(phase==='ending'&&b===winner){
-    const dx=W/2-b.x,dy=H/2-b.y;
-    b.vx=b.vx*.87+dx*.003*tick;b.vy=b.vy*.87+dy*.003*tick;
-   }
-   b.x+=b.vx*tick;b.y+=b.vy*tick;
-   const f=phase==='ending'?.965:.994;
-   b.vx*=Math.pow(f,tick);b.vy*=Math.pow(f,tick);
-   if(b.x<MIN){b.x=MIN;b.vx=Math.abs(b.vx)*.91}
-   if(b.x>MAXX){b.x=MAXX;b.vx=-Math.abs(b.vx)*.91}
-   if(b.y<MIN){b.y=MIN;b.vy=Math.abs(b.vy)*.91}
-   if(b.y>MAXY){b.y=MAXY;b.vy=-Math.abs(b.vy)*.91}
+  function drawBase(){
+    glow(650,446,600,'#116bfa1d');glow(410,360,440,'#1fbfb023');glow(1050,470,440,'#ff398028');
+    const a=project(0,0),b=project(10,0),c=project(10,10),d=project(0,10);
+    poly([{x:a.x,y:a.y+22},{x:b.x,y:b.y+22},{x:c.x,y:c.y+22},{x:d.x,y:d.y+22}],'#010713d9');
+    poly([a,b,c,d],'#081a34','#5c9bdc77',3);
+    // District slabs and roads in a 3D-isometric projection.
+    for(let x=0;x<10;x+=2)for(let z=0;z<10;z+=2){
+      const col=x<4?'#123937':x<7?'#183453':'#412035';
+      quad(x+.24,z+.24,x+1.76,z+1.76,col);
+    }
+    for(let v=0;v<=10;v+=2){
+      quad(v-.25,0,v+.25,10,'#1a3047');quad(0,v-.25,10,v+.25,'#192e45');
+      if(v<=10){line(project(v,0),project(v,10),'#6eacd42b',1);line(project(0,v),project(10,v),'#6eacd42b',1)}
+    }
+    // Lane markings along north-south / east-west avenues.
+    for(let v=0;v<=10;v+=2){
+      for(let p=.55;p<10;p+=1.13){
+        line(project(v,p),project(v,p+.41),'#a7d8e46c',1.6);
+        line(project(p,v),project(p+.41,v),'#a7d8e46c',1.6);
+      }
+    }
+    // Sidewalk and corner lighting.
+    for(let x=0;x<=10;x+=2)for(let z=0;z<=10;z+=2){
+      const p=project(x,z);glow(p.x,p.y,21,'#5b9fff22');ctx.beginPath();ctx.ellipse(p.x,p.y,4.2,2.3,0,0,Math.PI*2);ctx.fillStyle='#8ccafc75';ctx.fill();
+    }
   }
-  // Ball-to-ball collisions.
-  const active=balls.filter(b=>b.state==='active');
-  for(let i=0;i<active.length;i++)for(let j=i+1;j<active.length;j++){
-   const a=active[i],b=active[j],dx=b.x-a.x,dy=b.y-a.y,d2=dx*dx+dy*dy,diam=R*2;
-   if(d2>=diam*diam)continue;
-   const d=Math.sqrt(d2)||1,nx=dx/d,ny=dy/d,over=diam-d;
-   a.x-=nx*over*.5;b.x+=nx*over*.5;a.y-=ny*over*.5;b.y+=ny*over*.5;
-   const vrel=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;
-   if(vrel<0){const jimp=-(1+.92)*vrel/2;a.vx-=jimp*nx;a.vy-=jimp*ny;b.vx+=jimp*nx;b.vy+=jimp*ny;}
+  function prism(b,now){
+    const {x,z,w,h,tone,seed}=b,s=w*.48;
+    const p0=project(x-s,z-s),p1=project(x+s,z-s),p2=project(x+s,z+s),p3=project(x-s,z+s);
+    const t0=project(x-s,z-s,h),t1=project(x+s,z-s,h),t2=project(x+s,z+s,h),t3=project(x-s,z+s,h);
+    const near=rgb(tone),front=`rgb(${Math.floor(near[0]*.19+5)},${Math.floor(near[1]*.19+10)},${Math.floor(near[2]*.19+23)})`;
+    poly([p1,p2,t2,t1],front,'#79b5ff20');poly([p2,p3,t3,t2],`rgba(${Math.floor(near[0]*.12+5)},${Math.floor(near[1]*.17+12)},${Math.floor(near[2]*.23+21)},1)`,'#79b5ff25');
+    poly([t0,t1,t2,t3],rgba(tone,.29),'#ccedff58',1.15);
+    // Window grids embedded in both street-facing walls.
+    const floors=Math.max(3,Math.floor(h/16));
+    for(let floor=1;floor<floors;floor++)for(let k=1;k<=3;k++){
+      if((floor*17+k*13+seed)%6===0)continue;
+      const fy=floor/floors,fx=k/4,pr=(u,v)=>({x:mix(u.x,v.x,fx),y:mix(u.y,v.y,fx)});
+      const frontTop=pr(t1,t2),frontBot=pr(p1,p2), sideTop=pr(t2,t3),sideBot=pr(p2,p3);
+      const fy1=mix(frontTop.y,frontBot.y,fy),fy2=mix(sideTop.y,sideBot.y,fy);
+      const lit=((floor+seed+k)%3===0),color=lit?'#93e7facc':'#4a8cb664';
+      ctx.fillStyle=color;ctx.fillRect(mix(frontTop.x,frontBot.x,fy)-1.6,fy1,3.8,4.8);
+      ctx.fillStyle=lit?'#78bfff80':'#62a5cf35';ctx.fillRect(mix(sideTop.x,sideBot.x,fy)-1.6,fy2,3,4.1);
+    }
+    if(seed%4===0){glow(t2.x,t2.y,12,rgba(tone,.38));ctx.fillStyle=tone;ctx.beginPath();ctx.arc(t2.x,t2.y,1.6,0,Math.PI*2);ctx.fill()}
   }
-  const remaining=balls.filter(b=>b.state!=='gone').length;
-  if(remaining!==lastAnnouncedCount){lastAnnouncedCount=remaining;$('ballCount').textContent=String(remaining);}
-  if(phase==='spinning'&&remaining===1&&balls.filter(b=>b.state==='active').length===1){
-   phase='ending';finishedTime=now;setStatus('Остался один шар! Он замедляется...');
+  function drawPrize(p,now){
+    const {x,z,color}=p,v=project(x,z),height=20+Math.sin(now/560+x*1.5)*4;
+    const isWinner=p===chosen && phase==='finished';
+    glow(v.x,v.y,48,rgba(color,.25));
+    ctx.beginPath();ctx.ellipse(v.x,v.y,18,9,0,0,Math.PI*2);ctx.fillStyle=rgba(color,.26);ctx.fill();ctx.strokeStyle=rgba(color,.8);ctx.lineWidth=1.5;ctx.stroke();
+    line({x:v.x,y:v.y-4},{x:v.x,y:v.y-height-19},rgba(color,.8),2);
+    const yy=v.y-height-35,s=(isWinner?15:11)+Math.sin(now/390+x)*.7;
+    glow(v.x,yy,26,rgba(color,isWinner?.46:.28));
+    ctx.save();ctx.translate(v.x,yy);ctx.rotate(Math.PI/4);ctx.fillStyle=rgba(color,.7);ctx.fillRect(-s,-s,s*2,s*2);ctx.strokeStyle='#ebf9ffbd';ctx.lineWidth=1.8;ctx.strokeRect(-s,-s,s*2,s*2);ctx.restore();
+    ctx.textAlign='center';ctx.font='1000 12px Inter,Segoe UI,Arial,sans-serif';ctx.lineWidth=4;ctx.strokeStyle='#030d20df';ctx.strokeText(p.name.toUpperCase(),v.x,yy-27);ctx.fillStyle='#f0fbff';ctx.fillText(p.name.toUpperCase(),v.x,yy-27);
   }
-  if(phase==='ending'&&winner){
-   const speed=Math.hypot(winner.vx,winner.vy);
-   if(now-finishedTime>900&&(speed<.25||now-finishedTime>2800)){
-    winner.vx=0;winner.vy=0;phase='finished';$('spinProgress').classList.remove('active');$('spinBtn').disabled=false;$('resetBtn').disabled=false;
-    setStatus('Последний шар остановился: '+winner.name+'.');showResult();
-   }
+  function drawPatrol(now){
+    const p=project(car.x,car.z,6);const siren=Math.floor(now/210)%2===0;
+    ctx.save();ctx.translate(p.x,p.y);ctx.rotate(car.heading);
+    glow(0,12,59,siren?'#248bff70':'#ff36744e');
+    // Car roof and body: 2.5D polygon, viewed from above.
+    ctx.fillStyle='#0009';ctx.beginPath();ctx.ellipse(4,14,26,13,.0,0,Math.PI*2);ctx.fill();
+    poly([{x:-20,y:-9},{x:16,y:-9},{x:24,y:-4},{x:24,y:9},{x:17,y:14},{x:-17,y:14},{x:-25,y:9},{x:-25,y:-2}], '#101e34','#d5f2ffbb',1.6);
+    poly([{x:-12,y:-11},{x:12,y:-11},{x:16,y:-3},{x:-16,y:-3}],'#92b1c6','#d2e9ff8c');
+    poly([{x:-13,y:4},{x:13,y:4},{x:17,y:11},{x:-18,y:11}],'#e2e9ef','#c4def2bb');
+    ctx.fillStyle='#28445c';ctx.fillRect(-9,-2,17,6);
+    glow(-5,-11,22,siren?'#278cffcc':'#ff2869bb');glow(7,-11,22,siren?'#ff3277cc':'#328fffc8');
+    ctx.fillStyle=siren?'#54b7ff':'#fa477c';ctx.fillRect(-9,-13,9,4);ctx.fillStyle=siren?'#fa477c':'#54b7ff';ctx.fillRect(2,-13,9,4);
+    ctx.restore();
   }
- }
- function drawBall(b){
-  if(b.state==='gone'||b.scale<=0)return;
-  const radius=R*b.scale;
-  ctx.save();ctx.translate(b.x,b.y);ctx.scale(b.scale,b.scale);
-  ctx.beginPath();ctx.ellipse(7,14,R*1.03,R*.42,-.1,0,Math.PI*2);ctx.fillStyle='#0008';ctx.fill();
-  const grad=ctx.createRadialGradient(-10,-12,2,0,0,R+5);
-  grad.addColorStop(0,'#fff9');grad.addColorStop(.13,b.color);grad.addColorStop(.57,b.color);grad.addColorStop(1,'#08131fbf');
-  ctx.beginPath();ctx.arc(0,0,R,0,Math.PI*2);ctx.fillStyle=grad;ctx.fill();
-  ctx.strokeStyle='#ffffff80';ctx.lineWidth=1.8;ctx.stroke();
-  ctx.beginPath();ctx.arc(-8,-10,10,0,Math.PI*2);ctx.fillStyle='#fff6';ctx.fill();
-  ctx.beginPath();ctx.arc(0,2,21,0,Math.PI*2);ctx.fillStyle='#03102059';ctx.fill();
-  ctx.fillStyle='#fff';ctx.font=`900 ${b.name.length>8?10:b.name.length>6?11:13}px Inter,Segoe UI,Arial`;
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.shadowColor='#00101b';ctx.shadowBlur=5;ctx.fillText(b.name,0,3,49);
-  ctx.restore();
- }
- function draw(){
-  ctx.clearRect(0,0,W,H);
-  // Felt lines and luxury billiard table markers.
-  ctx.save();ctx.globalAlpha=.14;ctx.strokeStyle='#93f6de';ctx.lineWidth=2;
-  ctx.beginPath();ctx.moveTo(W/4,15);ctx.lineTo(W/4,H-15);ctx.stroke();
-  ctx.beginPath();ctx.arc(W*.74,H/2,65,0,Math.PI*2);ctx.stroke();
-  ctx.beginPath();ctx.arc(W/4,H/2,3,0,Math.PI*2);ctx.fillStyle='#b6fff3';ctx.fill();ctx.restore();
-  for(const p of POCKETS){const g=ctx.createRadialGradient(p.x,p.y,3,p.x,p.y,32);g.addColorStop(0,'#000');g.addColorStop(.65,'#020608');g.addColorStop(1,'#02181410');ctx.beginPath();ctx.arc(p.x,p.y,32,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();}
-  for(const b of balls){if(b.state==='sinking')drawBall(b)}
-  for(const b of balls){if(b.state==='active')drawBall(b)}
-  if(phase==='finished'&&winner){ctx.save();const h=(performance.now()-finishedTime)/1000;ctx.strokeStyle='#fff8b5';ctx.lineWidth=4;ctx.shadowColor='#f6e784';ctx.shadowBlur=22;ctx.beginPath();ctx.arc(winner.x,winner.y,R+9+Math.sin(h*3)*3,0,Math.PI*2);ctx.stroke();ctx.restore();}
- }
- function loop(now){const dt=previousFrame?Math.min(60,now-previousFrame):16.7;previousFrame=now;
-  if(phase==='spinning'||phase==='ending')update(dt,now);
-  draw();frame=requestAnimationFrame(loop);
- }
- function showResult(){
-  $('resultTitle').textContent=winner.name;$('resultBallText').textContent=winner.name;
-  $('resultBall').style.setProperty('--winner-color',winner.color);
-  const confetti=$('confetti');confetti.replaceChildren();
-  for(let i=0;i<45;i++){const v=document.createElement('b');v.style.left=randRange(0,100)+'%';v.style.animationDelay=randRange(0,1.1)+'s';v.style.background=PRIZES[Math.floor(rand()*PRIZES.length)].color;v.style.transform=`rotate(${Math.round(rand()*360)}deg)`;confetti.append(v)}
-  $('resultLayer').hidden=false;$('resultClose').focus();
- }
- function closeResult(){$('resultLayer').hidden=true;$('spinBtn').focus();}
- $('spinBtn').addEventListener('click',start);
- $('resetBtn').addEventListener('click',()=>{if(phase==='spinning'||phase==='ending')return;prepare();});
- $('resultClose').addEventListener('click',closeResult);
- $('resultLayer').addEventListener('click',e=>{if(e.target===$('resultLayer'))closeResult();});
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('resultLayer').hidden)closeResult();});
- function activateTab(which){
-  const contest=which==='contests';$('tab-roulette').setAttribute('aria-selected',String(!contest));$('tab-contests').setAttribute('aria-selected',String(contest));
-  $('panel-roulette').hidden=contest;$('panel-contests').hidden=!contest;
-  if(location.hash!=='#'+which){history.replaceState(null,'','#'+which);}
- }
- $('tab-roulette').addEventListener('click',()=>activateTab('roulette'));
- $('tab-contests').addEventListener('click',()=>activateTab('contests'));
- window.addEventListener('hashchange',()=>activateTab(location.hash==='#contests'?'contests':'roulette'));
- prepare();requestAnimationFrame(loop);
- activateTab(location.hash==='#contests'?'contests':'roulette');
- window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame)});
- window.addEventListener('pageshow',()=>{cancelAnimationFrame(frame);previousFrame=performance.now();frame=requestAnimationFrame(loop)});
+  function drawRoute(){
+    if(phase==='idle'||!route.length)return;
+    const points=[{x:car.x,z:car.z},...route.slice(routeIndex+1)];if(!points.length)return;
+    ctx.beginPath();points.forEach((v,i)=>{const p=project(v.x,v.z,2);if(!i)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y)});
+    ctx.save();ctx.setLineDash([10,8]);ctx.lineDashOffset=-travelled*30;ctx.strokeStyle='#64c4ff66';ctx.lineWidth=2.5;ctx.shadowColor='#7fd3ff';ctx.shadowBlur=9;ctx.stroke();ctx.restore();
+  }
+  function drawHud(now){
+    ctx.textAlign='left';ctx.font='900 13px Inter,Segoe UI,Arial,sans-serif';ctx.fillStyle='#a4c9ec';ctx.fillText('PD // NIGHT PATROL',40,740);
+    ctx.textAlign='right';ctx.fillStyle='#8ab3d4';ctx.fillText(phase==='running'?'PATROL IN PROGRESS':'BONUS OPERATION',1400,740);
+    if(phase!=='running')return;
+    const pct=clamp(travelled/(route.length*2),0,1);
+    rounded(556,718,328,9,5);ctx.fillStyle='#ffffff20';ctx.fill();rounded(556,718,328*pct,9,5);ctx.fillStyle='#59c5ff';ctx.shadowColor='#59c5ff';ctx.shadowBlur=15;ctx.fill();ctx.shadowBlur=0;
+  }
+  function frameDraw(now){
+    ctx.clearRect(0,0,W,H);
+    drawBase();
+    // Back-to-front rendering so the extruded city has consistent depth ordering.
+    for(const b of buildings)prism(b,now);
+    drawRoute();
+    for(const p of prizes)drawPrize(p,now);
+    drawPatrol(now);drawHud(now);
+    if(phase==='idle'){ctx.textAlign='center';ctx.font='800 13px Inter,Segoe UI,Arial,sans-serif';ctx.fillStyle='#cae7ffaf';ctx.fillText('ВЫБЕРИ МАРШРУТ — КРУТИТЬ!',W/2,92)}
+  }
+  const nextNeighbors=(node)=>[{x:node.x+2,z:node.z},{x:node.x-2,z:node.z},{x:node.x,z:node.z+2},{x:node.x,z:node.z-2}].filter(n=>n.x>=0&&n.x<=10&&n.z>=0&&n.z<=10);
+  function shortest(start,end){
+    const key=n=>`${n.x}:${n.z}`,q=[start],prev=new Map([[key(start),null]]);
+    for(let i=0;i<q.length;i++){
+      const n=q[i];if(n.x===end.x&&n.z===end.z)break;
+      for(const next of nextNeighbors(n)){const k=key(next);if(prev.has(k))continue;prev.set(k,n);q.push(next)}
+    }
+    const path=[];let curr=q.find(n=>n.x===end.x&&n.z===end.z);
+    while(curr){path.unshift(curr);curr=prev.get(key(curr))}
+    return path;
+  }
+  function makeRoute(target){
+    let here={x:0,z:4},last=null;const result=[here];
+    for(let i=0;i<15+ri(5);i++){
+      let opts=nextNeighbors(here).filter(n=>!last||n.x!==last.x||n.z!==last.z);
+      if(!opts.length)opts=nextNeighbors(here);
+      const n=opts[ri(opts.length)];last=here;here=n;result.push(here);
+    }
+    const end=shortest(here,target);
+    result.push(...end.slice(1));
+    return result;
+  }
+  function reset(){
+    phase='idle';chosen=null;route=[];routeIndex=0;segmentAt=0;segmentSpeed=0;car={x:0,z:4,heading:0};travelled=0;
+    $('spinBtn').disabled=false;$('spinBtn').textContent='✦ КРУТИТЬ!';$('resetBtn').disabled=false;
+    $('spinStatus').textContent='Машина готова к выезду. Запусти ночной патруль и узнай свой приз.';$('gpsText').textContent='ОЖИДАНИЕ МАРШРУТА';
+    frameDraw(performance.now());
+  }
+  function start(){
+    if(phase==='running')return;
+    // Local demo only. Server-authoritative prize selection is necessary before real rewards are introduced.
+    chosen=prizes[ri(prizes.length)];route=makeRoute(chosen);
+    if(prefersReduced){car={x:chosen.x,z:chosen.z,heading:0};phase='finished';$('spinStatus').textContent='Маршрут завершён · '+chosen.name;$('gpsText').textContent='МАРШРУТ ЗАВЕРШЁН';$('spinBtn').disabled=false;frameDraw(performance.now());showResult();return}
+    car={x:route[0].x,z:route[0].z,heading:0};routeIndex=0;segmentAt=0;travelled=0;phase='running';startedAt=performance.now();
+    $('spinBtn').disabled=true;$('resetBtn').disabled=true;$('spinBtn').textContent='◉ ПАТРУЛЬ В ПУТИ';
+    $('spinStatus').textContent='Патруль выехал! Маршрут строится через призовые районы...';$('gpsText').textContent='СИГНАЛ ПРИНЯТ · GPS';
+  }
+  function drive(dt){
+    if(phase!=='running'||!route[routeIndex+1])return;
+    let step=clamp(dt,0,70)*.0045; // world units per frame (frame-rate independent)
+    while(step>0&&routeIndex<route.length-1){
+      const a=route[routeIndex],b=route[routeIndex+1],length=2;
+      const remaining=length-segmentAt,delta=Math.min(remaining,step);
+      segmentAt+=delta;step-=delta;travelled+=delta;
+      const t=segmentAt/length;car.x=mix(a.x,b.x,t);car.z=mix(a.z,b.z,t);
+      const pa=project(a.x,a.z),pb=project(b.x,b.z);car.heading=Math.atan2(pb.y-pa.y,pb.x-pa.x);
+      if(segmentAt>=length-1e-6){routeIndex++;segmentAt=0;car.x=b.x;car.z=b.z}
+    }
+    const pct=Math.min(1,routeIndex/(route.length-1));
+    const status=pct<.39?'Патруль пересекает ночной город...':pct<.78?'Машина приближается к призовым районам...':'Финальный поворот — камера фиксирует приз...';
+    if($('spinStatus').textContent!==status)$('spinStatus').textContent=status;
+    $('gpsText').textContent=`ПРОЙДЕНО ${Math.floor(pct*100)}%`;
+    if(routeIndex>=route.length-1){
+      phase='finished';car.x=chosen.x;car.z=chosen.z;finishedAt=performance.now();
+      $('spinStatus').textContent=`Патруль остановился. Выбран сектор «${chosen.name}»!`;
+      $('gpsText').textContent='ПРИЗ ЗАФИКСИРОВАН';$('spinBtn').disabled=false;$('resetBtn').disabled=false;$('spinBtn').textContent='✦ КРУТИТЬ СНОВА';
+    }
+  }
+  function tick(now){
+    const dt=clamp(now-last,0,90);last=now;
+    if(document.hidden){requestAnimationFrame(tick);return}
+    if(phase==='running')drive(dt);
+    if(now-frame>=33||phase==='finished'&&now-frame>=120){
+      frameDraw(now);frame=now;
+      if(window.innerWidth<=540){
+        const viewport=canvas.parentElement;
+        const viewX=project(car.x,car.z).x*canvas.getBoundingClientRect().width/W;
+        const target=clamp(viewX-viewport.clientWidth*.5,0,canvas.getBoundingClientRect().width-viewport.clientWidth);
+        if(phase==='running'||phase==='idle')viewport.scrollLeft=mix(viewport.scrollLeft,target,.13);
+      }
+    }
+    if(phase==='finished'&&finishedAt&&now-finishedAt>750){finishedAt=0;showResult()}
+    requestAnimationFrame(tick);
+  }
+  function showResult(){
+    if(!chosen)return;
+    $('resultSymbol').style.setProperty('--winner-color',chosen.color);
+    $('resultSymbol').textContent=chosen.icon;
+    $('resultTitle').textContent=chosen.name;
+    const confetti=$('confetti');confetti.replaceChildren();
+    for(let i=0;i<28;i++){const piece=document.createElement('b');piece.style.left=(random()*100)+'%';piece.style.background=['#5dd1ff','#f887d8','#ffdd8a','#68ffbc'][i%4];piece.style.animationDelay=(random()*.9)+'s';confetti.append(piece)}
+    $('resultLayer').hidden=false;$('resultClose').focus();
+  }
+  function closeResult(){$('resultLayer').hidden=true;$('spinBtn').focus()}
+  $('spinBtn').addEventListener('click',start);$('resetBtn').addEventListener('click',reset);$('resultClose').addEventListener('click',closeResult);
+  $('resultLayer').addEventListener('click',e=>{if(e.target===$('resultLayer'))closeResult()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('resultLayer').hidden)closeResult()});
+  const tabRoulette=$('tab-roulette'),tabContests=$('tab-contests');
+  function changeTab(contests){
+    if(contests&&phase==='running')return; // do not hide the moving canvas mid-trip
+    tabRoulette.setAttribute('aria-selected',String(!contests));tabContests.setAttribute('aria-selected',String(contests));
+    $('panel-roulette').hidden=contests;$('panel-contests').hidden=!contests;
+  }
+  tabRoulette.addEventListener('click',()=>changeTab(false));tabContests.addEventListener('click',()=>changeTab(true));
+  $('prizeRibbon').replaceChildren(...prizes.map(p=>{const el=document.createElement('span');el.className='prize-tag';const dot=document.createElement('i');dot.style.setProperty('--dot-color',p.color);el.append(dot,document.createTextNode(p.name));return el}));
+  initBuildings();reset();requestAnimationFrame(tick);
 })();
 </script>
 </body>
