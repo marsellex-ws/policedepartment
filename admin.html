@@ -7,8 +7,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07111e">
 <meta name="description" content="Полиция Платинума — единый портал Absolute Role Play Platinum">
-<title>Админка</title>
-  <link rel="icon" type="image/png" href="pd_photo.png?v=2">
+<title>Полиция Платинума — Единый портал</title>
 <style>
 :root{color-scheme:dark;--bg:#07111e;--panel:#10243a;--border:#284863;--text:#ecf5ff;--muted:#92acc4;--blue:#4ba7ff;--red:#f35b79;--cyan:#54d4f4;--green:#55d9af;--gold:#f2bd65;--violet:#a48bff}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 65% 32% at 52% 0%,#13385b90,transparent),linear-gradient(180deg,#07111d,#081624 62%,#050e18);color:var(--text);font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
@@ -317,19 +316,7 @@ header.header a.brand.pd-unified-brand strong{
     <form id="pdVkForm" class="pd-admin-subcard"><h4>Привязка VK</h4><label for="pdVkUrl">Ссылка на страницу</label><input type="url" id="pdVkUrl" placeholder="https://vk.com/id123456" autocomplete="url"><button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить привязку</button></form>
     </div></section>
   </div>
-  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div>
-    <section class="pd-admin-card pd-ao-entry" style="margin-top:20px" aria-labelledby="pdAoTitle">
-      <div class="pd-admin-card-head"><h3 id="pdAoTitle">Учёт активности шефов · АО</h3></div>
-      <p class="pd-hint">Выбери департамент, дату по московскому времени и количество АО за этот день. Повторное сохранение заменяет результат за выбранную дату. История сохраняется за конкретным номером аккаунта шефа.</p>
-      <form id="pdAoForm" style="display:grid;grid-template-columns:repeat(3,minmax(130px,1fr)) auto;align-items:end;gap:12px">
-        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">Департамент<select id="pdAoDepartment" required><option>LSPD</option><option>SFPD</option><option>LVPD</option></select></label>
-        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">Дата (МСК)<input type="date" id="pdAoDate" required></label>
-        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">АО за день<input id="pdAoValue" type="number" min="0" max="100000" step="1" required placeholder="Например: 15"></label>
-        <button class="pd-admin-btn pd-admin-primary" type="submit" id="pdAoSubmit">Сохранить АО</button>
-      </form>
-      <p id="pdAoStatus" role="status" aria-live="polite" style="min-height:1.5em;font-size:12px;color:#9fcbe7;margin:10px 0 0"></p>
-    </section>
-  </div>
+  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
   <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
   <section id="pdAdminRoles" class="pd-roles-layout hidden" aria-label="Выдача ролей">
     <div class="pd-admin-card pd-roles-search-card">
@@ -356,14 +343,14 @@ header.header a.brand.pd-unified-brand strong{
 <div class="shell"><section class="quick" id="services" aria-label="Разделы">
 <a class="feature" style="--accent:#fc718b" href="reestr.html"><img class="feature-bg" src="png_police_site/01_registry.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/registry.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Реестр наказаний</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#64baff" href="exams.html"><img class="feature-bg" src="png_police_site/02_exams.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/exams.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Электронные экзамены</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" target="_blank" rel="noopener noreferrer" style="--accent:#ff637e" href="https://djoniohanter.com/car_theft/"><img class="feature-bg" src="png_police_site/03_car_thefts.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/car_thefts.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Угонки</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" target="_blank" rel="noopener noreferrer" style="--accent:#b494ff" href="https://forum.gta-samp.ru/index.php?/topic/884304-police-department-%D0%B1%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9-%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA/"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" target="_blank" rel="noopener noreferrer" style="--accent:#56e2bc" href="https://forum.gta-samp.ru/index.php?/topic/887947-police-department-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8-%D0%B8-%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B2-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%D1%85/"><img class="feature-bg" src="png_police_site/05_news.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/news.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Новости и обновления</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#ff637e" href="#" data-soon="Угонки"><img class="feature-bg" src="png_police_site/03_car_thefts.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/car_thefts.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Угонки</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#b494ff" href="#" data-soon="Справочник полиции"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#56e2bc" href="#news"><img class="feature-bg" src="png_police_site/05_news.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/news.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Новости и обновления</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#f1bd67" href="leadership.html"><img class="feature-bg" src="png_police_site/06_staff.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/staff.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Руководство полиции</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ff9a64" href="chiefs.html"><img class="feature-bg" src="png_police_site/07_chief_activity.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/chief_activity.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Активность шефов</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ad8cff" href="#ratings"><img class="feature-bg" src="png_police_site/08_top_employees.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/top_employees.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Топ сотрудников</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" id="quests" style="--accent:#55ccff" href="#quests" data-soon="Квесты для старшего состава [8-10]"><img class="feature-bg" src="png_police_site/09_quests.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/quests.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Квесты для старшего состава [8-10]</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" id="drawings" style="--accent:#fa83b4" href="#drawings" data-soon="Розыгрыши"><img class="feature-bg" src="png_police_site/10_giveaways.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/giveaways.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Розыгрыши / рулетка</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" id="drawings" style="--accent:#fa83b4" href="bonuses.html"><img class="feature-bg" src="png_police_site/10_giveaways.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/giveaways.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Бонусы</strong></span><span class="arrow">↗</span></span></a>
 </section>
 <section class="dashboard">
 <div class="panel" id="staff"><div class="panel-head"><h2><img class="panel-png" src="png_police_site/staff.png" alt="" width="21" height="21"> Руководство полиции</h2><a href="leadership.html" class="panel-link">Все руководство ↗</a></div><div class="tabs" id="staffTabs"><button class="active" data-staff="watchers">Руководство</button><button data-staff="leaders">Лидеры</button></div><div class="roster" id="roster"></div></div>
@@ -435,11 +422,11 @@ document.querySelectorAll('[data-soon]').forEach(el=>el.addEventListener('click'
 document.querySelectorAll('[data-article]').forEach(el=>el.addEventListener('click',()=>toast(el.dataset.article)));
 $('bellBtn').onclick=()=>toast('Новых уведомлений нет');
 $('nav').addEventListener('click',()=> $('nav').classList.remove('open'));
-const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','https://djoniohanter.com/car_theft/'],['Справочник полиции','https://forum.gta-samp.ru/index.php?/topic/884304-police-department-%D0%B1%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9-%D1%81%D0%BF%D1%80%D0%B0%D0%B2%D0%BE%D1%87%D0%BD%D0%B8%D0%BA/'],['Новости и обновления','https://forum.gta-samp.ru/index.php?/topic/887947-police-department-%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8-%D0%B8-%D0%BE%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B2-%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0%D1%85/'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Розыгрыши','#drawings'],['Личный кабинет','https://police-department.ru/entrance.html']];
+const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Бонусы','bonuses.html'],['Личный кабинет','https://police-department.ru/entrance.html']];
 const escapeHTML=t=>t.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showSearch(){ $('searchOverlay').classList.add('open');$('globalSearch').value='';renderSearch('');setTimeout(()=>$('globalSearch').focus(),10)}
 function hideSearch(){$('searchOverlay').classList.remove('open')}
-function renderSearch(q){const items=searchable.filter(x=>x[0].toLowerCase().includes(q.trim().toLowerCase()));$('searchResults').innerHTML=items.length?items.map(([name,href])=>`<a href="${href}"${href.startsWith("https://djoniohanter.com/")||href.startsWith("https://forum.gta-samp.ru/")?' target="_blank" rel="noopener noreferrer"':''}>${escapeHTML(name)} <span>↗</span></a>`).join(''):'<p>Ничего не найдено</p>'}
+function renderSearch(q){const items=searchable.filter(x=>x[0].toLowerCase().includes(q.trim().toLowerCase()));$('searchResults').innerHTML=items.length?items.map(([name,href])=>`<a href="${href}">${escapeHTML(name)} <span>↗</span></a>`).join(''):'<p>Ничего не найдено</p>'}
 $('headerSearch').onclick=showSearch;$('globalSearch').oninput=e=>renderSearch(e.target.value);$('closeSearch').onclick=hideSearch;
 $('searchResults').onclick=e=>{if(e.target.closest('a'))hideSearch()};
 $('searchOverlay').addEventListener('click',e=>{if(e.target===$('searchOverlay'))hideSearch()});
@@ -638,40 +625,6 @@ window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
 window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
-})();
-</script>
-<style id="pdAoStyles">
-@media(max-width:940px){#pdAoForm{grid-template-columns:repeat(2,minmax(120px,1fr))!important}}
-@media(max-width:550px){#pdAoForm{grid-template-columns:1fr!important}}
-</style>
-<script id="pdAoLogic">
-(() => {'use strict';
-  const form=document.getElementById('pdAoForm');
-  if(!form)return;
-  const dateEl=document.getElementById('pdAoDate');
-  const statusEl=document.getElementById('pdAoStatus');
-  const button=document.getElementById('pdAoSubmit');
-  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-  dateEl.value=today;dateEl.max=today;
-  form.addEventListener('submit',async event=>{
-    event.preventDefault();
-    const token=window.PoliceSession?.get?.();
-    if(!token){statusEl.textContent='Сессия истекла. Войди в аккаунт заново.';return;}
-    const department=document.getElementById('pdAoDepartment').value;
-    const value=document.getElementById('pdAoValue').value.trim();
-    if(!['LSPD','SFPD','LVPD'].includes(department)||!/^\d{1,6}$/.test(value)||Number(value)>100000){statusEl.textContent='Проверь департамент и значение АО (0–100000).';return;}
-    button.disabled=true;statusEl.textContent='Сохраняем...';
-    try{
-      const res=await fetch('https://police-api-b2y4.onrender.com/api/portal/admin/chiefs/'+department+'/activity',{
-        method:'PUT',headers:{Accept:'application/json','Content-Type':'application/json',Authorization:'Bearer '+token},
-        body:JSON.stringify({date:dateEl.value,ao:Number(value)}),cache:'no-store'
-      });
-      const data=await res.json().catch(()=>({}));
-      if(!res.ok||data.ok!==true)throw new Error(data.error||'Сервер: '+res.status);
-      statusEl.textContent='Сохранено: '+department+' · '+dateEl.value+' · '+value+' АО. Рейтинг обновится при следующей загрузке.';
-    }catch(err){statusEl.textContent='Не удалось сохранить: '+(err.message||'Ошибка сети');}
-    finally{button.disabled=false;}
-  });
 })();
 </script>
 </body>
