@@ -113,7 +113,7 @@
     .card-wrap{position:relative;width:100%;max-width:410px;perspective:1600px}
     .slot.first .card-wrap{max-width:500px}
     .rank-card{
-      --accent:#62ffe3;--accent-rgb:98,255,227;--accent-soft:#4dd9b3;--scene:url('chiefs_assets/lspd-city.webp');
+      --accent:#62ffe3;--accent-rgb:98,255,227;--accent-soft:#4dd9b3;--scene:url('chiefs_assets/fone_lspd.png');
       position:relative;isolation:isolate;transform-style:preserve-3d;border-radius:32px;overflow:visible;min-height:545px;
       background:linear-gradient(180deg,rgba(4,13,32,.78),rgba(5,12,30,.98));
       border:1px solid rgba(var(--accent-rgb),.36);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), inset 0 0 42px rgba(var(--accent-rgb),.09), 0 28px 65px rgba(0,0,0,.38);
@@ -130,13 +130,13 @@
       linear-gradient(135deg, rgba(var(--accent-rgb),.32), transparent 20%, transparent 76%, rgba(var(--accent-rgb),.18)),
       linear-gradient(90deg, transparent 18%, rgba(255,255,255,.13) 48%, transparent 54%);
       background-size:100% 100%,250% 100%;background-position:0 0,120% 0;mix-blend-mode:screen;animation:cardSweep 11s linear infinite}
-    .rank-card.lspd{--accent:#53f0c4;--accent-rgb:83,240,196;--accent-soft:#35d49b;--scene:url('chiefs_assets/lspd-city.webp')}
-    .rank-card.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255;--accent-soft:#4d90f4;--scene:url('chiefs_assets/sfpd-city.webp')}
-    .rank-card.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155;--accent-soft:#e44580;--scene:url('chiefs_assets/lvpd-city.webp')}
+    .rank-card.lspd{--accent:#53f0c4;--accent-rgb:83,240,196;--accent-soft:#35d49b;--scene:url('chiefs_assets/fone_lspd.png')}
+    .rank-card.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255;--accent-soft:#4d90f4;--scene:url('chiefs_assets/fone_sfpd.png')}
+    .rank-card.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155;--accent-soft:#e44580;--scene:url('chiefs_assets/fone_lvpd.png')}
     .rank-card.top{--accent:#ffcf57;--accent-rgb:255,207,87;--accent-soft:#e8b948;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 0 48px rgba(255,207,87,.12), 0 34px 90px rgba(0,0,0,.42), 0 0 44px rgba(255,194,58,.14)}
-    .rank-card.top.lspd{--scene:url('chiefs_assets/lspd-city.webp')}
-    .rank-card.top.sfpd{--scene:url('chiefs_assets/sfpd-city.webp')}
-    .rank-card.top.lvpd{--scene:url('chiefs_assets/lvpd-city.webp')}
+    .rank-card.top.lspd{--scene:url('chiefs_assets/fone_lspd.png')}
+    .rank-card.top.sfpd{--scene:url('chiefs_assets/fone_sfpd.png')}
+    .rank-card.top.lvpd{--scene:url('chiefs_assets/fone_lvpd.png')}
     .rank-card-body{position:relative;padding:28px 24px 18px;min-height:545px;display:flex;flex-direction:column}
     .rank-card-body::before{content:"";position:absolute;left:16px;right:16px;top:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.36),transparent)}
 
@@ -368,6 +368,96 @@
       .bg::before,.scanline,.rank-card::after{animation:none!important}
       .rank-card{transition:none}
     }
+
+    /* v3: deep stage, larger semi-transparent frosted-glass podium cards. */
+    html{overflow-x:hidden}
+    .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    .hero{padding:40px 0 0}
+    .hero h1{font-size:clamp(43px,5vw,78px)}
+    .hero-actions{margin:13px auto 0}
+    .period-toggle{border-color:rgba(116,181,255,.24);background:rgba(7,20,43,.32);backdrop-filter:blur(14px)}
+    .scene-shell{max-width:1550px;min-height:790px;margin-inline:auto;padding:24px 8px 44px;background:linear-gradient(180deg,rgba(4,12,30,.08),rgba(6,14,35,.04));perspective:2600px}
+    .scene-shell::after{bottom:18px;height:160px;opacity:.75}
+    .podium-scene{max-width:1490px;grid-template-columns:1fr 1.16fr 1fr;gap:clamp(14px,2.6vw,42px);min-height:745px;padding:72px 14px 0;align-items:end;perspective:2600px;transform:translateZ(-100px)}
+    .slot.first{transform:translateY(-23px)}
+    .slot.second{transform:translateY(13px)}
+    .slot.third{transform:translateY(13px)}
+    .card-wrap{max-width:400px}
+    .slot.first .card-wrap{max-width:460px}
+    .float-shell{margin-bottom:50px;animation-duration:7.2s;filter:drop-shadow(0 28px 24px rgba(0,0,0,.22))}
+    .slot.first .float-shell{animation-duration:8.2s}
+    .slot.third .float-shell{animation-duration:7.6s}
+    .rank-card{
+      min-height:510px;transform:perspective(2600px) translateZ(-85px) rotateX(4deg) scale(.975);
+      border:1px solid rgba(207,232,255,.26);
+      background:linear-gradient(155deg,rgba(31,67,94,.31),rgba(6,19,40,.52) 53%,rgba(5,15,33,.69));
+      -webkit-backdrop-filter:blur(15px) saturate(1.35);
+      backdrop-filter:blur(15px) saturate(1.35);
+      box-shadow:inset 1px 1px 1px rgba(225,244,255,.19),inset 0 0 30px rgba(var(--accent-rgb),.13),0 35px 84px rgba(0,0,0,.4),0 0 22px rgba(var(--accent-rgb),.11);
+    }
+    .slot.first .rank-card{transform:perspective(2600px) translateZ(-100px) rotateX(3deg) scale(.97)}
+    .slot.second .rank-card{transform:perspective(2600px) translateZ(-115px) rotateY(10deg) rotateX(5deg) scale(.97)}
+    .slot.third .rank-card{transform:perspective(2600px) translateZ(-115px) rotateY(-10deg) rotateX(5deg) scale(.97)}
+    .slot.second .float-shell:hover .rank-card,.slot.second .float-shell:focus-within .rank-card{transform:perspective(2600px) translateZ(-35px) rotateY(19deg) rotateX(3deg) scale(1.015)}
+    .slot.third .float-shell:hover .rank-card,.slot.third .float-shell:focus-within .rank-card{transform:perspective(2600px) translateZ(-35px) rotateY(-19deg) rotateX(3deg) scale(1.015)}
+    .slot.first .float-shell:hover .rank-card,.slot.first .float-shell:focus-within .rank-card{transform:perspective(2600px) translateZ(-25px) rotateX(1deg) scale(1.01)}
+    .rank-card::before{z-index:0;opacity:.88;background:
+      linear-gradient(180deg,rgba(6,16,37,.13) 0%,rgba(6,16,37,.20) 30%,rgba(6,15,33,.48) 57%,rgba(4,12,29,.68) 82%,rgba(4,11,26,.76) 100%),
+      var(--scene) center 34%/cover no-repeat;
+      filter:saturate(1.2) contrast(1.035)}
+    .rank-card::after{z-index:4;opacity:.46}
+    .rank-card-body{z-index:2;min-height:510px;padding:25px 20px 18px}
+    .character-strip{height:224px}
+    .dept-watermark{top:33px;right:20px;text-shadow:0 4px 20px rgba(0,0,0,.8)}
+    .dept-watermark strong{font-size:clamp(34px,2.8vw,45px)}
+    .dept-emblem{top:118px;right:20px;width:120px;height:120px;opacity:.8}
+    .info-panel-card{
+      border:1px solid rgba(216,240,255,.22);border-top-color:rgba(240,248,255,.36);
+      background:linear-gradient(145deg,rgba(12,36,63,.55),rgba(5,18,43,.62) 60%,rgba(6,19,43,.67));
+      -webkit-backdrop-filter:blur(17px) saturate(1.28);
+      backdrop-filter:blur(17px) saturate(1.28);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 16px 40px rgba(0,0,0,.21),0 0 24px rgba(var(--accent-rgb),.1);
+      padding:18px;border-radius:21px;
+    }
+    .identity-row{gap:14px}
+    .chief-avatar{width:76px;height:76px;border:1px solid rgba(233,246,255,.45)}
+    .chief-name{font-size:clamp(21px,2.15vw,32px)}
+    .chief-id{font-size:14px}
+    .dept-pill{height:30px;font-size:11px}
+    .stat-main{margin-top:16px}
+    .stat-value{font-size:clamp(40px,3.6vw,58px)}
+    .pedestal{width:min(93%,380px);height:76px;background:linear-gradient(170deg,rgba(31,54,81,.72),rgba(9,22,50,.82) 35%,rgba(5,13,28,.93));-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+    .slot.first .pedestal{height:92px}
+    .pedestal-label:empty{display:none}
+    .slot.first .pedestal-label:empty{display:none}
+    @media(max-width:1340px){
+      .podium-scene{max-width:1200px;gap:16px;min-height:710px;transform:translateZ(-75px);padding-inline:0}
+      .card-wrap{max-width:350px}.slot.first .card-wrap{max-width:400px}
+      .rank-card,.rank-card-body{min-height:482px}.character-strip{height:194px}
+      .scene-shell{min-height:740px}
+    }
+    @media(max-width:1050px){
+      .podium-scene{max-width:780px;grid-template-columns:1fr;gap:34px;min-height:0;padding:65px 0 0;transform:none}
+      .scene-shell{min-height:unset;padding:20px 10px 30px;overflow:hidden}
+      .slot.first,.slot.second,.slot.third{transform:none}
+      .slot.first{order:0}.slot.second{order:1}.slot.third{order:2}
+      .card-wrap,.slot.first .card-wrap{max-width:470px}
+      .rank-card,.slot.first .rank-card,.slot.second .rank-card,.slot.third .rank-card{transform:none}
+      .rank-card,.rank-card-body{min-height:500px}
+      .float-shell{margin-bottom:35px}
+      .slot.second .float-shell:hover .rank-card,.slot.third .float-shell:hover .rank-card{transform:translateY(-4px) scale(1.01)}
+    }
+    @media(max-width:600px){
+      .hero{padding-top:24px}.hero h1{font-size:clamp(30px,8.3vw,47px)}
+      .rank-card,.rank-card-body{min-height:440px}.rank-card-body{padding:19px 15px 15px}
+      .character-strip{height:160px}.dept-emblem{top:102px;width:103px;height:103px}
+      .info-panel-card{padding:14px}.chief-avatar{width:62px;height:62px}
+      .chief-name{font-size:clamp(20px,6.1vw,28px)}
+      .podium-scene{padding-top:40px;gap:24px}
+      .scene-shell{padding-inline:5px}
+    }
+    @media(prefers-reduced-motion:reduce){.float-shell{animation:none!important}.rank-card{transition:none}}
+
   </style>
 </head>
 <body>
@@ -399,16 +489,10 @@
         <h1>АКТИВНОСТЬ <span>ШЕФОВ</span></h1>
       </div>
       <div class="hero-actions">
-        <div class="chip date-chip" title="Дата на вашем устройстве">
-          <div style="display:flex;align-items:center;gap:10px"><svg class="nav-icon"><use href="#ic-calendar"/></svg><div class="date-block"><small>Дата обновления</small><b id="todayLabel">—</b></div></div>
-          <div class="live-block"><span class="live-dot"></span><span id="apiStateText">онлайн</span></div>
-        </div>
         <div class="period-toggle" role="group" aria-label="Период активности">
           <button type="button" data-period="day" aria-pressed="true">Сегодня</button>
           <button type="button" data-period="week" aria-pressed="false">Неделя</button>
         </div>
-        <a class="edit-chip" id="editChiefsLink" href="admin.html#chiefs" hidden>✎ Редактировать шефов</a>
-        <button class="refresh-chip" id="refreshChiefs" type="button"><svg class="nav-icon"><use href="#ic-refresh"/></svg>Обновить</button>
       </div>
     </div>
   </section>
@@ -419,6 +503,7 @@
       <div class="background-sign center">SAN FIERRO<small>police department</small></div>
       <div class="background-sign right">LAS VENTURAS<small>police department</small></div>
 
+      <p class="sr-only" id="apiStateText" role="status" aria-live="polite"></p>
       <div class="podium-scene" id="podiumScene" aria-label="Рейтинг шефов по активности">
         <div class="slot second" data-rank-slot="2"></div>
         <div class="slot first" data-rank-slot="1"></div>
@@ -452,11 +537,9 @@
     LVPD:{title:'LVPD',label:'Las Venturas Police Department',city:'LAS VENTURAS',cls:'lvpd',accent:'#ff5a9b'}
   };
   const slots={1:document.querySelector('[data-rank-slot="1"]'),2:document.querySelector('[data-rank-slot="2"]'),3:document.querySelector('[data-rank-slot="3"]')};
-  const refreshBtn=document.getElementById('refreshChiefs');
   const toastNode=document.getElementById('toast');
   const stateText=document.getElementById('apiStateText');
   const periodButtons=[...document.querySelectorAll('[data-period]')];
-  const editChiefsLink=document.getElementById('editChiefsLink');
   let items=[],period='day',controller=null,toastTimer=0;
   const htmlEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const safeAvatar=v=>/^https:\/\//i.test(String(v||'')) ? String(v) : FALLBACK_AVATAR;
@@ -472,16 +555,16 @@
     return null;
   };
   function showToast(message){toastNode.textContent=message;toastNode.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastNode.classList.remove('visible'),4200)}
-  function status(message,okay){stateText.textContent=message;stateText.parentElement.style.color=okay?'#5af1c3':'#ffcf57';const led=stateText.previousElementSibling;led.style.background=okay?'#4deeb8':'#ffcf57';led.style.boxShadow=okay?'0 0 14px #4deeb8':'0 0 14px #ffcf57'}
+  function status(message){stateText.textContent=message;}
   function shield(){return `<svg viewBox="0 0 160 160" aria-hidden="true"><circle class="ring" cx="80" cy="80" r="70"/><circle class="ring" cx="80" cy="80" r="58"/><path class="line" d="M46 110h68M60 100 80 56l20 44M80 56v54M55 42h50M44 50c12-9 25-14 36-14 16 0 29 6 36 14M52 119c17 9 39 9 56 0M31 80h16M113 80h16"/></svg>`}
   function card(person,rank,rankReady){
     const info=DEPT[person.department];
     const value=metric(person,period);
     const isFirst=rank===1;
-    const label=rankReady?`${rank} МЕСТО`:'РЕЙТИНГ ОЖИДАЕТСЯ';
-    const badge=isFirst
-      ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>${rankReady?'1 МЕСТО':'ОЖИДАНИЕ'}</div>`
-      : `<div class="place-badge"><div class="medal">${rankReady?rank:'—'}</div></div>`;
+    const label=rankReady?`${rank} МЕСТО`:'';
+    const badge=!rankReady?'':isFirst
+      ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>1 МЕСТО</div>`
+      : `<div class="place-badge"><div class="medal">${rank}</div></div>`;
     const avatar=safeAvatar(person.avatar_url);
     const score=value===null?'—':new Intl.NumberFormat('ru-RU',{maximumFractionDigits:1}).format(value);
     return `<div class="card-wrap ${info.cls}${isFirst?' rank-one':''}"><div class="float-shell"><article class="rank-card ${info.cls}${isFirst?' top':''}" aria-label="${info.title}, ${rankReady?'место '+rank:'ожидается рейтинг'}">
@@ -517,7 +600,7 @@
     }
   }
   async function refresh(){
-    controller?.abort();const next=new AbortController();controller=next;refreshBtn.disabled=true;status('обновление...',false);
+    controller?.abort();const next=new AbortController();controller=next;status('Обновляем данные...');
     const timeout=setTimeout(()=>next.abort(),12000);
     try{
       const res=await fetch(API+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal:next.signal});
@@ -525,24 +608,16 @@
       const data=await res.json();
       if(!data||data.ok!==true||!Array.isArray(data.items))throw new Error('Неверный ответ сервера');
       if(controller!==next)return;
-      items=data.items;render();status('обновлено',true);
+      items=data.items;render();status('Данные руководства получены');
     }catch(err){
       if(controller!==next)return;
       console.warn('[Police] Chiefs refresh:',err);
-      status('нет соединения',false);showToast('Не удалось обновить руководство, попробуй ещё раз.');
-    }finally{clearTimeout(timeout);if(controller===next){controller=null;refreshBtn.disabled=false}}
+      status('Временная ошибка соединения');showToast('Не удалось получить данные руководства.');
+    }finally{clearTimeout(timeout);if(controller===next){controller=null}}
   }
-  async function showAdmin(){
-    const token=window.PoliceSession?.get?.();if(!token)return;
-    try{const response=await fetch(API+'/api/auth/me',{headers:{Authorization:'Bearer '+token,Accept:'application/json'},cache:'no-store'});
-      if(!response.ok)return;const data=await response.json();if(['developer','admin'].includes(data?.user?.role))editChiefsLink.hidden=false;
-    }catch{}
-  }
-  document.getElementById('todayLabel').textContent=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());
   periodButtons.forEach(btn=>btn.addEventListener('click',()=>{period=btn.dataset.period;periodButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render()}));
-  refreshBtn.addEventListener('click',refresh);
   window.addEventListener('pageshow',event=>{if(event.persisted)refresh()});
-  render();refresh();showAdmin();
+  render();refresh();
 })();
 </script>
 </body>
