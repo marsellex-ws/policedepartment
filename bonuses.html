@@ -78,52 +78,63 @@
 .won-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px auto 10px;max-height:240px;overflow-y:auto;padding:3px}.won-item{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #4868909a;border-radius:12px;padding:9px;background:#061b32b8}.won-item.easy{border-color:#4ddfab8c}.won-item.medium{border-color:#6bbaff8c}.won-item.hard{border-color:#ff66868c}.won-pic{width:46px;height:46px;border-radius:10px;background:#173652;display:grid;place-items:center;font-size:26px;overflow:hidden;flex-shrink:0}.won-pic img{width:100%;height:100%;object-fit:cover}.won-item b{display:block;font-size:12px}.won-item small{display:block;font-size:9px;color:#9dbddd}.won-item em{margin-left:auto;font-size:10px;color:#799ebc;font-style:normal}
 .result-glyph{display:none}.result-card{max-height:calc(100vh - 44px);overflow-y:auto}
 @media(max-width:670px){.turret-housing{width:170px;height:77px}.physical-turret{width:195px;height:166px}.turret-swivel{height:159px;bottom:25px}.turret-barrel{height:120px}.target .orb{margin-top:46px}.target .glyph img{width:56px;height:56px}.target .armor-health b{font-size:8px}.won-list{grid-template-columns:1fr}}
+
+/* Бонусы · компактный тир */
+.kicker,.subtitle,.instructions{display:none!important}
+.tabs{
+  width:min(680px,100%);gap:8px;padding:8px;margin:25px auto 22px;
+  background:linear-gradient(135deg,rgba(8,28,57,.94),rgba(9,18,39,.96));
+  border:1px solid rgba(99,176,249,.42);border-radius:20px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 12px 35px rgba(0,0,0,.35),0 0 26px rgba(45,126,243,.12);
+  overflow:hidden;
+}
+.tabs button{flex:1;padding:17px 9px;border:1px solid transparent;border-radius:13px;letter-spacing:.075em;font-size:14px;font-weight:950;color:#bdd7f5;transition:.22s ease}
+.tabs button:not(:disabled):hover{background:rgba(51,111,179,.24);color:#fff}
+.tabs button[aria-selected="true"]{color:#fff;border-color:rgba(120,203,255,.55);background:linear-gradient(115deg,#14599d,#1b438b 55%,#462778);box-shadow:0 0 20px #328fff52,inset 0 0 18px #79baff14;text-shadow:0 0 15px #9dceff7d}
+.tabs button[aria-selected="true"]::after{height:3px;bottom:3px;left:15%;width:70%;background:#90ddff}
+.tabs button:disabled{opacity:.60;cursor:not-allowed;color:#7694b5}
+.hud{display:flex;justify-content:flex-end;gap:0;margin:0 0 13px}
+.timer-panel{width:230px;min-height:88px}
+.arena-frame{padding-top:16px}
+.demo-indicators{display:flex;align-items:center;justify-content:center;gap:8px;margin:20px 0 0;color:#cde8fd;font-weight:850;font-size:16px;letter-spacing:.01em;text-transform:none}
+.demo-indicators b{color:#6ef2c6;font-weight:1000;font-size:22px;font-variant-numeric:tabular-nums;text-shadow:0 0 18px #2bc9a36b}
+/* Preserve live announcements for assistive technology without verbose onscreen strings. */
+.status-line{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.range-shield{background:linear-gradient(180deg,transparent,rgba(0,10,25,.10));}
+@media(max-width:670px){.tabs{padding:5px;gap:4px}.tabs button{font-size:12px;padding:13px 5px}.hud{justify-content:center}.timer-panel{max-width:100%;width:230px;min-height:72px}.demo-indicators{font-size:14px}}
+
 </style>
 </head>
 <body>
 <div class="wallpaper" aria-hidden="true"></div>
 <header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
 <main class="shell">
-  <div class="kicker">MINI GAME / POLICE DEPARTMENT</div>
   <h1 class="title">ТАКТИЧЕСКИЙ <span>ТИР</span></h1>
-  <p class="subtitle">Прицеливайся · Выбивай цели · Получай награды</p>
   <div class="tabs" role="tablist" aria-label="Разделы бонусов">
-    <button type="button" role="tab" id="tab-roulette" aria-controls="panel-roulette" aria-selected="true">⌖ Рулетка</button>
-    <button type="button" role="tab" id="tab-contests" aria-controls="panel-contests" aria-selected="false">★ Конкурсы</button>
+    <button type="button" role="tab" id="tab-roulette" aria-controls="panel-roulette" aria-selected="true">ТИР</button>
+    <button type="button" role="tab" id="tab-cases" aria-selected="false" aria-disabled="true" title="Кейсы — скоро" disabled>КЕЙСЫ</button>
+    <button type="button" role="tab" id="tab-contests" aria-controls="panel-contests" aria-selected="false">КОНКУРСЫ</button>
   </div>
   <section id="panel-roulette" class="tab-panel" role="tabpanel" aria-labelledby="tab-roulette">
     <div class="arena-frame">
-      <div class="frame-head"><div class="frame-label"><div class="symbol">⌖</div><div><strong>POLICE SHOOTING RANGE / 01</strong><small>ТРЕНИРОВОЧНАЯ СИМУЛЯЦИЯ • ДЕМО-РЕЖИМ</small></div></div><div class="frame-live" id="operationState">СИСТЕМА ГОТОВА</div></div>
-      <div class="hud" aria-label="Результаты и таймер">
-        <div class="hud-left">
-          <div class="hud-stat easy"><div class="stat-icon">◎</div><div class="stat-body"><small>ЛЁГКИЕ · СБИТО</small><b id="easyValue">0</b><div class="meter"><i id="easyMeter"></i></div></div></div>
-          <div class="hud-stat medium"><div class="stat-icon">⬡</div><div class="stat-body"><small>СРЕДНИЕ · СБИТО</small><b id="mediumValue">0</b><div class="meter"><i id="mediumMeter"></i></div></div></div>
-          <div class="hud-stat hard"><div class="stat-icon">✦</div><div class="stat-body"><small>СЛОЖНЫЕ · СБИТО</small><b id="hardValue">0</b><div class="meter"><i id="hardMeter"></i></div></div></div>
-        </div>
-        <div class="timer-panel"><small>ВРЕМЯ РАУНДА</small><strong id="timeLeft">30.0</strong><div class="timer-track"><i id="timeMeter"></i></div></div>
+      <div class="hud" aria-label="Таймер раунда">
+        <div class="timer-panel"><small>ВРЕМЯ РАУНДА</small><strong id="timeLeft">15.0</strong><div class="timer-track"><i id="timeMeter"></i></div></div>
       </div>
       <div class="range" id="range" aria-label="Поле для стрельбы. Наведите курсор на цель и нажмите или удерживайте кнопку мыши">
         <div class="range-wall" aria-hidden="true"></div><div class="lane-marker" aria-hidden="true"></div><div class="laser" aria-hidden="true"></div>
-        <div class="range-top"><i></i> S.W.A.T. / TARGET SIMULATION</div><div class="range-corner">LIVE FIRE • BONUS TIME</div><div class="range-bottom">⌖ НАВЕДИ ПРИЦЕЛ И НАЖМИ</div>
         <div class="targets" id="targets"></div>
         <div id="physicalTurret" class="physical-turret" aria-hidden="true"><div id="turretSwivel" class="turret-swivel"><div class="turret-barrel"><span class="turret-rail"></span><span class="turret-bore"></span><span class="turret-muzzle"></span></div><span class="turret-neck"></span></div><div class="turret-housing"><div class="turret-shield">PD <small>MK-II</small></div><i class="turret-led left"></i><i class="turret-led right"></i></div></div><div class="crosshair" id="crosshair" aria-hidden="true"><b></b></div>
-        <div class="range-shield" id="rangeShield"><div class="start-prompt"><div class="start-icon">⌖</div><h2>ТАКТИЧЕСКАЯ ОПЕРАЦИЯ</h2><p>Каждая уничтоженная цель даёт свой приз. Стреляй по летающим наградам, пробивай броню и сбивай дополнительные секунды. Удерживай левую кнопку мыши для стрельбы.</p></div></div>
+        <div class="range-shield" id="rangeShield" aria-hidden="true"></div>
       </div>
-      <div class="action-row"><button type="button" class="sub-btn" id="soundToggle" aria-pressed="true">♫ Звук: ВКЛ</button><button class="start-btn" id="startBtn" type="button">⌖ НАЧАТЬ ОПЕРАЦИЮ</button><button class="sub-btn" id="resetBtn" type="button">↺ СБРОСИТЬ</button></div>
-      <div class="demo-indicators"><span id="catalogState">ЗАГРУЗКА ПРИЗОВ…</span><span>СБИТО ПРИЗОВ: <b id="winCount">0</b></span></div>
+      <div class="action-row"><button type="button" class="sub-btn" id="soundToggle" aria-pressed="true">♫ Звук: ВКЛ</button><button class="start-btn" id="startBtn" type="button">НАЧАТЬ ТИР</button></div>
+      <div class="demo-indicators">Выбито призов: <b id="winCount">0</b></div>
       <div class="status-line" id="statusLine" role="status" aria-live="polite">Демо-режим: выигрыши не начисляются на аккаунт.</div>
-    </div>
-    <div class="instructions" aria-label="Правила игры">
-      <div class="instruction easy"><strong><i></i> ЛЁГКИЕ</strong><small>Без брони. HP устанавливается в админке. Каждый сбитый приз попадает в итоговый список наград.</small></div>
-      <div class="instruction medium"><strong><i></i> СРЕДНИЕ</strong><small>Сначала нужно снять броню, затем HP. Уничтоженная цель приносит именно тот приз, который изображён на ней.</small></div>
-      <div class="instruction hard"><strong><i></i> СЛОЖНЫЕ</strong><small>Прочные летающие цели с большим запасом HP и брони. Все параметры редактируются в админке.</small></div>
-      <div class="instruction fallback"><strong><i></i> ДОПОЛНИТЕЛЬНОЕ ВРЕМЯ</strong><small>На арене появляется движущийся таймер +5/+10 сек. Если не сбито ни одной цели — автоматически выпадает <b>случайный лёгкий приз</b>.</small></div>
     </div>
   </section>
   <section id="panel-contests" class="tab-panel contests" role="tabpanel" aria-labelledby="tab-contests" hidden><span>🏆</span><h2>КОНКУРСЫ</h2><p>Этот раздел подготовлен. Конкурсы и задания для сотрудников полиции добавим позднее.</p></section>
 </main>
 <footer class="footer"><div class="shell footinner"><p>© marsellex · С 2024 по настоящее время</p><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a></nav></div></footer>
-<div class="result-layer" id="resultLayer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card" id="resultCard"><div class="result-badge" id="resultBadge">ОПЕРАЦИЯ ЗАВЕРШЕНА</div><div class="result-glyph" id="resultGlyph">🏆</div><h2 id="resultTitle">ПОЛУЧЕН ПРИЗ</h2><p id="resultDescription"></p><div class="won-list" id="resultWins"></div><div class="result-mini"><b id="resultTier">КАТЕГОРИЯ: ЛЁГКАЯ</b><b id="resultStats">0 попаданий</b></div><button type="button" class="result-close" id="resultClose">ПОНЯТНО</button></div></div>
+<div class="result-layer" id="resultLayer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card" id="resultCard"><div class="result-badge" id="resultBadge">ТВОИ НАГРАДЫ</div><div class="result-glyph" id="resultGlyph">🏆</div><h2 id="resultTitle">ПОЛУЧЕН ПРИЗ</h2><p id="resultDescription"></p><div class="won-list" id="resultWins"></div><div class="result-mini"><b id="resultTier">КАТЕГОРИЯ: ЛЁГКАЯ</b><b id="resultStats">0 попаданий</b></div><button type="button" class="result-close" id="resultClose">ПОНЯТНО</button></div></div>
 <script>
 (()=>{'use strict';
  const $=id=>document.getElementById(id);
@@ -138,10 +149,9 @@
   {id:'local7',name:'VIP',tier:'hard',hp:25,armor:120,icon:'👑',image_url:''},
   {id:'local8',name:'Редкий кейс',tier:'hard',hp:35,armor:150,icon:'🔐',image_url:''},
   {id:'local9',name:'Эксклюзив',tier:'hard',hp:45,armor:200,icon:'💎',image_url:''}];
- const DEFAULTS={round_seconds:30,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};
+ const DEFAULTS={round_seconds:15,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};
  const CATEGORIES={easy:{name:'ЛЁГКИЕ',color:'#53f1b0'},medium:{name:'СРЕДНИЕ',color:'#63b9ff'},hard:{name:'СЛОЖНЫЕ',color:'#ff698d'}};
- const arena=$('range'),layer=$('targets'),crosshair=$('crosshair'),start=$('startBtn'),resetBtn=$('resetBtn');
- const ui={easy:$('easyValue'),medium:$('mediumValue'),hard:$('hardValue'),easyMeter:$('easyMeter'),mediumMeter:$('mediumMeter'),hardMeter:$('hardMeter')};
+ const arena=$('range'),layer=$('targets'),crosshair=$('crosshair'),start=$('startBtn');
  let settings={...DEFAULTS},catalog=FALLBACK_PRIZES,targets=[],bonus=null,mode='idle',deadline=0,lastFrame=0,lastShot=0,pressed=false;
  let aim={x:200,y:200},shotCount=0,hitCount=0,won=[],kills={easy:0,medium:0,hard:0},soundOn=true,audio=null,loaded=false;
  let maxBonusUsed=0,nextBonus=0,bonusSpawnSerial=0,lastActive=null;
@@ -167,7 +177,7 @@
  function destroySound(){tone(340,.19,'sawtooth',.034);setTimeout(()=>tone(780,.24,'triangle',.034),75)}
  function bonusSound(){tone(960,.21,'sine',.04);setTimeout(()=>tone(1380,.16,'sine',.029),110)}
  function status(msg,good=false){$('statusLine').textContent=msg;$('statusLine').classList.toggle('strong',good)}
- function updateCounters(){for(const tier of Object.keys(kills)){ui[tier].textContent=kills[tier];ui[tier+'Meter'].style.width=Math.min(100,kills[tier]*20)+'%'}$('winCount').textContent=won.length}
+ function updateCounters(){$('winCount').textContent=kills.easy+kills.medium+kills.hard}
  function hpBar(o){o.hpEl.textContent=`HP ${Math.ceil(o.hp)}/${o.maxHp}`;o.barFill.style.width=(o.hp/o.maxHp*100)+'%';o.armorEl.textContent=`БРОНЯ ${Math.ceil(o.armor)}/${o.maxArmor}`;o.armorFill.style.width=o.maxArmor?o.armor/o.maxArmor*100+'%':'0%';o.armorBar.classList.toggle('no-armor',o.maxArmor===0)}
  function choosePrize(tier){const list=catalog.filter(p=>p.tier===tier);return list.length?pick(list):null}
  function makeTarget(tier,index,position){const prize=choosePrize(tier);if(!prize)return null;
@@ -204,7 +214,7 @@
   $('turretSwivel').style.transform=`translateX(-50%) rotate(${angle}deg)`;
   crosshair.style.left=aim.x+'px';crosshair.style.top=aim.y+'px';crosshair.style.display=e.pointerType==='touch'?'none':'block';
  }
- function fire(now){if(mode!=='running'||now-lastShot<155)return;lastShot=now;shotCount++;shotSound();
+ function fire(now){if(mode!=='running'||now-lastShot<65)return;lastShot=now;shotCount++;shotSound();
   const gun=$('physicalTurret');gun.classList.remove('firing');void gun.offsetWidth;gun.classList.add('firing');setTimeout(()=>gun.classList.remove('firing'),100);
   let best=null,bestDistance=Infinity;
   for(const o of targets){if(!o.alive)continue;const rect=o.el.querySelector('.orb').getBoundingClientRect(),a=arena.getBoundingClientRect();const cx=rect.left+rect.width*.5-a.left,cy=rect.top+rect.height*.5-a.top;
@@ -213,8 +223,10 @@
       takeBonus(bonus);hitPulse(aim.x,aim.y,false);return;
   }}
   hitPulse(aim.x,aim.y,!best);if(!best)return;
-  hitCount++;const armored=best.armor>0;const damage=15;
-  if(best.armor>0){const blocked=Math.min(best.armor,damage);best.armor-=blocked;best.hp=Math.max(0,best.hp-(damage-blocked))}else best.hp=Math.max(0,best.hp-damage);
+  hitCount++;const armored=best.armor>0;
+  // Each hit removes exactly ONE point: armor first, then HP.
+  if(armored)best.armor=Math.max(0,best.armor-1);
+  else best.hp=Math.max(0,best.hp-1);
   hpBar(best);hitSound(armored);best.el.classList.remove('hit');void best.el.offsetWidth;best.el.classList.add('hit');setTimeout(()=>best.el.classList.remove('hit'),160);
   if(armored){effect(aim.x,aim.y,'#81c8ff',best.armor===0?16:4);textAt(best.x,best.y,best.armor===0?'БРОНЯ ПРОБИТА':'−БРОНЯ');if(best.armor===0)tone(190,.22,'sawtooth',.04)}else{textAt(best.x,best.y,'−HP')}
   if(best.hp>0)return;
@@ -245,30 +257,30 @@
  }
  function resetGame(){mode='idle';pressed=false;lastShot=0;shotCount=hitCount=0;won=[];kills={easy:0,medium:0,hard:0};maxBonusUsed=0;removeBonus();
   updateCounters();$('timeLeft').textContent=Number(settings.round_seconds).toFixed(1);$('timeMeter').style.width='100%';$('timeLeft').classList.remove('danger');$('rangeShield').classList.remove('hidden');$('resultLayer').hidden=true;
-  start.textContent='⌖ НАЧАТЬ ОПЕРАЦИЮ';start.disabled=false;resetBtn.disabled=false;crosshair.style.display='none';$('operationState').textContent='СИСТЕМА ГОТОВА';status('Демо: все сбитые призы сохраняются в итогах раунда, но не начисляются на аккаунт.');buildTargets();
+  start.textContent='НАЧАТЬ ТИР';start.disabled=false;crosshair.style.display='none';status('');buildTargets();
  }
  function begin(){if(mode==='running'||!catalog.length)return;resetGame();mode='running';const now=performance.now();deadline=now+Number(settings.round_seconds)*1000;nextBonus=now+Number(settings.bonus_interval)*1000;
-  start.textContent='⌖ ОПЕРАЦИЯ ИДЁТ';start.disabled=true;resetBtn.disabled=true;arena.scrollIntoView({behavior:'smooth',block:'center'});$('rangeShield').classList.add('hidden');$('operationState').textContent='ОГОНЬ ПО ЦЕЛЯМ';status('Сбивай призы, подбирай дополнительное время и успей забрать больше наград.');tone(640,.16,'triangle',.05)
+  start.textContent='ТИР ЗАПУЩЕН';start.disabled=true;arena.scrollIntoView({behavior:'smooth',block:'center'});$('rangeShield').classList.add('hidden');status('');tone(640,.16,'triangle',.05)
  }
- function finish(){if(mode!=='running')return;mode='finished';pressed=false;removeBonus();start.disabled=false;resetBtn.disabled=false;start.textContent='⌖ ИГРАТЬ СНОВА';$('operationState').textContent='ОПЕРАЦИЯ ЗАВЕРШЕНА';$('timeLeft').textContent='0.0';$('timeMeter').style.width='0%';
+ function finish(){if(mode!=='running')return;mode='finished';pressed=false;removeBonus();start.disabled=false;start.textContent='ИГРАТЬ СНОВА';$('timeLeft').textContent='0.0';$('timeMeter').style.width='0%';
   const fallback=!won.length;
-  if(fallback){const p=choosePrize('easy')||pick(FALLBACK_PRIZES.filter(x=>x.tier==='easy'));won.push({...p});kills[p.tier]=(kills[p.tier]||0)+1;updateCounters()}
+  if(fallback){const p=choosePrize('easy')||pick(FALLBACK_PRIZES.filter(x=>x.tier==='easy'));won.push({...p});updateCounters()}
   const list=$('resultWins');list.innerHTML=won.map((p,i)=>`<div class="won-item ${escapeHtml(p.tier)}"><div class="won-pic">${imageMarkup(p)}</div><div><b>${escapeHtml(p.name)}</b><small>${escapeHtml(CATEGORIES[p.tier]?.name||'ПРИЗ')}</small></div><em>#${i+1}</em></div>`).join('');
-  $('resultBadge').textContent=fallback?'ГАРАНТИРОВАННЫЙ ЛЁГКИЙ ПРИЗ':'ОПЕРАЦИЯ ЗАВЕРШЕНА';$('resultTitle').textContent=fallback?'ВЫПАЛ ПРИЗ':'ТВОИ НАГРАДЫ · '+won.length;
+  $('resultBadge').textContent=fallback?'ГАРАНТИРОВАННЫЙ ЛЁГКИЙ ПРИЗ':'ИТОГ ТИРА';$('resultTitle').textContent=fallback?'ВЫПАЛ ПРИЗ':'ТВОИ НАГРАДЫ · '+won.length;
   $('resultDescription').textContent=fallback?'Ты не уничтожил ни одной цели, поэтому получил случайный лёгкий приз. Демонстрационная награда.':'Каждая уничтоженная цель принесла свой приз. Это демо, награды пока не выдаются аккаунтам.';
   $('resultTier').textContent='ПРИЗОВ: '+won.length;$('resultStats').textContent=hitCount+' попаданий · '+shotCount+' выстрелов';
-  $('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus();status('Раунд завершён · призов: '+won.length,true);tone(970,.24,'triangle',.04)
+  $('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus();status('');tone(970,.24,'triangle',.04)
  }
  function close(){ $('resultLayer').hidden=true;start.focus() }
  async function loadCatalog(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),14000);let response;
     try{response=await fetch(API+'/api/portal/range',{signal:c.signal,cache:'no-store',headers:{Accept:'application/json'}})}finally{clearTimeout(t)}
     if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(!data.ok||!Array.isArray(data.prizes))throw Error('Неверный ответ API');
     catalog=data.prizes.filter(p=>CATEGORIES[p.tier] && p.is_enabled!==false && Number(p.hp)>=1 && Number(p.hp)<=200 && Number(p.armor)>=0 && Number(p.armor)<=200);
-    if(data.settings)settings={...DEFAULTS,...data.settings};loaded=true;$('catalogState').textContent='НАСТРОЙКИ С SUPABASE';
+    if(data.settings)settings={...DEFAULTS,...data.settings};loaded=true;
     if(mode==='idle'){resetGame();if(!catalog.length){start.disabled=true;status('В админке нет активных призов. Добавьте хотя бы один приз.',false)}}
-  }catch(err){console.warn('[Police Range] using local demo catalog',err);$('catalogState').textContent='ЛОКАЛЬНЫЙ ДЕМО-НАБОР';}
+  }catch(err){console.warn('[Police Range] using local demo catalog',err);}
  }
- start.addEventListener('click',begin);resetBtn.addEventListener('click',()=>{if(mode!=='running')resetGame()});
+ start.addEventListener('click',begin);
  $('resultClose').addEventListener('click',close);$('resultLayer').addEventListener('click',e=>{if(e.target===$('resultLayer'))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('resultLayer').hidden)close()});
  arena.addEventListener('pointermove',aimTo);arena.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')aimTo(e)});
  arena.addEventListener('pointerleave',()=>{pressed=false;crosshair.style.display='none'});
