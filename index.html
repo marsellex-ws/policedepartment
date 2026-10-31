@@ -258,6 +258,32 @@ header.header a.brand.pd-unified-brand strong{
   header.header a.brand.pd-unified-brand img{width:30px!important;height:34px!important;flex-basis:30px!important}
   header.header a.brand.pd-unified-brand strong{font-size:clamp(11px,2.7vw,13px)!important}
 }
+
+/* Registry-style section tabs: slim underline, smooth movement, no pill backgrounds. */
+.pd-admin-tabs{
+ position:relative;display:flex;align-items:stretch;gap:12px;
+ flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+ padding:0 0 6px;margin:0 0 22px;
+ border-bottom:1px solid #86c9f74a;
+}
+.pd-admin-tabs::-webkit-scrollbar{display:none}
+.pd-admin-tabs button,.pd-admin-tabs button.selected{
+ position:relative;flex:0 0 auto;min-width:0;
+ border:0;border-radius:0;background:transparent;box-shadow:none;
+ padding:11px 15px 14px;color:#90afc7;font-size:13px;font-weight:800;
+ white-space:nowrap;transition:color .23s,text-shadow .23s;
+}
+.pd-admin-tabs button.selected{color:#f4faff}
+.pd-admin-tabs button:hover,.pd-admin-tabs button:focus-visible{color:#ecfaff;text-shadow:0 0 14px #77caff66}
+.pd-admin-tabs button:focus-visible{outline:1px solid #86c9f7aa;outline-offset:-4px;border-radius:4px}
+.pd-admin-tabs .pd-admin-tab-indicator{
+ position:absolute;bottom:0;left:0;width:40px;height:3px;
+ pointer-events:none;border-radius:50px;z-index:2;
+ background:#78caff;box-shadow:0 0 13px #78caff55;
+ transition:left .26s ease,width .26s ease;
+}
+@media(max-width:650px){.pd-admin-tabs{gap:5px}.pd-admin-tabs button,.pd-admin-tabs button.selected{flex:0 0 auto;padding:10px 11px 13px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.pd-admin-tabs .pd-admin-tab-indicator{transition:none}}
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
@@ -297,10 +323,11 @@ header.header a.brand.pd-unified-brand strong{
 
 <section id="pdAdminSection" class="shell pd-admin-section hidden" aria-labelledby="pdAdminTitle">
   <div class="pd-admin-heading"><div><div class="pd-eyebrow">POLICE DEPARTMENT · ADMINISTRATION</div><h2 id="pdAdminTitle">Панель управления</h2></div><button id="pdAdminClose" class="pd-admin-btn pd-admin-ghost" type="button">← На главную</button></div>
-  <nav class="pd-admin-tabs" aria-label="Разделы админки">
-    <button type="button" class="selected" data-pd-tab="users">Пользователи</button>
-    <button type="button" data-pd-tab="chiefs">Активность шефов</button>
-    <button type="button" data-pd-tab="leadership">Руководство полиции</button>
+  <nav class="pd-admin-tabs" aria-label="Разделы админки" role="tablist">
+    <button type="button" class="selected" data-pd-tab="users" role="tab" aria-controls="pdAdminUsers" aria-selected="true">Пользователи</button>
+    <button type="button" data-pd-tab="chiefs" role="tab" aria-controls="pdAdminChiefs" aria-selected="false">Активность шефов</button>
+    <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false">Руководство полиции</button>
+    <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
   </nav>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
   <div id="pdAdminUsers" class="pd-admin-layout">
@@ -459,7 +486,7 @@ async function openAdmin(){
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  try{await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
 }
-$('pdAdminOpen').onclick=()=>{PoliceNavigation.go(user?.role==='minister'?'admin.html#roles':'admin.html')};
+$('pdAdminOpen').onclick=()=>{PoliceNavigation.go('admin.html')};
 $('pdAdminClose').onclick=()=>{PoliceNavigation.go('index.html')};
 async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
@@ -546,9 +573,29 @@ function renderLeadershipEditors(){
  ]});}).join('');
  setupEditors($('pdLeadershipEditor'),async(slot,data)=>{data.gender=data.gender||leadership.find(x=>x.slot===slot)?.gender||'male';const r=await req('/api/portal/admin/leadership/'+slot,'PUT',data);const i=leadership.findIndex(x=>x.slot===slot);if(i>=0)leadership[i]=r.item;renderLeadershipEditors();});
 }
-function setTab(tab){currentTab=tab;document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('selected',b.dataset.pdTab===tab));
- $('pdAdminUsers').classList.toggle('hidden',tab!=='users');$('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');$('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');error('')}
-document.querySelectorAll('[data-pd-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.pdTab));
+function positionTabLine(){
+ const tabs=document.querySelector('.pd-admin-tabs'),line=tabs?.querySelector('.pd-admin-tab-indicator');
+ const active=tabs?.querySelector('[data-pd-tab].selected');
+ if(!tabs||!line||!active)return;
+ const width=Math.max(26,Math.min(88,active.offsetWidth-22));
+ line.style.width=width+'px';
+ line.style.left=(active.offsetLeft+(active.offsetWidth-width)/2)+'px';
+}
+function setTab(tab){
+ if(!['users','chiefs','leadership'].includes(tab))return;
+ currentTab=tab;
+ document.querySelectorAll('[data-pd-tab]').forEach(b=>{
+   const active=b.dataset.pdTab===tab;
+   b.classList.toggle('selected',active);
+   b.setAttribute('aria-selected',String(active));
+ });
+ $('pdAdminUsers').classList.toggle('hidden',tab!=='users');
+ $('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');
+ $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
+ error('');requestAnimationFrame(positionTabLine);
+}
+document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.pdTab));
+window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
 </script>

@@ -235,6 +235,32 @@ header.header a.brand.pd-unified-brand strong{
   header.header a.brand.pd-unified-brand img{width:30px!important;height:34px!important;flex-basis:30px!important}
   header.header a.brand.pd-unified-brand strong{font-size:clamp(11px,2.7vw,13px)!important}
 }
+
+/* Registry-style section tabs: slim underline, smooth movement, no pill backgrounds. */
+.pd-admin-tabs{
+ position:relative;display:flex;align-items:stretch;gap:12px;
+ flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+ padding:0 0 6px;margin:0 0 22px;
+ border-bottom:1px solid #86c9f74a;
+}
+.pd-admin-tabs::-webkit-scrollbar{display:none}
+.pd-admin-tabs button,.pd-admin-tabs button.selected{
+ position:relative;flex:0 0 auto;min-width:0;
+ border:0;border-radius:0;background:transparent;box-shadow:none;
+ padding:11px 15px 14px;color:#90afc7;font-size:13px;font-weight:800;
+ white-space:nowrap;transition:color .23s,text-shadow .23s;
+}
+.pd-admin-tabs button.selected{color:#f4faff}
+.pd-admin-tabs button:hover,.pd-admin-tabs button:focus-visible{color:#ecfaff;text-shadow:0 0 14px #77caff66}
+.pd-admin-tabs button:focus-visible{outline:1px solid #86c9f7aa;outline-offset:-4px;border-radius:4px}
+.pd-admin-tabs .pd-admin-tab-indicator{
+ position:absolute;bottom:0;left:0;width:40px;height:3px;
+ pointer-events:none;border-radius:50px;z-index:2;
+ background:#78caff;box-shadow:0 0 13px #78caff55;
+ transition:left .26s ease,width .26s ease;
+}
+@media(max-width:650px){.pd-admin-tabs{gap:5px}.pd-admin-tabs button,.pd-admin-tabs button.selected{flex:0 0 auto;padding:10px 11px 13px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.pd-admin-tabs .pd-admin-tab-indicator{transition:none}}
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
@@ -274,11 +300,12 @@ header.header a.brand.pd-unified-brand strong{
 
 <section id="pdAdminSection" class="shell pd-admin-section hidden" aria-labelledby="pdAdminTitle">
   <div class="pd-admin-heading"><div><div class="pd-eyebrow">POLICE DEPARTMENT · ADMINISTRATION</div><h2 id="pdAdminTitle">Панель управления</h2></div><button id="pdAdminClose" class="pd-admin-btn pd-admin-ghost" type="button">← На главную</button></div>
-  <nav class="pd-admin-tabs" aria-label="Разделы админки">
-    <button type="button" class="selected" data-pd-tab="users">Пользователи</button>
-    <button type="button" data-pd-tab="chiefs">Активность шефов</button>
-    <button type="button" data-pd-tab="leadership">Руководство полиции</button>
-    <button type="button" data-pd-tab="roles">Выдача ролей</button>
+  <nav class="pd-admin-tabs" aria-label="Разделы админки" role="tablist">
+    <button type="button" class="selected" data-pd-tab="users" role="tab" aria-controls="pdAdminUsers" aria-selected="true">Пользователи</button>
+    <button type="button" data-pd-tab="chiefs" role="tab" aria-controls="pdAdminChiefs" aria-selected="false">Активность шефов</button>
+    <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false">Руководство полиции</button>
+    <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false">Выдача ролей</button>
+    <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
   </nav>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
   <div id="pdAdminUsers" class="pd-admin-layout">
@@ -440,7 +467,7 @@ const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>'
 const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT',swat_deputy_2:'Заместитель SWAT II'};
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const defaultAvatar='png_police_site/profile.png';
-let users=[],selected=null,leadership=[],chiefs=[],currentTab='users';
+let users=[],selected=null,leadership=[],chiefs=[],currentTab='users',adminUser=null;
 const error=msg=>$('pdAdminError').textContent=msg||'';
 async function req(path,method='GET',data){
  const token=PoliceSession.get();
@@ -454,11 +481,30 @@ async function req(path,method='GET',data){
 }
 function image(img,url){img.src=url||defaultAvatar;img.onerror=()=>{img.onerror=null;img.src=defaultAvatar};}
 async function openAdmin(){
- error('');$('pdAdminSection').classList.remove('hidden');$('pdProfileMenu').classList.add('hidden');
+ error('');
+ $('pdAdminSection').classList.remove('hidden');
+ $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
-  const roleOnly=location.hash==='#roles';
-  if(roleOnly){currentTab='roles';setTab('roles');return;}
-  try{if(!user){const me=await api('/api/auth/me',{auth:true});user=me.user;render();}if(user?.role==='minister'){document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('hidden',b.dataset.pdTab!=='roles'));setTab('roles');return;}await Promise.all([loadUsers(),loadChiefs(),loadLeadership()]);setTab(currentTab);}catch(e){error(e.message);if(/прав|Войдите|401|403/i.test(e.message))$('pdAdminSection').classList.add('hidden');}
+ // Render the selected panel immediately; network requests must not block tab clicks.
+ setTab(location.hash==='#roles'?'roles':currentTab);
+ try{
+   const me=await req('/api/auth/me');
+   adminUser=me.user;
+   if(!['developer','admin','minister'].includes(adminUser?.role)) throw Error('Недостаточно прав');
+   if(adminUser.role==='minister'){
+     document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('hidden',b.dataset.pdTab!=='roles'));
+     setTab('roles');
+     return;
+   }
+   document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
+   if(location.hash==='#roles') {setTab('roles');return;}
+   const results=await Promise.allSettled([loadUsers(),loadChiefs(),loadLeadership()]);
+   const failed=results.find(r=>r.status==='rejected');
+   if(failed) error('Некоторые данные не загрузились: '+failed.reason.message);
+ }catch(e){
+   error(e.message||'Ошибка загрузки админки');
+   if(/прав|Войдите|401|403/i.test(e.message||'')) $('pdAdminSection').classList.add('hidden');
+ }
 }
 $('pdAdminOpen').onclick=openAdmin;
 $('pdAdminClose').onclick=()=>{PoliceNavigation.go('index.html')};
@@ -547,9 +593,34 @@ function renderLeadershipEditors(){
  ]});}).join('');
  setupEditors($('pdLeadershipEditor'),async(slot,data)=>{data.gender=data.gender||leadership.find(x=>x.slot===slot)?.gender||'male';const r=await req('/api/portal/admin/leadership/'+slot,'PUT',data);const i=leadership.findIndex(x=>x.slot===slot);if(i>=0)leadership[i]=r.item;renderLeadershipEditors();});
 }
-function setTab(tab){if(user?.role==='minister'&&tab!=='roles')tab='roles';currentTab=tab;document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('selected',b.dataset.pdTab===tab));
- $('pdAdminUsers').classList.toggle('hidden',tab!=='users');$('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');$('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');$('pdAdminRoles').classList.toggle('hidden',tab!=='roles');error('');if(tab==='roles')window.PoliceRoleManager?.init();}
-document.querySelectorAll('[data-pd-tab]').forEach(b=>b.onclick=()=>setTab(b.dataset.pdTab));
+function positionTabLine(){
+ const tabs=document.querySelector('.pd-admin-tabs'),line=tabs?.querySelector('.pd-admin-tab-indicator');
+ const active=tabs?.querySelector('[data-pd-tab].selected');
+ if(!tabs||!line||!active)return;
+ const width=Math.max(26,Math.min(88,active.offsetWidth-22));
+ line.style.width=width+'px';
+ line.style.left=(active.offsetLeft+(active.offsetWidth-width)/2)+'px';
+}
+function setTab(tab){
+ if(adminUser?.role==='minister'&&tab!=='roles')tab='roles';
+ const allowed=['users','chiefs','leadership','roles'];if(!allowed.includes(tab))return;
+ currentTab=tab;
+ document.querySelectorAll('[data-pd-tab]').forEach(b=>{
+   const active=b.dataset.pdTab===tab;
+   b.classList.toggle('selected',active);
+   b.setAttribute('aria-selected',String(active));
+ });
+ $('pdAdminUsers').classList.toggle('hidden',tab!=='users');
+ $('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');
+ $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
+ $('pdAdminRoles').classList.toggle('hidden',tab!=='roles');
+ error('');requestAnimationFrame(positionTabLine);
+ if(tab==='roles')window.PoliceRoleManager?.init();
+}
+document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
+ b.onclick=()=>setTab(b.dataset.pdTab);
+});
+window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
 window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
