@@ -3,176 +3,258 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#040b1b">
+  <meta name="theme-color" content="#050b1c">
   <meta name="description" content="Активность шефов LSPD, SFPD и LVPD — Police Department">
   <title>Активность шефов — Police Department</title>
   <link rel="icon" href="pd_photo.png" type="image/png">
-  <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
+  <link rel="preconnect" href="https://api.police-department.ru" crossorigin>
   <link rel="preload" href="chiefs_assets/city-night.webp" as="image" type="image/webp">
-  <style>
-    :root{
-      color-scheme:dark;--text:#f2f7ff;--soft:#bccde3;--muted:#819ab9;
-      --stroke:rgba(119,177,255,.20);--blue:#3fb4ff;--pink:#ff3f9b;
-      --glass:rgba(7,17,39,.80);--bg:#040918;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;
-      background:var(--bg);overflow-x:hidden}
-    a{text-decoration:none;color:inherit}
-    button{font:inherit;color:inherit;cursor:pointer}
-    img{display:block;max-width:100%}
-    button:focus-visible,a:focus-visible{outline:2px solid #88d6ff;outline-offset:4px}
-    .frame{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-      background:linear-gradient(180deg,rgba(2,7,20,.37) 0%,rgba(2,7,20,.40) 25%,rgba(2,8,23,.79) 72%,#050b1c 99%),
-      url('chiefs_assets/city-night.webp') center 42%/cover no-repeat}
-    .frame::after{content:"";position:absolute;inset:0;opacity:.33;
-      background:radial-gradient(ellipse at 49% 55%,transparent 15%,#030714 87%),linear-gradient(110deg,#006c7c1c,transparent 50%,#c50b581f)}
-    .frame::before{content:"";position:absolute;inset:-25%;background:linear-gradient(105deg,transparent 22%,#4d9bff0d 27%,transparent 33%,transparent 64%,#ff298a0b 69%,transparent 74%);transform:translateX(-30%);animation:skyDrift 28s ease-in-out infinite alternate}
-    .grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.14;background-image:linear-gradient(#8dc1ff1b 1px,transparent 1px),linear-gradient(90deg,#8dc1ff15 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(180deg,transparent,#000 42%,#000)}
-    .glow{position:fixed;pointer-events:none;filter:blur(78px);border-radius:50%;opacity:.19;z-index:0;animation:slowFloat 12s ease-in-out infinite alternate}
-    .glow.one{width:450px;height:350px;left:-140px;top:38%;background:#187bff}
-    .glow.two{width:560px;height:450px;right:-160px;top:35%;background:#f82d80;animation-delay:-4s}
-    .wrap{width:min(1510px,calc(100% - 68px));margin-inline:auto}
-    main.wrap{position:relative;z-index:1}
-    .site-header{min-height:82px;position:sticky;top:0;z-index:100;
-      background:linear-gradient(90deg,rgba(3,12,29,.95),rgba(6,13,35,.86) 46%,rgba(4,13,30,.96)),url('reestr_shapk.png') center/cover;
-      border-bottom:1px solid rgba(110,176,250,.16);backdrop-filter:blur(18px);box-shadow:0 15px 50px #02051182}
-    .header-inner{min-height:82px;display:flex;gap:25px;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;flex-shrink:0;gap:11px;min-width:0}
-    .brand img{width:43px;height:49px;object-fit:contain;filter:drop-shadow(0 3px 16px #4bb5ff73)}
-    .brand strong{font-size:clamp(13px,1.27vw,18px);font-weight:950;letter-spacing:.025em;white-space:nowrap;color:#f0f7ff}
-    .main-nav{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0;flex:1}
-    .main-nav a{display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid transparent;border-radius:12px;
-      font-size:12px;font-weight:750;color:#9eb6d7;white-space:nowrap;transition:.25s}
-    .main-nav a:hover{color:white;background:#11345a88}
-    .main-nav a.active{color:#e7f7ff;border-color:#4aaaff59;background:linear-gradient(140deg,#184b82a3,#111f4db0);
-      box-shadow:inset 0 -2px 0 #53dfff,0 0 20px #007bff24}
-    .nav-icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-    .right-tools{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-shrink:0;margin-left:auto;min-width:0}
-    .divider{height:36px;width:1px;background:#6a9fd34b}
-    .mobile-nav{display:none}
-    .top-kicker{display:flex;align-items:center;gap:9px;justify-content:center;margin-top:33px;font-size:11px;letter-spacing:.23em;font-weight:850;color:#ff77be}
-    .top-kicker::before{content:"";width:21px;height:9px;clip-path:polygon(21% 0,67% 0,45% 100%,0 100%);background:linear-gradient(115deg,#fa2c96,#ff97c7)}
-    .headline{text-align:center;position:relative;z-index:1;margin:8px auto 0;font-size:clamp(43px,5.3vw,84px);font-weight:1000;line-height:1.08;letter-spacing:-.057em;
-      text-shadow:0 8px 35px #0009}
-    .headline span{background:linear-gradient(100deg,#e9f7ff,#55c3ff 32%,#f240ac 78%,#ff7ab5);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .subtitle{text-align:center;color:#9db8d5;letter-spacing:.23em;font-weight:700;font-size:11px;margin:12px 0 0}
-    .hero-controls{display:flex;justify-content:center;align-items:center;gap:12px;margin:20px 0 35px;flex-wrap:wrap}
-    .date-chip,.refresh-chip{border:1px solid #4778b17d;background:linear-gradient(140deg,#09234cbe,#111934d9);box-shadow:0 8px 26px #0007;
-      border-radius:12px;display:inline-flex;align-items:center;gap:9px;padding:10px 16px;color:#e6f3ff;font-size:12px;font-weight:750}
-    .date-chip svg,.refresh-chip svg{width:17px;height:17px;color:#6fc2ff}
-    .refresh-chip:hover{border-color:#8bd5ff;background:#14375f}
-    .edit-chip{border:1px solid #b752a178;background:#4420475b;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 14px;color:#ffd6ef;font-size:12px;font-weight:800;transition:.2s}
-    .edit-chip:hover{border-color:#f68ecc;background:#6a2b6375}.edit-chip[hidden]{display:none!important}
-    .refresh-chip:disabled{opacity:.6;cursor:wait}
-    .period-toggle{display:inline-flex;align-items:center;gap:3px;padding:4px;background:#081b39cc;border:1px solid #4778b171;border-radius:12px}
-    .period-toggle button{border:0;background:transparent;border-radius:8px;padding:7px 13px;color:#94b1cd;font-weight:850;font-size:11px;transition:.2s}
-    .period-toggle button[aria-pressed="true"]{color:#f3faff;background:linear-gradient(130deg,#174e82,#142b60);box-shadow:inset 0 -2px #53bdff,0 0 13px #238aff22}
-    .live-state{display:inline-flex;align-items:center;gap:7px;font-size:11px;color:#9cbbcd;max-width:100%}
-    .live-led{width:7px;height:7px;background:#4aeeb0;box-shadow:0 0 12px #4aeeb0;border-radius:50%;flex-shrink:0}
-    .live-state.off .live-led{background:#f3bd62;box-shadow:0 0 12px #f3bd62}
-    .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:stretch;margin-top:10px}
-    .chief-card{--accent:#52dbaa;--rgb:64,220,174;--scene:url('chiefs_assets/lspd-city.webp');
-      position:relative;isolation:isolate;min-width:0;min-height:516px;
-      border:1px solid rgba(var(--rgb),.70);background:linear-gradient(150deg,#0c1c30ed,#070b1ded);
-      clip-path:polygon(0 25px,25px 0,calc(100% - 26px) 0,100% 27px,100% calc(100% - 21px),calc(100% - 21px) 100%,22px 100%,0 calc(100% - 22px));
-      box-shadow:inset 0 0 25px rgba(var(--rgb),.15);transition:transform .45s cubic-bezier(.15,.7,.2,1),filter .4s;
-      animation:appearUp .75s both;overflow:hidden}
-    .chief-card:nth-child(2){animation-delay:.09s}
-    .chief-card:nth-child(3){animation-delay:.17s}
-    .chief-card:hover{transform:translateY(-9px);filter:drop-shadow(0 12px 15px rgba(var(--rgb),.17))}
-    .chief-card::before{content:"";position:absolute;inset:0;z-index:-2;background:
-      linear-gradient(180deg,rgba(3,10,23,.16) 0%,rgba(4,10,24,.35) 25%,rgba(3,10,22,.91) 52%,rgba(4,9,22,.98) 100%),
-      var(--scene) center 25%/cover;filter:saturate(1.15)}
-    .chief-card::after{content:"";position:absolute;inset:-1px;pointer-events:none;z-index:8;
-      background:linear-gradient(130deg,rgba(var(--rgb),.28),transparent 29%,transparent 73%,rgba(var(--rgb),.16)),linear-gradient(90deg,transparent 20%,rgba(255,255,255,.1) 48%,transparent 54%);
-      background-size:100% 100%,270% 100%;background-position:0 0,120% 0;mix-blend-mode:screen;opacity:.75;animation:cardShimmer 12s linear infinite}
-    .chief-card.sfpd{--accent:#42baff;--rgb:65,161,255;--scene:url('chiefs_assets/sfpd-city.webp')}
-    .chief-card.lvpd{--accent:#ff4589;--rgb:255,55,122;--scene:url('chiefs_assets/lvpd-city.webp')}
-    .chief-card::selection{background:var(--accent);color:#041125}
-    .edge-glow{pointer-events:none;position:absolute;inset:0;z-index:7;border:2px solid rgba(var(--rgb),.82);
-      clip-path:polygon(0 25px,25px 0,calc(100% - 26px) 0,100% 27px,100% calc(100% - 21px),calc(100% - 21px) 100%,22px 100%,0 calc(100% - 22px));
-      box-shadow:inset 0 0 19px rgba(var(--rgb),.31),0 0 14px rgba(var(--rgb),.26)}
-    .corner{position:absolute;top:16px;right:16px;height:22px;width:22px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);opacity:.8}
-    .card-content{position:relative;z-index:3;display:flex;flex-direction:column;min-height:516px;padding:26px 25px 23px}
-    .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-    .dept-tag{display:inline-flex;align-items:center;gap:7px;border-radius:7px;padding:7px 10px;border:1px solid rgba(var(--rgb),.42);background:rgba(var(--rgb),.13);color:var(--accent);font-size:10px;font-weight:950;letter-spacing:.15em}
-    .dept-tag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-    .tag-right{color:#d4e7f4a8;font-size:10px;letter-spacing:.14em;font-weight:800;text-transform:uppercase;margin-top:8px}
-    .emblem{margin:30px auto 16px;display:grid;place-items:center;width:100px;height:100px;border-radius:25px;
-      background:radial-gradient(ellipse at 48% 16%,rgba(var(--rgb),.21),transparent 70%),linear-gradient(145deg,rgba(12,37,58,.9),rgba(5,11,25,.85));
-      border:1px solid rgba(var(--rgb),.65);box-shadow:0 0 40px rgba(var(--rgb),.24),inset 0 0 30px rgba(var(--rgb),.14);position:relative}
-    .emblem:before{content:"";position:absolute;inset:6px;border:1px solid rgba(var(--rgb),.30);clip-path:polygon(50% 0,93% 16%,90% 77%,50% 100%,10% 77%,7% 16%)}
-    .emblem svg{width:56px;height:56px;fill:none;stroke:var(--accent);stroke-width:1.6;filter:drop-shadow(0 0 9px rgba(var(--rgb),.6))}
-    .dept-name{text-align:center;font-size:clamp(28px,2.9vw,44px);line-height:1;letter-spacing:.035em;font-weight:1000;color:#fff;text-shadow:0 3px 20px #000}
-    .dept-full{text-align:center;font-size:10px;color:#b7d0e3;margin:8px 0 27px;letter-spacing:.11em;font-weight:800}
-    .chief-person{display:flex;align-items:center;gap:14px;min-height:84px;border-top:1px solid rgba(var(--rgb),.30);padding:18px 0 12px}
-    .chief-avatar{width:67px;height:67px;flex-shrink:0;border-radius:15px;object-fit:cover;background:#102b48;border:2px solid rgba(var(--rgb),.75);box-shadow:0 6px 20px #0008,0 0 16px rgba(var(--rgb),.17)}
-    .chief-ident{min-width:0;flex:1}
-    .chief-position{color:#9eafc8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800;margin-bottom:5px}
-    .chief-nick{font-size:clamp(14px,1.25vw,20px);font-weight:900;overflow-wrap:anywhere;line-height:1.2}
-    .chief-id{font-size:12px;margin-top:6px;color:var(--accent);font-weight:800}
-    .metric{margin-top:auto;min-height:89px;display:flex;align-items:center;gap:14px;border:1px solid rgba(var(--rgb),.25);
-      border-radius:13px;background:linear-gradient(140deg,rgba(var(--rgb),.12),rgba(3,9,24,.60));padding:14px}
-    .metric-icon{display:grid;place-items:center;width:50px;height:50px;flex-shrink:0;border-radius:10px;border:1px solid rgba(var(--rgb),.25);background:#040e26a3}
-    .metric-icon svg{width:24px;height:24px;stroke:var(--accent);fill:none;stroke-width:2}
-    .metric-body{flex:1;min-width:0}
-    .metric-title{font-size:10px;letter-spacing:.065em;color:#bbd1e3;font-weight:850}
-    .metric-value{font-size:27px;font-weight:1000;line-height:1.4;color:var(--accent);white-space:nowrap}
-    .metric-value small{font-size:12px;margin-left:7px;color:#e4efff;font-weight:800}
-    .metric-hint{font-size:10px;color:#8caac0;line-height:1.25}
-    .metric-pill{display:inline-block;border-radius:20px;color:#a5bed4;background:#3046655e;padding:3px 9px;font-size:9px;font-weight:900}
-    .card-foot{display:flex;justify-content:space-between;align-items:center;margin-top:20px;gap:12px}
-    .card-foot span{font-size:10px;font-weight:850;letter-spacing:.07em;color:#99b1c8}
-    .card-foot .dots{display:flex;gap:4px;opacity:.75}
-    .card-foot .dots i{width:5px;height:5px;border-radius:1px;background:rgba(var(--rgb),.55)}
-    .stats-blocks{display:grid;grid-template-columns:.92fr 1.26fr .90fr;gap:18px;margin:29px 0 48px}
-    .info-panel{position:relative;overflow:hidden;border:1px solid #4c78b05c;border-radius:18px;
-      background:linear-gradient(145deg,rgba(7,21,46,.92),rgba(5,12,31,.87));box-shadow:0 15px 50px #0008,inset 0 1px #ffffff0c;padding:20px 22px;min-width:0}
-    .info-panel::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at top right,#52b8ff0b,transparent 61%)}
-    .panel-title{display:flex;align-items:center;gap:10px;color:#e2f0ff;font-weight:900;font-size:12px;letter-spacing:.08em;margin:0 0 17px}
-    .panel-title svg{color:#69b9ff;width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2}
-    .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-    .fact{border:1px solid #54739a45;border-radius:12px;background:#08193280;padding:14px 9px 12px;min-height:98px}
-    .fact strong{display:block;color:#f4f9ff;font-weight:1000;font-size:31px;line-height:1.15}
-    .fact small{display:block;color:#98b5cf;font-size:10px;line-height:1.35;margin-top:8px}
-    .fact strong.accent{color:#70d6ff}
-    .graph{min-height:116px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;border-top:1px solid #54739a2b}
-    .graph::before{content:"";position:absolute;inset:10px 0;opacity:.45;background:repeating-linear-gradient(0deg,transparent 0 29px,#739cc92b 30px),repeating-linear-gradient(90deg,transparent 0 61px,#739cc91c 62px)}
-    .graph .trace{position:absolute;left:4%;right:4%;top:55%;height:1px;border-top:2px dashed #5c87b94d}
-    .graph-note{position:relative;z-index:1;display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:9px;background:#07172fd9;border:1px solid #587ca854;color:#b8d1e6;text-align:center;font-size:11px}
-    .graph-note svg{width:18px;height:18px;stroke:#69b9ff;fill:none;stroke-width:2;flex-shrink:0}
-    .leader-placeholder{display:flex;gap:12px;align-items:center;min-height:115px}
-    .empty-medal{width:68px;height:68px;display:grid;place-items:center;flex-shrink:0;border:1px solid #e3b2597a;border-radius:16px;background:#b67c2913;box-shadow:inset 0 0 22px #e3b25917}
-    .empty-medal svg{width:36px;height:36px;stroke:#f9cb77;fill:none;stroke-width:1.7}
-    .leader-placeholder strong{display:block;font-size:13px;font-weight:900;margin-bottom:6px}
-    .leader-placeholder small{display:block;color:#8ba7be;font-size:11px;line-height:1.5}
-    .page-bottom{position:relative;z-index:1;border-top:1px solid #46658a54;background:#040a19be;padding:22px 0}
-    .footer-in{display:flex;justify-content:space-between;align-items:center;gap:16px;color:#8fa9c2;font-size:11px;flex-wrap:wrap}
-    .footer-in nav{display:flex;align-items:center;gap:17px;flex-wrap:wrap}
-    .footer-in a:hover{color:white}
-    .toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,15px);opacity:0;pointer-events:none;z-index:500;padding:11px 17px;white-space:normal;
-      text-align:center;max-width:calc(100% - 30px);font-size:12px;border:1px solid #759bc9;border-radius:12px;background:#0b2440;color:#f1f8ff;box-shadow:0 8px 35px #000b;transition:opacity .25s,transform .25s}
-    .toast.visible{opacity:1;transform:translate(-50%,0)}
-    @keyframes slowFloat{to{transform:translate(70px,-30px)}}
-    @keyframes skyDrift{to{transform:translateX(25%)}}
-    @keyframes cardShimmer{to{background-position:0 0,-150% 0}}
-    @keyframes appearUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
-    @media(max-width:1280px){.wrap{width:min(100% - 40px,1480px)}.main-nav a{padding:10px 9px;font-size:11px}.cards{gap:14px}.card-content{padding:22px 19px}.stats-blocks{gap:13px}}
-    @media(max-width:1060px){.header-inner{gap:13px}.main-nav{display:none}.mobile-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:4px;margin:0 0 15px;padding:0 0 8px;border-bottom:1px solid #587da13d}.mobile-nav a{padding:9px 12px;color:#adc2d7;font-size:11px;font-weight:800;border-radius:8px}.mobile-nav a.active{background:#194a7a66;color:#fff}.cards{gap:12px}.chief-card,.card-content{min-height:495px}.card-content{padding:18px 14px}.emblem{width:75px;height:75px;margin:24px auto 12px}.emblem svg{width:44px;height:44px}.chief-person{gap:9px}.chief-avatar{width:52px;height:52px}.dept-full{font-size:9px}.metric{padding:9px;gap:9px}.metric-icon{width:41px;height:41px}.stats-blocks{grid-template-columns:1fr 1fr}.info-panel:last-child{grid-column:1/-1}}
-    @media(max-width:700px){.wrap{width:calc(100% - 26px)}.header-inner{min-height:74px}.site-header{min-height:74px}.brand img{width:34px;height:38px}.brand strong{font-size:13px}.divider{display:none}.top-kicker{margin-top:25px;font-size:9px}.headline{font-size:clamp(36px,8vw,60px)}.subtitle{font-size:9px;line-height:1.7}.hero-controls{margin-bottom:27px}.cards{grid-template-columns:1fr;max-width:560px;margin:0 auto}.chief-card,.card-content{min-height:445px}.chief-card:hover{transform:none}.emblem{margin:14px auto 9px;width:70px;height:70px}.dept-full{margin-bottom:13px}.chief-person{padding:12px 0 9px}.card-content{padding:20px 21px}.stats-blocks{grid-template-columns:1fr;gap:12px;margin-top:24px}.info-panel:last-child{grid-column:auto}.info-panel{padding:18px}.footer-in{justify-content:center;text-align:center}.footer-in nav{justify-content:center}}
-    @media(max-width:380px){.brand strong{font-size:11px}.date-chip,.refresh-chip{padding:9px 10px}.card-content{padding:16px}.headline{font-size:35px}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
-  </style>
   <script src="api-fetch-retry.js"></script>
   <script src="site-session.js"></script>
   <script src="page-ready.js"></script>
   <script src="role-ui.js" defer></script>
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#060c1d;--bg2:#09132b;--text:#eef6ff;--muted:#9fb4d6;--stroke:rgba(111,164,232,.24);
+      --cyan:#53c4ff;--cyan-rgb:83,196,255;
+      --green:#53f0c4;--green-rgb:83,240,196;
+      --blue:#5f96ff;--blue-rgb:95,150,255;
+      --pink:#ff4d96;--pink-rgb:255,77,150;
+      --gold:#ffcb58;--gold-rgb:255,203,88;
+      --glass:rgba(7,17,38,.68);
+      --panel:rgba(8,20,45,.82);
+      --shadow:0 20px 60px rgba(0,0,0,.38);
+      --header-h:84px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;min-height:100vh;overflow-x:hidden;background:#040a18;color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif}
+    a{text-decoration:none;color:inherit}
+    img{display:block;max-width:100%}
+    button{font:inherit;color:inherit;cursor:pointer}
+    button:focus-visible,a:focus-visible{outline:2px solid #8cd7ff;outline-offset:3px}
+
+    .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+      background:
+        linear-gradient(180deg,rgba(4,10,24,.78) 0%,rgba(4,10,24,.55) 20%,rgba(4,10,24,.68) 55%,rgba(2,8,20,.92) 100%),
+        url('chiefs_assets/city-night.webp') center/cover no-repeat;
+    }
+    .bg::before{content:"";position:absolute;inset:-15%;background:
+        radial-gradient(circle at 18% 25%, rgba(68,147,255,.32), transparent 28%),
+        radial-gradient(circle at 80% 28%, rgba(255,60,134,.30), transparent 25%),
+        radial-gradient(circle at 52% 72%, rgba(255,184,60,.16), transparent 26%);
+      filter:blur(34px);animation:floatGlow 16s ease-in-out infinite alternate;opacity:.92}
+    .bg::after{content:"";position:absolute;inset:0;opacity:.22;background-image:
+      linear-gradient(rgba(133,180,255,.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(133,180,255,.08) 1px, transparent 1px);
+      background-size:64px 64px;mask-image:linear-gradient(180deg,transparent,#000 25%,#000 86%,transparent)}
+    .scanline{position:fixed;inset:auto 0 28px 0;height:2px;z-index:0;background:linear-gradient(90deg,transparent,#53c4ff 18%,#ff4d96 50%,#53c4ff 82%,transparent);box-shadow:0 0 16px #53c4ff99,0 0 22px #ff4d9688;animation:scan 7s linear infinite;opacity:.4;pointer-events:none}
+    .wrap{width:min(1540px,calc(100% - 54px));margin-inline:auto;position:relative;z-index:1}
+
+    .site-header{position:sticky;top:0;z-index:110;min-height:var(--header-h);border-bottom:1px solid rgba(120,181,255,.14);
+      background:linear-gradient(90deg,rgba(4,10,24,.95),rgba(7,14,34,.92) 50%,rgba(4,10,24,.96)),url('reestr_shapk.png') center/cover;
+      backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.32)}
+    .header-inner{min-height:var(--header-h);display:flex;align-items:center;gap:24px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0;flex-shrink:0}
+    .brand img{width:44px;height:50px;object-fit:contain;filter:drop-shadow(0 0 16px rgba(72,179,255,.35))}
+    .brand strong{font-size:clamp(14px,1.2vw,18px);font-weight:950;letter-spacing:.03em;white-space:nowrap}
+    .main-nav{display:flex;align-items:center;justify-content:center;gap:6px;flex:1;min-width:0}
+    .main-nav a{display:flex;align-items:center;gap:8px;padding:11px 15px;border-radius:14px;border:1px solid transparent;color:#9cb6d8;font-size:12px;font-weight:800;white-space:nowrap;transition:.25s}
+    .main-nav a:hover{color:#fff;background:rgba(17,52,90,.55)}
+    .main-nav a.active{color:#f7fbff;border-color:rgba(83,196,255,.38);background:linear-gradient(140deg,rgba(30,68,133,.86),rgba(16,32,71,.92));box-shadow:inset 0 -2px 0 #58ccff,0 0 24px rgba(41,125,255,.22)}
+    .nav-icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .right-tools{display:flex;align-items:center;justify-content:flex-end;gap:14px;flex-shrink:0}
+    .divider{width:1px;height:36px;background:rgba(112,160,215,.36)}
+    .mobile-nav{display:none}
+
+    .hero{padding:34px 0 12px;text-align:center}
+    .hero-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:start}
+    .hero-left{display:grid;justify-items:center}
+    .hero-kicker{display:flex;align-items:center;justify-content:center;gap:10px;color:#ff70b2;font-size:11px;font-weight:900;letter-spacing:.24em;text-transform:uppercase}
+    .hero-kicker::before{content:"";width:20px;height:9px;clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);background:linear-gradient(90deg,#ff3e9e,#ff7fc1)}
+    .hero h1{margin:12px 0 10px;font-size:clamp(42px,5.2vw,86px);line-height:1;font-weight:1000;letter-spacing:-.055em;text-shadow:0 10px 36px rgba(0,0,0,.38)}
+    .hero h1 span{background:linear-gradient(100deg,#f4f7ff 12%,#87cfff 39%,#4e8fff 56%,#ff49a0 88%);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero p{margin:0;color:#9cb4d4;font-size:13px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+    .hero-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .chip{display:inline-flex;align-items:center;gap:8px;border-radius:15px;padding:12px 16px;min-height:48px;border:1px solid rgba(105,152,221,.28);
+      background:linear-gradient(140deg,rgba(8,20,46,.88),rgba(10,18,42,.82));box-shadow:0 10px 30px rgba(0,0,0,.26)}
+    .chip svg{width:17px;height:17px;color:#6fc4ff;flex-shrink:0}
+    .date-chip{min-width:215px;justify-content:space-between;text-align:left}
+    .date-block b{display:block;font-size:28px;line-height:1;font-weight:950;color:#f4f8ff}
+    .date-block small{display:block;font-size:11px;color:#8ea8c8;text-transform:uppercase;letter-spacing:.16em;margin-bottom:6px}
+    .live-block{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#5af1c3;text-transform:uppercase;letter-spacing:.12em}
+    .live-dot{width:9px;height:9px;border-radius:50%;background:#4deeb8;box-shadow:0 0 14px #4deeb8}
+    .period-toggle{display:inline-flex;gap:4px;padding:4px;border-radius:15px;border:1px solid rgba(105,152,221,.28);background:rgba(7,18,41,.86)}
+    .period-toggle button{border:0;background:transparent;color:#94aecf;border-radius:11px;padding:10px 14px;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;transition:.22s}
+    .period-toggle button[aria-pressed="true"]{color:#fff;background:linear-gradient(140deg,rgba(31,72,143,.9),rgba(16,30,70,.92));box-shadow:inset 0 -2px 0 #58ccff,0 0 16px rgba(45,120,255,.18)}
+    .refresh-chip,.edit-chip{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 16px;border-radius:15px;font-size:12px;font-weight:900;letter-spacing:.06em;transition:.2s}
+    .refresh-chip{border:1px solid rgba(91,154,221,.3);background:linear-gradient(140deg,rgba(8,20,46,.88),rgba(10,18,42,.82))}
+    .refresh-chip:hover{border-color:rgba(123,208,255,.5);background:rgba(14,36,73,.92)}
+    .edit-chip{border:1px solid rgba(255,110,184,.28);background:linear-gradient(140deg,rgba(62,22,63,.52),rgba(28,11,37,.68));color:#ffd9ef}
+    .edit-chip:hover{border-color:rgba(255,140,208,.48);background:rgba(80,28,82,.7)}
+    .edit-chip[hidden]{display:none!important}
+    .refresh-chip:disabled{opacity:.65;cursor:wait}
+
+    .stage-section{padding:18px 0 4px}
+    .scene-shell{position:relative;border-radius:34px;padding:32px 22px 30px;background:linear-gradient(180deg,rgba(6,14,31,.48),rgba(5,13,31,.14));overflow:hidden;min-height:780px}
+    .scene-shell::before{content:"";position:absolute;inset:12% -3% auto -3%;height:1px;background:linear-gradient(90deg,transparent,rgba(83,196,255,.55),rgba(255,77,150,.4),transparent);filter:blur(.2px)}
+    .scene-shell::after{content:"";position:absolute;left:50%;bottom:70px;transform:translateX(-50%);width:min(1080px,85%);height:170px;background:radial-gradient(ellipse at center, rgba(0,0,0,.48) 0%, rgba(0,0,0,.08) 60%, transparent 70%);filter:blur(20px);pointer-events:none}
+    .background-sign{position:absolute;top:72px;font-weight:900;letter-spacing:.07em;text-transform:uppercase;opacity:.24;text-shadow:0 0 30px currentColor;line-height:1.05;pointer-events:none}
+    .background-sign small{display:block;font-size:18px;opacity:.72;font-weight:700;letter-spacing:.16em}
+    .background-sign.left{left:28px;color:#63ffe4;text-align:left}
+    .background-sign.center{left:50%;transform:translateX(-50%);top:108px;color:#68b8ff;text-align:center}
+    .background-sign.right{right:36px;color:#ff5ea7;text-align:right}
+    .podium-scene{position:relative;display:grid;grid-template-columns:1fr 1.24fr 1fr;gap:28px;align-items:end;padding:190px 0 0;min-height:680px}
+    .slot{position:relative;display:flex;align-items:end;justify-content:center;min-width:0}
+    .slot.first{z-index:3;transform:translateY(-14px)}
+    .slot.second{z-index:2}
+    .slot.third{z-index:2}
+    .card-wrap{position:relative;width:100%;max-width:410px;perspective:1600px}
+    .slot.first .card-wrap{max-width:500px}
+    .rank-card{
+      --accent:#62ffe3;--accent-rgb:98,255,227;--accent-soft:#4dd9b3;--scene:url('chiefs_assets/lspd-city.webp');
+      position:relative;isolation:isolate;transform-style:preserve-3d;border-radius:32px;overflow:visible;min-height:545px;
+      background:linear-gradient(180deg,rgba(4,13,32,.78),rgba(5,12,30,.98));
+      border:1px solid rgba(var(--accent-rgb),.36);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), inset 0 0 42px rgba(var(--accent-rgb),.09), 0 28px 65px rgba(0,0,0,.38);
+      transition:transform .45s cubic-bezier(.2,.75,.22,1), box-shadow .35s ease;
+    }
+    .slot.second .rank-card{transform:rotateY(17deg) rotateX(3deg) translateY(18px)}
+    .slot.first .rank-card{transform:translateZ(0) translateY(-10px) scale(1.02)}
+    .slot.third .rank-card{transform:rotateY(-17deg) rotateX(3deg) translateY(18px)}
+    .rank-card:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), inset 0 0 42px rgba(var(--accent-rgb),.14), 0 38px 78px rgba(0,0,0,.48)}
+    .rank-card::before{content:"";position:absolute;inset:0;border-radius:32px;z-index:-3;background:
+      linear-gradient(180deg,rgba(4,10,20,.18) 0%,rgba(4,10,20,.14) 28%,rgba(4,10,20,.82) 66%,rgba(3,7,17,.96) 100%),
+      var(--scene) center 22%/cover no-repeat;filter:saturate(1.12)}
+    .rank-card::after{content:"";position:absolute;inset:-1px;border-radius:32px;pointer-events:none;z-index:4;background:
+      linear-gradient(135deg, rgba(var(--accent-rgb),.32), transparent 20%, transparent 76%, rgba(var(--accent-rgb),.18)),
+      linear-gradient(90deg, transparent 18%, rgba(255,255,255,.13) 48%, transparent 54%);
+      background-size:100% 100%,250% 100%;background-position:0 0,120% 0;mix-blend-mode:screen;animation:cardSweep 11s linear infinite}
+    .rank-card.lspd{--accent:#53f0c4;--accent-rgb:83,240,196;--accent-soft:#35d49b;--scene:url('chiefs_assets/lspd-city.webp')}
+    .rank-card.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255;--accent-soft:#4d90f4;--scene:url('chiefs_assets/sfpd-city.webp')}
+    .rank-card.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155;--accent-soft:#e44580;--scene:url('chiefs_assets/lvpd-city.webp')}
+    .rank-card.top{--accent:#ffcf57;--accent-rgb:255,207,87;--accent-soft:#e8b948;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 0 48px rgba(255,207,87,.12), 0 34px 90px rgba(0,0,0,.42), 0 0 44px rgba(255,194,58,.14)}
+    .rank-card.top.lspd{--scene:url('chiefs_assets/lspd-city.webp')}
+    .rank-card.top.sfpd{--scene:url('chiefs_assets/sfpd-city.webp')}
+    .rank-card.top.lvpd{--scene:url('chiefs_assets/lvpd-city.webp')}
+    .rank-card-body{position:relative;padding:28px 24px 18px;min-height:545px;display:flex;flex-direction:column}
+    .rank-card-body::before{content:"";position:absolute;left:16px;right:16px;top:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.36),transparent)}
+
+    .place-crown{position:absolute;top:-24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;min-width:128px;height:62px;padding:0 18px;border-radius:22px 22px 14px 14px;background:linear-gradient(180deg,rgba(255,215,113,.94),rgba(210,132,29,.88));color:#fff8dc;box-shadow:0 14px 28px rgba(0,0,0,.28),0 0 22px rgba(255,187,62,.24);font-size:16px;font-weight:1000;letter-spacing:.04em;text-transform:uppercase;z-index:7}
+    .place-crown svg{position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:38px;height:38px;fill:#ffdc76;filter:drop-shadow(0 4px 10px rgba(255,203,88,.48))}
+    .place-badge{position:absolute;top:24px;left:20px;display:flex;align-items:center;justify-content:center;width:74px;height:74px;border-radius:22px;background:linear-gradient(160deg,rgba(8,17,39,.88),rgba(13,26,55,.82));border:1px solid rgba(var(--accent-rgb),.42);box-shadow:inset 0 0 26px rgba(var(--accent-rgb),.12)}
+    .place-badge .medal{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 28%, rgba(255,255,255,.5), rgba(var(--accent-rgb),.16));border:2px solid rgba(var(--accent-rgb),.58);font-size:24px;font-weight:1000;text-shadow:0 0 12px rgba(var(--accent-rgb),.5)}
+    .slot.first .place-badge{display:none}
+    .dept-watermark{position:absolute;top:42px;right:22px;text-align:right;z-index:2}
+    .dept-watermark strong{display:block;font-size:42px;font-weight:1000;letter-spacing:-.04em;text-shadow:0 0 22px rgba(var(--accent-rgb),.25)}
+    .dept-watermark small{display:block;font-size:12px;font-weight:800;letter-spacing:.18em;color:rgba(245,250,255,.78);text-transform:uppercase}
+
+    .dept-emblem{position:absolute;top:126px;right:18px;width:150px;height:150px;opacity:.93;display:grid;place-items:center;filter:drop-shadow(0 10px 22px rgba(0,0,0,.35))}
+    .dept-emblem svg{width:100%;height:100%;fill:none;stroke:rgba(255,225,155,.88);stroke-width:1.8}
+    .dept-emblem .ring{stroke:rgba(255,226,158,.86)}
+    .dept-emblem .line{stroke:rgba(255,229,167,.82)}
+
+    .character-strip{height:214px;border-radius:26px 26px 18px 18px;position:relative;overflow:hidden}
+    .character-strip::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,28,.18),rgba(7,12,24,.12) 35%,rgba(5,11,24,.75) 100%)}
+
+    .info-panel-card{margin-top:auto;position:relative;border-radius:24px;padding:18px;background:linear-gradient(180deg,rgba(7,17,36,.88),rgba(6,14,32,.95));border:1px solid rgba(var(--accent-rgb),.34);box-shadow:0 16px 34px rgba(0,0,0,.24), inset 0 0 24px rgba(var(--accent-rgb),.08);backdrop-filter:blur(10px)}
+    .identity-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px}
+    .chief-avatar{width:78px;height:78px;border-radius:22px;object-fit:cover;background:#10233c;border:2px solid rgba(var(--accent-rgb),.38);box-shadow:0 10px 22px rgba(0,0,0,.28)}
+    .chief-name{font-size:clamp(28px,2.4vw,42px);font-weight:1000;line-height:1;letter-spacing:-.04em;margin:0 0 8px}
+    .chief-id{font-size:16px;font-weight:900;color:rgba(var(--accent-rgb),1)}
+    .dept-pill{display:inline-flex;align-items:center;justify-content:center;min-width:74px;height:32px;padding:0 14px;border-radius:999px;background:rgba(var(--accent-rgb),.14);border:1px solid rgba(var(--accent-rgb),.36);font-size:13px;font-weight:900;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+    .stat-main{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:end;margin-top:14px}
+    .stat-main small{display:block;color:#9db6d5;font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+    .stat-value{font-size:clamp(48px,4vw,68px);line-height:.92;font-weight:1000;letter-spacing:-.05em;color:var(--accent);text-shadow:0 0 22px rgba(var(--accent-rgb),.28)}
+    .stat-value span{font-size:.5em;font-weight:900;margin-left:6px}
+    .bars{display:flex;align-items:flex-end;gap:8px;height:64px;justify-content:flex-end}
+    .bars i{display:block;width:14px;border-radius:10px 10px 0 0;background:linear-gradient(180deg,rgba(255,255,255,.2), rgba(var(--accent-rgb),.96));box-shadow:0 0 14px rgba(var(--accent-rgb),.28)}
+    .bars i:nth-child(1){height:20px;opacity:.68}.bars i:nth-child(2){height:34px;opacity:.8}.bars i:nth-child(3){height:52px;opacity:.92}
+    .meta-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+    .meta-box{display:flex;align-items:center;gap:10px;min-height:66px;padding:12px 12px;border-radius:16px;background:linear-gradient(180deg,rgba(7,18,39,.65),rgba(7,16,35,.9));border:1px solid rgba(var(--accent-rgb),.18)}
+    .meta-box svg{width:20px;height:20px;flex-shrink:0;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .meta-box b{display:block;font-size:20px;line-height:1;font-weight:1000;color:var(--accent)}
+    .meta-box span{display:block;font-size:10px;font-weight:800;color:#90abc9;letter-spacing:.14em;text-transform:uppercase;line-height:1.3}
+    .activity-link{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:15px;color:#cfe2fb;font-size:14px;font-weight:800}
+    .activity-link svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+
+    .pedestal{position:relative;margin:0 auto;z-index:-1;width:min(92%,420px);height:118px;border-radius:0 0 28px 28px;background:
+      linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 18%,rgba(9,16,34,.88) 20%,rgba(8,16,34,.98) 100%),
+      linear-gradient(90deg,rgba(var(--accent-rgb),.36),transparent 30%,transparent 70%,rgba(var(--accent-rgb),.36));
+      border:1px solid rgba(var(--accent-rgb),.26);box-shadow:0 25px 40px rgba(0,0,0,.3), inset 0 0 18px rgba(var(--accent-rgb),.1)}
+    .pedestal::before{content:"";position:absolute;left:16px;right:16px;top:10px;height:18px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.02));opacity:.75}
+    .pedestal::after{content:"";position:absolute;left:50%;top:-14px;transform:translateX(-50%);width:78%;height:26px;border-radius:999px;background:radial-gradient(circle at 50% 50%, rgba(var(--accent-rgb),.38), rgba(var(--accent-rgb),.06) 58%, transparent 80%);filter:blur(6px)}
+    .pedestal-ring{position:absolute;left:50%;top:-32px;transform:translateX(-50%);width:110%;height:54px;border-radius:50%;border:1px solid rgba(var(--accent-rgb),.36);box-shadow:0 0 36px rgba(var(--accent-rgb),.22), inset 0 0 12px rgba(var(--accent-rgb),.18);background:radial-gradient(circle, rgba(var(--accent-rgb),.12), transparent 65%)}
+    .pedestal-label{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:22px;font-weight:1000;letter-spacing:.06em;text-transform:uppercase;text-shadow:0 0 18px rgba(var(--accent-rgb),.28);white-space:nowrap}
+    .slot.first .pedestal{height:138px}
+    .slot.first .pedestal-label{font-size:30px;color:#ffe49b;text-shadow:0 0 18px rgba(255,207,87,.28)}
+    .slot.first .pedestal-ring{border-color:rgba(255,207,87,.5);box-shadow:0 0 38px rgba(255,207,87,.22), inset 0 0 12px rgba(255,207,87,.18)}
+
+    .analytics-grid{display:grid;grid-template-columns:1.1fr 1.2fr .9fr;gap:18px;margin-top:30px;padding-bottom:38px}
+    .panel{position:relative;min-height:160px;padding:20px;border-radius:28px;background:linear-gradient(180deg,rgba(8,18,42,.78),rgba(7,15,34,.88));border:1px solid rgba(102,154,225,.18);box-shadow:0 16px 40px rgba(0,0,0,.24), inset 0 0 26px rgba(255,255,255,.02)}
+    .panel-title{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:#dce9fa;margin:0 0 18px}
+    .panel-title svg{width:18px;height:18px;stroke:#63b8ff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .fact{min-height:92px;padding:16px;border-radius:20px;background:linear-gradient(180deg,rgba(7,18,40,.62),rgba(7,14,31,.92));border:1px solid rgba(98,150,228,.16)}
+    .fact strong{display:block;font-size:44px;line-height:.95;font-weight:1000;letter-spacing:-.05em;margin-bottom:6px}
+    .fact small{display:block;color:#8ea8c8;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;line-height:1.35}
+    .graph-box{position:relative;height:168px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,rgba(5,13,28,.78),rgba(8,14,32,.96));border:1px solid rgba(97,151,225,.14)}
+    .graph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(130,174,234,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(130,174,234,.08) 1px,transparent 1px);background-size:56px 56px;opacity:.5}
+    .graph-svg{position:absolute;inset:0;width:100%;height:100%}
+    .legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:12px;font-weight:800;color:#a9c0db}
+    .legend span{display:inline-flex;align-items:center;gap:7px}
+    .legend i{display:inline-block;width:10px;height:10px;border-radius:50%}
+    .leader-box{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:14px;min-height:106px;padding:14px 16px;border-radius:22px;background:linear-gradient(180deg,rgba(7,17,38,.72),rgba(7,16,35,.94));border:1px solid rgba(255,207,87,.2)}
+    .leader-box img{width:76px;height:76px;border-radius:20px;object-fit:cover;border:2px solid rgba(255,207,87,.32)}
+    .leader-score{font-size:58px;font-weight:1000;line-height:1;letter-spacing:-.05em;color:#ffcf57;text-shadow:0 0 18px rgba(255,207,87,.26)}
+    .leader-score span{font-size:.45em}
+
+    .footer{padding:22px 0 32px;color:#93aacc;font-size:12px}
+    .footer-inner{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;border-top:1px solid rgba(98,150,228,.12);padding-top:18px}
+    .footer nav{display:flex;flex-wrap:wrap;gap:18px}
+    .toast{position:fixed;right:20px;bottom:20px;z-index:210;padding:14px 18px;border-radius:16px;background:rgba(10,18,38,.96);border:1px solid rgba(255,100,160,.28);box-shadow:0 18px 42px rgba(0,0,0,.28);font-size:13px;font-weight:800;color:#ffd9eb;opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+    .toast.visible{opacity:1;transform:translateY(0)}
+
+    @keyframes floatGlow{0%{transform:translate3d(-1%,0,0) scale(1)}100%{transform:translate3d(1%,2%,0) scale(1.06)}}
+    @keyframes scan{0%{transform:translateX(-35%)}100%{transform:translateX(35%)}}
+    @keyframes cardSweep{0%{background-position:0 0,130% 0}100%{background-position:0 0,-120% 0}}
+    @keyframes pulseGold{0%,100%{box-shadow:0 0 0 rgba(255,207,87,0),0 0 26px rgba(255,207,87,.18)}50%{box-shadow:0 0 0 rgba(255,207,87,0),0 0 42px rgba(255,207,87,.28)}}
+    @media (max-width:1280px){
+      .wrap{width:min(1540px,calc(100% - 34px))}
+      .podium-scene{gap:18px}
+      .slot.second .rank-card{transform:rotateY(12deg) rotateX(2deg) translateY(16px)}
+      .slot.third .rank-card{transform:rotateY(-12deg) rotateX(2deg) translateY(16px)}
+      .analytics-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:1080px){
+      .main-nav{display:none}.mobile-nav{display:flex;gap:10px;overflow:auto;padding-bottom:12px}.mobile-nav a{white-space:nowrap;padding:10px 13px;border-radius:12px;border:1px solid rgba(94,147,220,.16);background:rgba(9,19,42,.54);font-size:12px;font-weight:800;color:#9eb7d8}.mobile-nav a.active{color:#fff;border-color:rgba(83,196,255,.35);background:linear-gradient(140deg,rgba(30,68,133,.86),rgba(16,32,71,.92))}
+      .hero-row{grid-template-columns:1fr}.hero-actions{justify-content:center}
+      .podium-scene{grid-template-columns:1fr;gap:26px;padding-top:120px}.slot,.slot.first,.slot.second,.slot.third{transform:none}.card-wrap,.slot.first .card-wrap{max-width:760px}.slot.second .rank-card,.slot.first .rank-card,.slot.third .rank-card{transform:none}.place-crown{top:-18px}.background-sign{display:none}
+    }
+    @media (max-width:760px){
+      .wrap{width:min(100%,calc(100% - 18px))}
+      .site-header{min-height:auto}.header-inner{padding:10px 0;gap:12px}.brand img{width:37px;height:42px}.brand strong{font-size:13px}
+      .hero{padding-top:22px}.hero h1{font-size:clamp(34px,12vw,58px)}.hero p{font-size:11px;letter-spacing:.16em}
+      .date-chip{min-width:unset;width:100%}.hero-actions{gap:8px}.chip,.refresh-chip,.edit-chip{width:100%;justify-content:center}
+      .scene-shell{padding:18px 8px 26px;min-height:unset}.rank-card-body{padding:22px 16px 16px;min-height:518px}.dept-emblem{width:110px;height:110px;top:122px;right:8px}.dept-watermark strong{font-size:34px}.place-badge{width:60px;height:60px}.place-badge .medal{width:38px;height:38px;font-size:20px}.chief-name{font-size:clamp(22px,7vw,34px)}.chief-avatar{width:68px;height:68px}.identity-row{grid-template-columns:auto 1fr}.identity-row .bars{grid-column:1/-1;justify-content:flex-start;height:42px}.stat-main{grid-template-columns:1fr}.meta-row{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.leader-box{grid-template-columns:auto 1fr}.leader-score{grid-column:1/-1}
+    }
+  </style>
 </head>
 <body>
-<div class="frame" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><div class="glow one" aria-hidden="true"></div><div class="glow two" aria-hidden="true"></div>
-<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden"><symbol id="ic-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9h-6v-6H9v6H3z"/></symbol><symbol id="ic-chart" viewBox="0 0 24 24"><path d="M5 20V12M10 20V6M15 20V10M20 20V3"/></symbol><symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 2 21 6v6c0 6-4 9-9 11-5-2-9-5-9-11V6zM8 12l3 3 5-6"/></symbol><symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 2v6M17 2v6M3 10h18M8 14h3v3H8z"/></symbol><symbol id="ic-refresh" viewBox="0 0 24 24"><path d="M20 10a8 8 0 1 0 .7 4M20 4v6h-6"/></symbol><symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-2c0-3 3-5 6-5s6 2 6 5v2zM17 6c2 0 4 2 4 4s-2 4-4 4M17 15c3 0 5 2 5 5"/></symbol><symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></symbol><symbol id="ic-medal" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6"/><path d="m6 2 4 7m8-7-4 7M10 15l2-2 2 2-2 3z"/></symbol></svg>
+<div class="bg" aria-hidden="true"></div>
+<div class="scanline" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="ic-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></symbol>
+  <symbol id="ic-chart" viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M7 17V9"/><path d="M12 17V5"/><path d="M17 17v-7"/></symbol>
+  <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></symbol>
+  <symbol id="ic-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></symbol>
+  <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 20v-1c0-4 3-7 7-7s7 3 7 7v1"/><path d="M17 11c2 0 4-2 4-4s-2-4-4-4"/><path d="M22 20v-1c0-3-2-5.7-5-6.6"/></symbol>
+  <symbol id="ic-file" viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6M9 17h6M9 9h2"/></symbol>
+  <symbol id="ic-star" viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.4 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></symbol>
+  <symbol id="ic-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></symbol>
+  <symbol id="ic-crown" viewBox="0 0 24 24"><path d="m3 7 5 5 4-7 4 7 5-5-2 12H5z"/></symbol>
+</svg>
+
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a>
@@ -185,114 +267,359 @@
     </nav>
     <div class="right-tools"><div class="divider"></div><div class="pd-header-user-slot" data-police-user-slot></div></div>
   </div>
-  <nav class="mobile-nav wrap" aria-label="Разделы"><a href="index.html">Главная</a><a href="reestr.html">Реестр</a><a href="exams.html">Экзамены</a><a href="chiefs.html" class="active">Активность</a><a href="leadership.html">Руководство</a></nav>
+  <nav class="mobile-nav wrap" aria-label="Разделы">
+    <a href="index.html">Главная</a>
+    <a href="reestr.html">Реестр</a>
+    <a href="exams.html">Экзамены</a>
+    <a href="chiefs.html" class="active">Активность</a>
+    <a href="leadership.html">Руководство</a>
+  </nav>
 </header>
+
 <main class="wrap">
-  <div class="top-kicker">АНАЛИТИКА РУКОВОДЯЩЕГО СОСТАВА POLICE DEPARTMENT</div>
-  <h1 class="headline">АКТИВНОСТЬ <span>ШЕФОВ</span></h1>
-  <p class="subtitle">ТРИ ДЕПАРТАМЕНТА · ОДНА КОМАНДА · ЖИВАЯ СТАТИСТИКА</p>
-  <div class="hero-controls">
-    <div class="date-chip" title="Дата на вашем устройстве"><svg class="nav-icon"><use href="#ic-calendar"/></svg><time id="todayLabel">—</time></div>
-    <div class="period-toggle" role="group" aria-label="Период активности"><button type="button" data-period="day" aria-pressed="true">Сегодня</button><button type="button" data-period="week" aria-pressed="false">Неделя</button></div>
-    <a class="edit-chip" id="editChiefsLink" href="admin.html#chiefs" hidden>✎ Редактировать шефов</a>
-    <button class="refresh-chip" id="refreshChiefs" type="button" title="Обновить руководство"><svg class="nav-icon"><use href="#ic-refresh"/></svg>Обновить</button>
-    <div class="live-state off" id="apiState" role="status"><span class="live-led"></span><span id="apiStateText">Загружаем состав...</span></div>
-  </div>
-  <section class="cards" id="chiefsCards" aria-label="Руководители департаментов">
-    <article class="chief-card lspd" data-dept="LSPD"><span class="edge-glow"></span><span class="corner"></span><div class="card-content">
-      <div class="card-top"><span class="dept-tag">LOS SANTOS</span><span class="tag-right">ДЕПАРТАМЕНТ 01</span></div>
-      <div class="emblem"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 50 11v16c0 14-9 22-20 29C19 49 10 41 10 27V11z"/><path d="M18 39h24M22 37V25l8-11 8 11v12M26 37v-8h8v8M16 42h28"/></svg></div>
-      <div class="dept-name">LSPD</div><div class="dept-full">LOS SANTOS POLICE DEPARTMENT</div>
-      <div class="chief-person"><img class="chief-avatar" data-field="avatar" alt="Аватар шефа LSPD" src="png_police_site/profile.png"><div class="chief-ident"><div class="chief-position">РУКОВОДИТЕЛЬ ДЕПАРТАМЕНТА</div><div class="chief-nick" data-field="nick">Получаем данные...</div><div class="chief-id" data-field="id"></div></div></div>
-      <div class="metric"><div class="metric-icon"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 18v-6h3v6M11 18V8h3v10M17 18V4h3v14"/></svg></div><div class="metric-body"><div class="metric-title" data-field="metric-title">АКТИВНОСТЬ ЗА ДЕНЬ</div><div class="metric-value">— <small>АШ</small></div><div class="metric-hint">Статистика ещё не подключена</div></div></div>
-      <div class="card-foot"><span>ДАННЫЕ РУКОВОДСТВА · LIVE</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-    </div></article>
-    <article class="chief-card sfpd" data-dept="SFPD"><span class="edge-glow"></span><span class="corner"></span><div class="card-content">
-      <div class="card-top"><span class="dept-tag">SAN FIERRO</span><span class="tag-right">ДЕПАРТАМЕНТ 02</span></div>
-      <div class="emblem"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 50 11v16c0 14-9 22-20 29C19 49 10 41 10 27V11z"/><path d="M17 40h26M18 34h24M22 34l8-21 8 21M30 13v27M15 40h30"/></svg></div>
-      <div class="dept-name">SFPD</div><div class="dept-full">SAN FIERRO POLICE DEPARTMENT</div>
-      <div class="chief-person"><img class="chief-avatar" data-field="avatar" alt="Аватар шефа SFPD" src="png_police_site/profile.png"><div class="chief-ident"><div class="chief-position">РУКОВОДИТЕЛЬ ДЕПАРТАМЕНТА</div><div class="chief-nick" data-field="nick">Получаем данные...</div><div class="chief-id" data-field="id"></div></div></div>
-      <div class="metric"><div class="metric-icon"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 18v-6h3v6M11 18V8h3v10M17 18V4h3v14"/></svg></div><div class="metric-body"><div class="metric-title" data-field="metric-title">АКТИВНОСТЬ ЗА ДЕНЬ</div><div class="metric-value">— <small>АШ</small></div><div class="metric-hint">Статистика ещё не подключена</div></div></div>
-      <div class="card-foot"><span>ДАННЫЕ РУКОВОДСТВА · LIVE</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-    </div></article>
-    <article class="chief-card lvpd" data-dept="LVPD"><span class="edge-glow"></span><span class="corner"></span><div class="card-content">
-      <div class="card-top"><span class="dept-tag">LAS VENTURAS</span><span class="tag-right">ДЕПАРТАМЕНТ 03</span></div>
-      <div class="emblem"><svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 4 50 11v16c0 14-9 22-20 29C19 49 10 41 10 27V11z"/><path d="M15 38h30M20 38l4-18 6 8 6-8 4 18M24 21l6-8 6 8M30 27v10"/></svg></div>
-      <div class="dept-name">LVPD</div><div class="dept-full">LAS VENTURAS POLICE DEPARTMENT</div>
-      <div class="chief-person"><img class="chief-avatar" data-field="avatar" alt="Аватар шефа LVPD" src="png_police_site/profile.png"><div class="chief-ident"><div class="chief-position">РУКОВОДИТЕЛЬ ДЕПАРТАМЕНТА</div><div class="chief-nick" data-field="nick">Получаем данные...</div><div class="chief-id" data-field="id"></div></div></div>
-      <div class="metric"><div class="metric-icon"><svg viewBox="0 0 24 24"><path d="M3 20h18M5 18v-6h3v6M11 18V8h3v10M17 18V4h3v14"/></svg></div><div class="metric-body"><div class="metric-title" data-field="metric-title">АКТИВНОСТЬ ЗА ДЕНЬ</div><div class="metric-value">— <small>АШ</small></div><div class="metric-hint">Статистика ещё не подключена</div></div></div>
-      <div class="card-foot"><span>ДАННЫЕ РУКОВОДСТВА · LIVE</span><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
-    </div></article>
+  <section class="hero">
+    <div class="hero-row">
+      <div class="hero-left">
+        <div class="hero-kicker">Статистика руководящего состава PD</div>
+        <h1>АКТИВНОСТЬ <span>ШЕФОВ</span></h1>
+        <p>Лидеры · Ответственность · Результат · Полицейская аналитика</p>
+      </div>
+      <div class="hero-actions">
+        <div class="chip date-chip" title="Дата на вашем устройстве">
+          <div style="display:flex;align-items:center;gap:10px"><svg class="nav-icon"><use href="#ic-calendar"/></svg><div class="date-block"><small>Дата обновления</small><b id="todayLabel">—</b></div></div>
+          <div class="live-block"><span class="live-dot"></span><span id="apiStateText">онлайн</span></div>
+        </div>
+        <div class="period-toggle" role="group" aria-label="Период активности">
+          <button type="button" data-period="day" aria-pressed="true">Сегодня</button>
+          <button type="button" data-period="week" aria-pressed="false">Неделя</button>
+        </div>
+        <a class="edit-chip" id="editChiefsLink" href="admin.html#chiefs" hidden>✎ Редактировать шефов</a>
+        <button class="refresh-chip" id="refreshChiefs" type="button"><svg class="nav-icon"><use href="#ic-refresh"/></svg>Обновить</button>
+      </div>
+    </div>
   </section>
-  <section class="stats-blocks" aria-label="Аналитика">
-    <div class="info-panel"><h2 class="panel-title"><svg><use href="#ic-users"/></svg> ОБЩАЯ СТАТИСТИКА</h2><div class="facts"><div class="fact"><strong>3</strong><small>Департамента</small></div><div class="fact"><strong class="accent" id="appointedCount">—</strong><small>Назначено шефов</small></div><div class="fact"><strong>—</strong><small>Активность дня</small></div></div></div>
-    <div class="info-panel"><h2 class="panel-title"><svg><use href="#ic-chart"/></svg> ДИНАМИКА АКТИВНОСТИ</h2><div class="graph"><div class="trace"></div><div class="graph-note"><svg><use href="#ic-clock"/></svg> История активности появится после подключения статистики</div></div></div>
-    <div class="info-panel"><h2 class="panel-title"><svg><use href="#ic-medal"/></svg> ЛИДЕР СЕГОДНЯ</h2><div class="leader-placeholder"><div class="empty-medal"><svg><use href="#ic-medal"/></svg></div><div><strong>Ожидаем результаты</strong><small>Лидер дня определится автоматически после подключения подсчёта активности.</small></div></div></div>
+
+  <section class="stage-section">
+    <div class="scene-shell">
+      <div class="background-sign left">LOS SANTOS<small>police department</small></div>
+      <div class="background-sign center">SAN FIERRO<small>police department</small></div>
+      <div class="background-sign right">LAS VENTURAS<small>police department</small></div>
+
+      <div class="podium-scene" id="podiumScene" aria-label="Рейтинг шефов по активности">
+        <div class="slot second" data-rank-slot="2"></div>
+        <div class="slot first" data-rank-slot="1"></div>
+        <div class="slot third" data-rank-slot="3"></div>
+      </div>
+
+      <section class="analytics-grid" aria-label="Дополнительная аналитика">
+        <div class="panel">
+          <h2 class="panel-title"><svg><use href="#ic-users"/></svg> Общая статистика</h2>
+          <div class="facts">
+            <div class="fact"><strong>3</strong><small>Шефа в системе</small></div>
+            <div class="fact"><strong id="appointedCount">—</strong><small>Назначено руководителей</small></div>
+            <div class="fact"><strong id="avgActivity">—</strong><small>Средняя активность за период</small></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2 class="panel-title"><svg><use href="#ic-chart"/></svg> Динамика активности шефов</h2>
+          <div class="graph-box">
+            <div class="graph-grid"></div>
+            <svg class="graph-svg" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="gradLSPD" x1="0" x2="1"><stop offset="0" stop-color="#53f0c4" stop-opacity=".15"/><stop offset="1" stop-color="#53f0c4" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gradSFPD" x1="0" x2="1"><stop offset="0" stop-color="#63b8ff" stop-opacity=".15"/><stop offset="1" stop-color="#63b8ff" stop-opacity="0"/></linearGradient>
+                <linearGradient id="gradLVPD" x1="0" x2="1"><stop offset="0" stop-color="#ff5a9b" stop-opacity=".15"/><stop offset="1" stop-color="#ff5a9b" stop-opacity="0"/></linearGradient>
+              </defs>
+              <path id="graphAreaLSPD" fill="url(#gradLSPD)" d=""></path>
+              <path id="graphAreaSFPD" fill="url(#gradSFPD)" d=""></path>
+              <path id="graphAreaLVPD" fill="url(#gradLVPD)" d=""></path>
+              <path id="graphLineLSPD" d="" stroke="#53f0c4" stroke-width="4" fill="none" stroke-linecap="round"></path>
+              <path id="graphLineSFPD" d="" stroke="#63b8ff" stroke-width="4" fill="none" stroke-linecap="round"></path>
+              <path id="graphLineLVPD" d="" stroke="#ff5a9b" stroke-width="4" fill="none" stroke-linecap="round"></path>
+            </svg>
+          </div>
+          <div class="legend"><span><i style="background:#53f0c4"></i>LSPD</span><span><i style="background:#63b8ff"></i>SFPD</span><span><i style="background:#ff5a9b"></i>LVPD</span></div>
+        </div>
+        <div class="panel">
+          <h2 class="panel-title"><svg><use href="#ic-star"/></svg> Лидер сегодня</h2>
+          <div class="leader-box" id="leaderTodayBox">
+            <img src="png_police_site/profile.png" alt="Лидер дня" id="leaderTodayAvatar">
+            <div>
+              <div style="font-size:28px;font-weight:1000;letter-spacing:-.04em;line-height:1" id="leaderTodayName">Ожидаем данные</div>
+              <div style="margin-top:8px;font-size:14px;font-weight:900;color:#ffcf57;text-transform:uppercase;letter-spacing:.12em" id="leaderTodayDept">—</div>
+            </div>
+            <div class="leader-score" id="leaderTodayScore">—<span>АШ</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
   </section>
 </main>
-<footer class="page-bottom"><div class="wrap footer-in"><span>© marsellex · С 2024 по настоящее время</span><nav aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="index.html">На главную</a></nav></div></footer>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>© marsellex · Police Department</span>
+    <nav aria-label="Полезные ссылки">
+      <a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a>
+      <a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a>
+      <a href="index.html">На главную</a>
+    </nav>
+  </div>
+</footer>
 <div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
 <script>
 (()=>{'use strict';
-  const API='https://police-api-b2y4.onrender.com';
-  const FALLBACK='png_police_site/profile.png';
-  const cards=[...document.querySelectorAll('.chief-card')];
-  const byDept=Object.fromEntries(cards.map(card=>[card.dataset.dept,card]));
-  const $=id=>document.getElementById(id);
+  const API_PRIMARY='https://api.police-department.ru';
+  const API_FALLBACK='https://police-api-b2y4.onrender.com';
+  const FALLBACK_AVATAR='png_police_site/profile.png';
+  const DEPT_INFO={
+    LSPD:{short:'LSPD',label:'Los Santos Police Department',className:'lspd',city:'LOS SANTOS',accent:'#53f0c4',rankHint:'Сильные лидеры — сильный штат'},
+    SFPD:{short:'SFPD',label:'San Fierro Police Department',className:'sfpd',city:'SAN FIERRO',accent:'#63b8ff',rankHint:'Мост между дисциплиной и результатом'},
+    LVPD:{short:'LVPD',label:'Las Venturas Police Department',className:'lvpd',city:'LAS VENTURAS',accent:'#ff5a9b',rankHint:'Темп, давление и результат'}
+  };
+  const demoStats={
+    LSPD:{day:15,week:66,online:112,events:8,penalties:27,trend:[9,10,11,12,13,14,15]},
+    SFPD:{day:17,week:74,online:98,events:11,penalties:31,trend:[7,10,11,12,14,15,17]},
+    LVPD:{day:35,week:95,online:86,events:14,penalties:45,trend:[15,19,22,23,27,30,35]}
+  };
+
+  const slotMap={1:document.querySelector('[data-rank-slot="1"]'),2:document.querySelector('[data-rank-slot="2"]'),3:document.querySelector('[data-rank-slot="3"]')};
+  const refreshBtn=document.getElementById('refreshChiefs');
+  const toastNode=document.getElementById('toast');
+  const stateText=document.getElementById('apiStateText');
+  const todayLabel=document.getElementById('todayLabel');
+  const periodButtons=[...document.querySelectorAll('[data-period]')];
+  const leaderTodayAvatar=document.getElementById('leaderTodayAvatar');
+  const leaderTodayName=document.getElementById('leaderTodayName');
+  const leaderTodayDept=document.getElementById('leaderTodayDept');
+  const leaderTodayScore=document.getElementById('leaderTodayScore');
+  const appointedCount=document.getElementById('appointedCount');
+  const avgActivity=document.getElementById('avgActivity');
+  const editChiefsLink=document.getElementById('editChiefsLink');
+  let currentPeriod='day';
   let lastController=null;
-  let toastTimeout=0;
-  function toast(message){const node=$('toast');node.textContent=message;node.classList.add('visible');clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>node.classList.remove('visible'),4000)}
-  function setStatus(text,ok){$('apiStateText').textContent=text;$('apiState').classList.toggle('off',!ok)}
-  function fill(card,item){
-    const nick=card.querySelector('[data-field="nick"]');
-    const id=card.querySelector('[data-field="id"]');
-    const avatar=card.querySelector('[data-field="avatar"]');
-    nick.textContent=item?.nickname?.trim()||'Не назначен';
-    const number=String(item?.account_number||'').trim();
-    id.textContent=number ? `[${number}]` : '';
-    // Images always come from HTTPS or the local fallback; do not render remote markup.
-    const url=String(item?.avatar_url||'');
-    avatar.src=/^https:\/\//i.test(url) ? url : FALLBACK;
-    avatar.onerror=()=>{avatar.onerror=null;avatar.src=FALLBACK;};
+  let toastTimer=0;
+
+  function toast(message){
+    toastNode.textContent=message;
+    toastNode.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>toastNode.classList.remove('visible'),4200);
+  }
+  function escapeHtml(value){
+    return String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  }
+  function setState(text, ok=true){
+    stateText.textContent=text;
+    stateText.parentElement.style.color=ok ? '#5af1c3' : '#ffcf57';
+    stateText.previousElementSibling.style.background=ok ? '#4deeb8' : '#ffcf57';
+    stateText.previousElementSibling.style.boxShadow=ok ? '0 0 14px #4deeb8' : '0 0 14px #ffcf57';
+  }
+  function getMetric(item, period){
+    const base=demoStats[item.department]?.[period] ?? (period==='day'?0:0);
+    const candidates = period==='day'
+      ? [item.activity_day,item.day_activity,item.metric_day,item.metric_value,item.activity,item.stats?.day]
+      : [item.activity_week,item.week_activity,item.metric_week,item.week_metric,item.stats?.week];
+    for(const value of candidates){
+      const num=Number(value);
+      if(Number.isFinite(num) && num>=0) return num;
+    }
+    return base;
+  }
+  function getStat(item,key){
+    const candidates=[item[key], item.stats?.[key], item.metrics?.[key]];
+    for(const value of candidates){
+      const num=Number(value);
+      if(Number.isFinite(num) && num>=0) return num;
+    }
+    return demoStats[item.department]?.[key] ?? 0;
+  }
+  function getTrend(item){
+    const list = Array.isArray(item.trend) ? item.trend : Array.isArray(item.activity_trend) ? item.activity_trend : demoStats[item.department]?.trend || [0,0,0,0,0,0,0];
+    return list.map(v=>Number(v)||0);
+  }
+  function buildLinePath(values,width,height,padding){
+    const innerW=width-padding*2, innerH=height-padding*2;
+    const max=Math.max(...values,1), min=Math.min(...values,0);
+    const step=values.length>1 ? innerW/(values.length-1) : innerW;
+    return values.map((v,i)=>{
+      const x=padding+i*step;
+      const ratio=(v-min)/(max-min || 1);
+      const y=height-padding-ratio*innerH;
+      return `${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+  }
+  function buildAreaPath(values,width,height,padding){
+    const line=buildLinePath(values,width,height,padding);
+    const innerW=width-padding*2;
+    const step=values.length>1 ? innerW/(values.length-1) : innerW;
+    const endX=(padding+(values.length-1)*step).toFixed(1);
+    const startX=padding.toFixed(1);
+    const baseY=(height-padding).toFixed(1);
+    return `${line} L${endX},${baseY} L${startX},${baseY} Z`;
+  }
+  function emblemSvg(){
+    return `<svg viewBox="0 0 160 160" aria-hidden="true">
+      <circle class="ring" cx="80" cy="80" r="70"></circle>
+      <circle class="ring" cx="80" cy="80" r="58"></circle>
+      <path class="line" d="M46 110h68"></path>
+      <path class="line" d="M60 100 80 56l20 44"></path>
+      <path class="line" d="M80 56v54"></path>
+      <path class="line" d="M55 42h50"></path>
+      <path class="line" d="M44 50c12-9 25-14 36-14 16 0 29 6 36 14"></path>
+      <path class="line" d="M52 119c17 9 39 9 56 0"></path>
+      <path class="line" d="M31 80h16M113 80h16"></path>
+    </svg>`;
+  }
+  function createCard(item, rank){
+    const info=DEPT_INFO[item.department] || DEPT_INFO.LSPD;
+    const metric=getMetric(item,currentPeriod);
+    const online=getStat(item,'online');
+    const events=getStat(item,'events');
+    const penalties=getStat(item,'penalties');
+    const avatar=/^https:\/\//i.test(String(item.avatar_url||'')) ? String(item.avatar_url) : FALLBACK_AVATAR;
+    const medal=rank===1 ? '' : `<div class="place-badge"><div class="medal">${rank}</div></div>`;
+    const crown=rank===1 ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>1 МЕСТО</div>` : '';
+    const topClass=rank===1 ? ' top' : '';
+    const label=rank===1 ? '1 МЕСТО' : rank===2 ? '2 МЕСТО' : '3 МЕСТО';
+    return `
+      <div class="card-wrap">
+        <article class="rank-card ${info.className}${topClass}" data-dept="${info.short}">
+          ${crown}
+          ${medal}
+          <div class="rank-card-body">
+            <div class="dept-watermark"><strong>${info.short}</strong><small>${escapeHtml(info.label)}</small></div>
+            <div class="dept-emblem">${emblemSvg()}</div>
+            <div class="character-strip"></div>
+            <div class="info-panel-card">
+              <div class="identity-row">
+                <img class="chief-avatar" src="${escapeHtml(avatar)}" alt="Аватар ${escapeHtml(item.nickname||info.short)}" onerror="this.onerror=null;this.src='${FALLBACK_AVATAR}'">
+                <div>
+                  <div class="chief-name">${escapeHtml(item.nickname?.trim() || 'Не назначен')}</div>
+                  <div class="chief-id">${item.account_number ? '['+escapeHtml(item.account_number)+']' : ''}</div>
+                  <div style="margin-top:10px"><span class="dept-pill">${info.short}</span></div>
+                </div>
+                <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
+              </div>
+              <div class="stat-main">
+                <div><small>${currentPeriod==='day' ? 'Активность за день' : 'Активность за неделю'}</small><div class="stat-value">${metric}<span>АШ</span></div></div>
+                <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg><div><b>${online}</b><span>Онлайн</span></div></div>
+                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-file"/></svg><div><b>${events}</b><span>Проведено мероприятий</span></div></div>
+                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-star"/></svg><div><b>${penalties}</b><span>Выдано наказаний</span></div></div>
+              </div>
+              <div class="activity-link"><span>${escapeHtml(info.rankHint)}</span><svg viewBox="0 0 24 24"><use href="#ic-arrow"/></svg></div>
+            </div>
+          </div>
+        </article>
+        <div class="pedestal"><div class="pedestal-ring"></div><div class="pedestal-label">${label}</div></div>
+      </div>`;
+  }
+  function normalizeItem(item, dept){
+    return {
+      department:dept,
+      nickname:String(item?.nickname || '').trim(),
+      account_number:item?.account_number || '',
+      avatar_url:item?.avatar_url || '',
+      activity_day:getMetric({...item,department:dept},'day'),
+      activity_week:getMetric({...item,department:dept},'week'),
+      online:getStat({...item,department:dept},'online'),
+      events:getStat({...item,department:dept},'events'),
+      penalties:getStat({...item,department:dept},'penalties'),
+      trend:getTrend({...item,department:dept})
+    };
+  }
+  async function fetchChiefs(signal){
+    const endpoints=[API_PRIMARY,API_FALLBACK];
+    let lastError=null;
+    for(const base of endpoints){
+      try{
+        const res=await fetch(base+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal});
+        if(!res.ok) throw new Error('HTTP '+res.status+' ['+base+']');
+        const data=await res.json();
+        if(data?.ok!==true || !Array.isArray(data.items)) throw new Error('Некорректный ответ API ['+base+']');
+        return data.items;
+      }catch(err){lastError=err;if(signal.aborted) throw err;}
+    }
+    throw lastError || new Error('Нет ответа API');
+  }
+  function renderGraph(items){
+    const width=600, height=200, padding=16;
+    ['LSPD','SFPD','LVPD'].forEach(dep=>{
+      const item=items.find(x=>x.department===dep) || normalizeItem(null,dep);
+      const trend=getTrend(item);
+      document.getElementById('graphLine'+dep).setAttribute('d', buildLinePath(trend,width,height,padding));
+      document.getElementById('graphArea'+dep).setAttribute('d', buildAreaPath(trend,width,height,padding));
+    });
+  }
+  function render(items){
+    const normalized=['LSPD','SFPD','LVPD'].map(dep=>normalizeItem(items.find(x=>String(x.department||'').toUpperCase()===dep),dep));
+    const ranked=[...normalized].sort((a,b)=>getMetric(b,currentPeriod)-getMetric(a,currentPeriod));
+    slotMap[1].innerHTML=createCard(ranked[0],1);
+    slotMap[2].innerHTML=createCard(ranked[1],2);
+    slotMap[3].innerHTML=createCard(ranked[2],3);
+    appointedCount.textContent=String(normalized.filter(x=>x.nickname).length);
+    const values=ranked.map(x=>getMetric(x,currentPeriod)).filter(v=>Number.isFinite(v));
+    avgActivity.textContent=values.length ? (values.reduce((a,b)=>a+b,0)/values.length).toFixed(1) : '—';
+    leaderTodayAvatar.src=/^https:\/\//i.test(String(ranked[0].avatar_url||'')) ? String(ranked[0].avatar_url) : FALLBACK_AVATAR;
+    leaderTodayAvatar.onerror=()=>{leaderTodayAvatar.onerror=null;leaderTodayAvatar.src=FALLBACK_AVATAR};
+    leaderTodayName.textContent=ranked[0].nickname || 'Не назначен';
+    leaderTodayDept.textContent=ranked[0].department;
+    leaderTodayDept.style.color=DEPT_INFO[ranked[0].department]?.accent || '#ffcf57';
+    leaderTodayScore.innerHTML=`${getMetric(ranked[0],currentPeriod)}<span>АШ</span>`;
+    renderGraph(normalized);
   }
   async function refresh(){
     lastController?.abort();
-    const controller=new AbortController();lastController=controller;
-    const btn=$('refreshChiefs');btn.disabled=true;
-    setStatus('Обновляем руководство...',false);
-    const tid=setTimeout(()=>controller.abort(),12000);
+    const controller=new AbortController();
+    lastController=controller;
+    refreshBtn.disabled=true;
+    setState('загрузка...', false);
+    const timer=setTimeout(()=>controller.abort(),15000);
     try{
-      const res=await fetch(API+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal:controller.signal});
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const data=await res.json();
-      if(!data || data.ok!==true || !Array.isArray(data.items))throw new Error('Некорректный ответ API');
-      if(lastController!==controller)return;
-      const map=new Map(data.items.map(x=>[String(x.department||'').toUpperCase(),x]));
-      for(const [dep,card] of Object.entries(byDept))fill(card,map.get(dep));
-      $('appointedCount').textContent=String(data.items.filter(x=>['LSPD','SFPD','LVPD'].includes(x.department)&&String(x.nickname||'').trim()).length);
-      setStatus('Руководство обновлено',true);
-    }catch(e){
-      if(lastController!==controller)return;
-      console.warn('[Police chiefs] Не удалось обновить список:',e);
-      setStatus('Нет соединения с API',false);
-      toast('Не удалось обновить руководство. Попробуй ещё раз.');
-    }finally{clearTimeout(tid);if(lastController===controller){btn.disabled=false;lastController=null;}}
+      const items=await fetchChiefs(controller.signal);
+      if(lastController!==controller) return;
+      render(items);
+      setState('онлайн', true);
+    }catch(error){
+      if(lastController!==controller) return;
+      console.warn('[Chiefs] refresh failed', error);
+      render([]);
+      setState('частично офлайн', false);
+      toast('Не удалось быстро загрузить часть данных. Показан резервный вариант.');
+    }finally{
+      clearTimeout(timer);
+      if(lastController===controller){lastController=null;refreshBtn.disabled=false;}
+    }
   }
   async function showAdminLink(){
-    const token=window.PoliceSession?.get?.();if(!token)return;
-    try{const r=await fetch(API+'/api/auth/me',{headers:{Authorization:'Bearer '+token,Accept:'application/json'},cache:'no-store'});
-      if(!r.ok)return;const data=await r.json();
-      if(['developer','admin'].includes(data?.user?.role))$('editChiefsLink').hidden=false;
-    }catch{} // A network hiccup cannot break the public chief cards.
+    const token=window.PoliceSession?.get?.();
+    if(!token) return;
+    const endpoints=[API_PRIMARY,API_FALLBACK];
+    for(const base of endpoints){
+      try{
+        const response=await fetch(base+'/api/auth/me',{headers:{Authorization:'Bearer '+token,Accept:'application/json'},cache:'no-store'});
+        if(!response.ok) continue;
+        const data=await response.json();
+        if(['developer','admin'].includes(data?.user?.role)){editChiefsLink.hidden=false;}
+        break;
+      }catch{}
+    }
   }
-  $('todayLabel').textContent=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());
-  document.querySelectorAll('[data-period]').forEach(button=>button.addEventListener('click',()=>{
-    document.querySelectorAll('[data-period]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
-    document.querySelectorAll('[data-field="metric-title"]').forEach(el=>{el.textContent=button.dataset.period==='day'?'АКТИВНОСТЬ ЗА ДЕНЬ':'АКТИВНОСТЬ ЗА НЕДЕЛЮ';});
+
+  todayLabel.textContent=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());
+  periodButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    currentPeriod=btn.dataset.period;
+    periodButtons.forEach(node=>node.setAttribute('aria-pressed', String(node===btn)));
+    refresh();
   }));
-  $('refreshChiefs').addEventListener('click',refresh);
-  window.addEventListener('pageshow',event=>{if(event.persisted)refresh()});
-  refresh();showAdminLink();
+  refreshBtn.addEventListener('click',refresh);
+  window.addEventListener('pageshow',event=>{ if(event.persisted) refresh(); });
+  render([]); refresh(); showAdminLink();
 })();
 </script>
-</body></html>
+</body>
+</html>
