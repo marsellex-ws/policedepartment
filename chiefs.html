@@ -7,7 +7,7 @@
   <meta name="description" content="Активность шефов LSPD, SFPD и LVPD — Police Department">
   <title>Активность шефов — Police Department</title>
   <link rel="icon" href="pd_photo.png" type="image/png">
-  <link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+  <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
   <link rel="preload" href="chiefs_assets/city-night.webp" as="image" type="image/webp">
   <script src="api-fetch-retry.js"></script>
   <script src="site-session.js"></script>
@@ -238,6 +238,136 @@
       .date-chip{min-width:unset;width:100%}.hero-actions{gap:8px}.chip,.refresh-chip,.edit-chip{width:100%;justify-content:center}
       .scene-shell{padding:18px 8px 26px;min-height:unset}.rank-card-body{padding:22px 16px 16px;min-height:518px}.dept-emblem{width:110px;height:110px;top:122px;right:8px}.dept-watermark strong{font-size:34px}.place-badge{width:60px;height:60px}.place-badge .medal{width:38px;height:38px;font-size:20px}.chief-name{font-size:clamp(22px,7vw,34px)}.chief-avatar{width:68px;height:68px}.identity-row{grid-template-columns:auto 1fr}.identity-row .bars{grid-column:1/-1;justify-content:flex-start;height:42px}.stat-main{grid-template-columns:1fr}.meta-row{grid-template-columns:1fr}.facts{grid-template-columns:1fr}.leader-box{grid-template-columns:auto 1fr}.leader-score{grid-column:1/-1}
     }
+
+    /* Police portal shared chrome: title + profile only. */
+    :root{--header-h:78px}
+    .site-header{min-height:78px;background:linear-gradient(90deg,rgba(4,15,25,.87),rgba(6,19,30,.60) 42%,rgba(5,15,25,.88)),url('reestr_shapk.png') center/cover;
+      border-bottom:1px solid rgba(124,185,231,.24);box-shadow:0 9px 36px rgba(1,7,15,.23)}
+    .header-inner{min-height:78px;height:78px;justify-content:space-between}
+    .brand{gap:12px}
+    .brand img{width:42px;height:45px}
+    .brand strong{font-size:clamp(13px,1.4vw,18px);font-weight:950;letter-spacing:.035em}
+    .right-tools{margin-left:auto;gap:0;min-width:0}
+    .hero{padding:34px 0 4px}
+    .hero-row{display:flex;flex-direction:column;align-items:center;gap:15px}
+    .hero-left{width:100%}
+    .hero h1{margin:3px 0 0;font-size:clamp(42px,5.1vw,80px)}
+    .hero-actions{justify-content:center;gap:11px;margin:4px auto 2px}
+
+    /* Less clutter, more distance: suspended glass cards above independent pedestals. */
+    .scene-shell{min-height:665px;padding:8px 24px 24px;background:linear-gradient(180deg,rgba(5,13,30,.15),rgba(4,11,26,.05));overflow:visible}
+    .scene-shell::before{top:20%;opacity:.6}
+    .scene-shell::after{bottom:42px}
+    .background-sign{display:none}
+    .podium-scene{grid-template-columns:1fr 1.16fr 1fr;gap:clamp(12px,2.2vw,32px);
+      min-height:655px;max-width:1200px;margin-inline:auto;padding:38px 8px 0;align-items:end;perspective:2200px}
+    .slot,.slot.first,.slot.second,.slot.third{transform:none;align-items:end}
+    .slot.first{z-index:4}
+    .slot.second,.slot.third{z-index:3}
+    .card-wrap{width:100%;max-width:310px;perspective:1800px}
+    .slot.first .card-wrap{max-width:375px}
+    .float-shell{position:relative;will-change:transform;margin-bottom:30px;
+      animation:chiefLevitate 5.6s ease-in-out infinite alternate}
+    .slot.first .float-shell{animation-duration:6.6s;animation-delay:-1.4s}
+    .slot.third .float-shell{animation-duration:6s;animation-delay:-2.8s}
+    .rank-card{min-height:428px;border-radius:26px;transform:perspective(1800px) rotateX(3deg) rotateY(0deg);
+      transition:transform .75s cubic-bezier(.18,.72,.18,1),box-shadow .6s ease,filter .6s ease;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),inset 0 0 28px rgba(var(--accent-rgb),.08),0 30px 65px rgba(0,0,0,.34)}
+    .slot.second .rank-card,.slot.third .rank-card{transform:perspective(1800px) rotateX(3deg) rotateY(0deg)}
+    .slot.first .rank-card{transform:perspective(1800px) rotateX(1deg)}
+    .slot.second .float-shell:hover .rank-card,.slot.second .float-shell:focus-within .rank-card{transform:perspective(1800px) rotateY(17deg) rotateX(3deg) scale(1.035)}
+    .slot.third .float-shell:hover .rank-card,.slot.third .float-shell:focus-within .rank-card{transform:perspective(1800px) rotateY(-17deg) rotateX(3deg) scale(1.035)}
+    .slot.first .float-shell:hover .rank-card,.slot.first .float-shell:focus-within .rank-card{transform:perspective(1800px) rotateY(0deg) rotateX(0deg) scale(1.03)}
+    .float-shell:hover .rank-card{box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),inset 0 0 35px rgba(var(--accent-rgb),.15),0 40px 86px rgba(0,0,0,.54),0 0 42px rgba(var(--accent-rgb),.18)}
+    .rank-card::before,.rank-card::after{border-radius:26px}
+    .rank-card-body{min-height:428px;padding:20px 15px 14px}
+    .character-strip{height:169px}
+    .dept-watermark{top:31px;right:16px}
+    .dept-watermark strong{font-size:34px}
+    .dept-watermark small{font-size:9px;letter-spacing:.1em}
+    .dept-emblem{top:100px;right:13px;width:102px;height:102px}
+    .info-panel-card{border-radius:19px;padding:13px}
+    .identity-row{grid-template-columns:auto minmax(0,1fr);gap:11px}
+    .chief-avatar{width:61px;height:61px;border-radius:16px}
+    .chief-name{font-size:clamp(19px,1.7vw,26px);overflow-wrap:anywhere;margin-bottom:6px}
+    .chief-id{font-size:12px}
+    .dept-pill{margin-top:5px;font-size:10px;height:25px;min-width:58px;padding-inline:10px}
+    .stat-main{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+    .stat-main small{font-size:9px;letter-spacing:.11em}
+    .stat-value{font-size:clamp(38px,3.3vw,50px)}
+    .stat-value span{font-size:.4em}
+    .stat-note{font-size:10px;color:#8eb0cb;margin-top:4px}
+    .place-crown{min-width:112px;height:50px;top:-28px;font-size:13px;border-radius:16px}
+    .place-crown svg{width:31px;height:31px;top:-15px}
+    .place-badge{width:58px;height:58px;top:17px;left:14px;border-radius:16px}
+    .place-badge .medal{width:37px;height:37px;font-size:21px}
+    .pedestal{width:min(94%,345px);height:70px;border-radius:0 0 22px 22px}
+    .slot.first .pedestal{height:85px}
+    .pedestal-ring{height:32px;top:-24px}
+    .pedestal-label,.slot.first .pedestal-label{font-size:clamp(12px,1.5vw,19px);bottom:15px}
+    .slot.first .pedestal-label{color:#ffe49b}
+    .rank-card.top{--accent-rgb:255,207,87;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05),inset 0 0 36px rgba(255,207,87,.07),0 32px 72px rgba(0,0,0,.36),0 0 28px rgba(255,194,58,.09)}
+    .rank-card.top.lspd{--accent:#53f0c4;--accent-rgb:83,240,196}
+    .rank-card.top.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255}
+    .rank-card.top.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155}
+    .pedestal-label{color:#d7edff}
+    .footer{position:relative;z-index:2;background:rgba(6,18,30,.92);border-top:1px solid #284863;padding:33px 0;color:#a7c1d5;font-size:12px}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:22px;border:0;padding:0}
+    .footer p{margin:0;color:#a7c1d5;font-size:12px}
+    .links{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:12px 20px}
+    .links a{color:#a7c1d5;font-size:11px}
+    .links a:hover{color:#fff;text-decoration:underline}
+    @keyframes chiefLevitate{0%{transform:translateY(-5px)}50%{transform:translateY(7px)}100%{transform:translateY(-11px)}}
+    @media(max-width:1150px){
+      .podium-scene{max-width:1000px;gap:12px;padding-inline:0;min-height:595px}
+      .card-wrap{max-width:272px}.slot.first .card-wrap{max-width:328px}
+      .rank-card,.rank-card-body{min-height:408px}
+      .scene-shell{min-height:590px}
+    }
+    @media(max-width:850px){
+      .wrap{width:calc(100% - 24px)}
+      .podium-scene{grid-template-columns:1fr;gap:26px;min-height:0;padding-top:48px;max-width:460px}
+      .scene-shell{overflow:hidden;padding:12px 7px 34px;min-height:0}
+      .slot.first{order:0}.slot.second{order:1}.slot.third{order:2}
+      .card-wrap,.slot.first .card-wrap{max-width:360px}
+      .rank-card,.rank-card-body{min-height:405px}
+      .slot.second .rank-card,.slot.third .rank-card{transform:none}
+      .slot.second .float-shell:hover .rank-card,.slot.third .float-shell:hover .rank-card{transform:rotateX(0deg) scale(1.02)}
+      .hero h1{font-size:clamp(34px,7vw,60px)}
+      .hero-actions{gap:8px}
+      .date-chip{width:auto;min-width:200px}
+    }
+    @media(max-width:550px){
+      .site-header,.header-inner{height:74px;min-height:74px}
+      .brand img{width:35px;height:38px}.brand strong{font-size:12px}
+      .hero{padding-top:23px}.hero h1{font-size:clamp(29px,8.5vw,45px)}
+      .hero-actions{width:100%}.date-chip{width:100%}.period-toggle{width:100%;justify-content:center}.period-toggle button{flex:1}.refresh-chip,.edit-chip{flex:1}
+      .scene-shell{padding-inline:6px}
+      .rank-card-body{min-height:392px}
+      .character-strip{height:150px}
+      .dept-emblem{width:98px;height:98px;top:100px}
+      .dept-watermark strong{font-size:30px}
+      .footer-inner,.links{justify-content:center;text-align:center}
+      .footer{padding:26px 0}
+    }
+
+    /* Give the pedestal the department accent, independent of the floating card. */
+    .card-wrap.lspd{--accent-rgb:83,240,196}
+    .card-wrap.sfpd{--accent-rgb:99,184,255}
+    .card-wrap.lvpd{--accent-rgb:255,90,155}
+    .card-wrap.rank-one{--accent-rgb:255,207,87}
+    .pedestal{z-index:0;border-top:3px solid rgba(var(--accent-rgb),.75);
+      background:linear-gradient(180deg,rgba(23,39,76,.96) 0%,rgba(9,18,42,.98) 34%,rgba(5,11,28,.98) 100%);
+      box-shadow:0 18px 42px #0009,inset 0 0 25px rgba(var(--accent-rgb),.11),0 0 19px rgba(var(--accent-rgb),.17)}
+    .pedestal-ring{border:2px solid rgba(var(--accent-rgb),.62);
+      box-shadow:0 0 27px rgba(var(--accent-rgb),.35),inset 0 0 12px rgba(var(--accent-rgb),.19)}
+    .pedestal-label{text-shadow:0 0 16px rgba(var(--accent-rgb),.38)}
+    .scanline{animation:none}
+    @media(prefers-reduced-motion:reduce){
+      .float-shell{animation:none!important;transform:none}
+      .bg::before,.scanline,.rank-card::after{animation:none!important}
+      .rank-card{transition:none}
+    }
   </style>
 </head>
 <body>
@@ -258,31 +388,15 @@
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a>
-    <nav class="main-nav" aria-label="Навигация">
-      <a href="index.html"><svg class="nav-icon"><use href="#ic-home"/></svg>Главная</a>
-      <a href="reestr.html">Реестр</a>
-      <a href="exams.html">Экзамены</a>
-      <a class="active" href="chiefs.html" aria-current="page"><svg class="nav-icon"><use href="#ic-chart"/></svg>Активность шефов</a>
-      <a href="leadership.html">Руководство</a>
-    </nav>
-    <div class="right-tools"><div class="divider"></div><div class="pd-header-user-slot" data-police-user-slot></div></div>
+    <div class="right-tools"><div class="pd-header-user-slot" data-police-user-slot></div></div>
   </div>
-  <nav class="mobile-nav wrap" aria-label="Разделы">
-    <a href="index.html">Главная</a>
-    <a href="reestr.html">Реестр</a>
-    <a href="exams.html">Экзамены</a>
-    <a href="chiefs.html" class="active">Активность</a>
-    <a href="leadership.html">Руководство</a>
-  </nav>
 </header>
 
 <main class="wrap">
   <section class="hero">
     <div class="hero-row">
       <div class="hero-left">
-        <div class="hero-kicker">Статистика руководящего состава PD</div>
         <h1>АКТИВНОСТЬ <span>ШЕФОВ</span></h1>
-        <p>Лидеры · Ответственность · Результат · Полицейская аналитика</p>
       </div>
       <div class="hero-actions">
         <div class="chip date-chip" title="Дата на вашем устройстве">
@@ -310,59 +424,19 @@
         <div class="slot first" data-rank-slot="1"></div>
         <div class="slot third" data-rank-slot="3"></div>
       </div>
-
-      <section class="analytics-grid" aria-label="Дополнительная аналитика">
-        <div class="panel">
-          <h2 class="panel-title"><svg><use href="#ic-users"/></svg> Общая статистика</h2>
-          <div class="facts">
-            <div class="fact"><strong>3</strong><small>Шефа в системе</small></div>
-            <div class="fact"><strong id="appointedCount">—</strong><small>Назначено руководителей</small></div>
-            <div class="fact"><strong id="avgActivity">—</strong><small>Средняя активность за период</small></div>
-          </div>
-        </div>
-        <div class="panel">
-          <h2 class="panel-title"><svg><use href="#ic-chart"/></svg> Динамика активности шефов</h2>
-          <div class="graph-box">
-            <div class="graph-grid"></div>
-            <svg class="graph-svg" viewBox="0 0 600 200" preserveAspectRatio="none" aria-hidden="true">
-              <defs>
-                <linearGradient id="gradLSPD" x1="0" x2="1"><stop offset="0" stop-color="#53f0c4" stop-opacity=".15"/><stop offset="1" stop-color="#53f0c4" stop-opacity="0"/></linearGradient>
-                <linearGradient id="gradSFPD" x1="0" x2="1"><stop offset="0" stop-color="#63b8ff" stop-opacity=".15"/><stop offset="1" stop-color="#63b8ff" stop-opacity="0"/></linearGradient>
-                <linearGradient id="gradLVPD" x1="0" x2="1"><stop offset="0" stop-color="#ff5a9b" stop-opacity=".15"/><stop offset="1" stop-color="#ff5a9b" stop-opacity="0"/></linearGradient>
-              </defs>
-              <path id="graphAreaLSPD" fill="url(#gradLSPD)" d=""></path>
-              <path id="graphAreaSFPD" fill="url(#gradSFPD)" d=""></path>
-              <path id="graphAreaLVPD" fill="url(#gradLVPD)" d=""></path>
-              <path id="graphLineLSPD" d="" stroke="#53f0c4" stroke-width="4" fill="none" stroke-linecap="round"></path>
-              <path id="graphLineSFPD" d="" stroke="#63b8ff" stroke-width="4" fill="none" stroke-linecap="round"></path>
-              <path id="graphLineLVPD" d="" stroke="#ff5a9b" stroke-width="4" fill="none" stroke-linecap="round"></path>
-            </svg>
-          </div>
-          <div class="legend"><span><i style="background:#53f0c4"></i>LSPD</span><span><i style="background:#63b8ff"></i>SFPD</span><span><i style="background:#ff5a9b"></i>LVPD</span></div>
-        </div>
-        <div class="panel">
-          <h2 class="panel-title"><svg><use href="#ic-star"/></svg> Лидер сегодня</h2>
-          <div class="leader-box" id="leaderTodayBox">
-            <img src="png_police_site/profile.png" alt="Лидер дня" id="leaderTodayAvatar">
-            <div>
-              <div style="font-size:28px;font-weight:1000;letter-spacing:-.04em;line-height:1" id="leaderTodayName">Ожидаем данные</div>
-              <div style="margin-top:8px;font-size:14px;font-weight:900;color:#ffcf57;text-transform:uppercase;letter-spacing:.12em" id="leaderTodayDept">—</div>
-            </div>
-            <div class="leader-score" id="leaderTodayScore">—<span>АШ</span></div>
-          </div>
-        </div>
-      </section>
     </div>
   </section>
 </main>
 
 <footer class="footer">
   <div class="wrap footer-inner">
-    <span>© marsellex · Police Department</span>
-    <nav aria-label="Полезные ссылки">
+    <p>© marsellex · С 2024 по настоящее время</p>
+    <nav class="links" aria-label="Полезные ссылки">
       <a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a>
       <a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a>
-      <a href="index.html">На главную</a>
+      <a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a>
+      <a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a>
+      <a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a>
     </nav>
   </div>
 </footer>
@@ -370,255 +444,105 @@
 
 <script>
 (()=>{'use strict';
-  const API_PRIMARY='https://api.police-department.ru';
-  const API_FALLBACK='https://police-api-b2y4.onrender.com';
+  const API='https://police-api-b2y4.onrender.com';
   const FALLBACK_AVATAR='png_police_site/profile.png';
-  const DEPT_INFO={
-    LSPD:{short:'LSPD',label:'Los Santos Police Department',className:'lspd',city:'LOS SANTOS',accent:'#53f0c4',rankHint:'Сильные лидеры — сильный штат'},
-    SFPD:{short:'SFPD',label:'San Fierro Police Department',className:'sfpd',city:'SAN FIERRO',accent:'#63b8ff',rankHint:'Мост между дисциплиной и результатом'},
-    LVPD:{short:'LVPD',label:'Las Venturas Police Department',className:'lvpd',city:'LAS VENTURAS',accent:'#ff5a9b',rankHint:'Темп, давление и результат'}
+  const DEPT={
+    LSPD:{title:'LSPD',label:'Los Santos Police Department',city:'LOS SANTOS',cls:'lspd',accent:'#53f0c4'},
+    SFPD:{title:'SFPD',label:'San Fierro Police Department',city:'SAN FIERRO',cls:'sfpd',accent:'#63b8ff'},
+    LVPD:{title:'LVPD',label:'Las Venturas Police Department',city:'LAS VENTURAS',cls:'lvpd',accent:'#ff5a9b'}
   };
-  const demoStats={
-    LSPD:{day:15,week:66,online:112,events:8,penalties:27,trend:[9,10,11,12,13,14,15]},
-    SFPD:{day:17,week:74,online:98,events:11,penalties:31,trend:[7,10,11,12,14,15,17]},
-    LVPD:{day:35,week:95,online:86,events:14,penalties:45,trend:[15,19,22,23,27,30,35]}
-  };
-
-  const slotMap={1:document.querySelector('[data-rank-slot="1"]'),2:document.querySelector('[data-rank-slot="2"]'),3:document.querySelector('[data-rank-slot="3"]')};
+  const slots={1:document.querySelector('[data-rank-slot="1"]'),2:document.querySelector('[data-rank-slot="2"]'),3:document.querySelector('[data-rank-slot="3"]')};
   const refreshBtn=document.getElementById('refreshChiefs');
   const toastNode=document.getElementById('toast');
   const stateText=document.getElementById('apiStateText');
-  const todayLabel=document.getElementById('todayLabel');
   const periodButtons=[...document.querySelectorAll('[data-period]')];
-  const leaderTodayAvatar=document.getElementById('leaderTodayAvatar');
-  const leaderTodayName=document.getElementById('leaderTodayName');
-  const leaderTodayDept=document.getElementById('leaderTodayDept');
-  const leaderTodayScore=document.getElementById('leaderTodayScore');
-  const appointedCount=document.getElementById('appointedCount');
-  const avgActivity=document.getElementById('avgActivity');
   const editChiefsLink=document.getElementById('editChiefsLink');
-  let currentPeriod='day';
-  let lastController=null;
-  let toastTimer=0;
-
-  function toast(message){
-    toastNode.textContent=message;
-    toastNode.classList.add('visible');
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>toastNode.classList.remove('visible'),4200);
-  }
-  function escapeHtml(value){
-    return String(value ?? '').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-  }
-  function setState(text, ok=true){
-    stateText.textContent=text;
-    stateText.parentElement.style.color=ok ? '#5af1c3' : '#ffcf57';
-    stateText.previousElementSibling.style.background=ok ? '#4deeb8' : '#ffcf57';
-    stateText.previousElementSibling.style.boxShadow=ok ? '0 0 14px #4deeb8' : '0 0 14px #ffcf57';
-  }
-  function getMetric(item, period){
-    const base=demoStats[item.department]?.[period] ?? (period==='day'?0:0);
-    const candidates = period==='day'
-      ? [item.activity_day,item.day_activity,item.metric_day,item.metric_value,item.activity,item.stats?.day]
-      : [item.activity_week,item.week_activity,item.metric_week,item.week_metric,item.stats?.week];
+  let items=[],period='day',controller=null,toastTimer=0;
+  const htmlEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const safeAvatar=v=>/^https:\/\//i.test(String(v||'')) ? String(v) : FALLBACK_AVATAR;
+  const metric=(person,mode)=>{
+    const candidates=mode==='day'
+      ? [person?.activity_day,person?.day_activity,person?.metric_day,person?.stats?.day]
+      : [person?.activity_week,person?.week_activity,person?.metric_week,person?.stats?.week];
     for(const value of candidates){
-      const num=Number(value);
-      if(Number.isFinite(num) && num>=0) return num;
+      if(value===null||value===undefined||value==='')continue;
+      const number=Number(value);
+      if(Number.isFinite(number)&&number>=0)return number;
     }
-    return base;
-  }
-  function getStat(item,key){
-    const candidates=[item[key], item.stats?.[key], item.metrics?.[key]];
-    for(const value of candidates){
-      const num=Number(value);
-      if(Number.isFinite(num) && num>=0) return num;
-    }
-    return demoStats[item.department]?.[key] ?? 0;
-  }
-  function getTrend(item){
-    const list = Array.isArray(item.trend) ? item.trend : Array.isArray(item.activity_trend) ? item.activity_trend : demoStats[item.department]?.trend || [0,0,0,0,0,0,0];
-    return list.map(v=>Number(v)||0);
-  }
-  function buildLinePath(values,width,height,padding){
-    const innerW=width-padding*2, innerH=height-padding*2;
-    const max=Math.max(...values,1), min=Math.min(...values,0);
-    const step=values.length>1 ? innerW/(values.length-1) : innerW;
-    return values.map((v,i)=>{
-      const x=padding+i*step;
-      const ratio=(v-min)/(max-min || 1);
-      const y=height-padding-ratio*innerH;
-      return `${i?'L':'M'}${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(' ');
-  }
-  function buildAreaPath(values,width,height,padding){
-    const line=buildLinePath(values,width,height,padding);
-    const innerW=width-padding*2;
-    const step=values.length>1 ? innerW/(values.length-1) : innerW;
-    const endX=(padding+(values.length-1)*step).toFixed(1);
-    const startX=padding.toFixed(1);
-    const baseY=(height-padding).toFixed(1);
-    return `${line} L${endX},${baseY} L${startX},${baseY} Z`;
-  }
-  function emblemSvg(){
-    return `<svg viewBox="0 0 160 160" aria-hidden="true">
-      <circle class="ring" cx="80" cy="80" r="70"></circle>
-      <circle class="ring" cx="80" cy="80" r="58"></circle>
-      <path class="line" d="M46 110h68"></path>
-      <path class="line" d="M60 100 80 56l20 44"></path>
-      <path class="line" d="M80 56v54"></path>
-      <path class="line" d="M55 42h50"></path>
-      <path class="line" d="M44 50c12-9 25-14 36-14 16 0 29 6 36 14"></path>
-      <path class="line" d="M52 119c17 9 39 9 56 0"></path>
-      <path class="line" d="M31 80h16M113 80h16"></path>
-    </svg>`;
-  }
-  function createCard(item, rank){
-    const info=DEPT_INFO[item.department] || DEPT_INFO.LSPD;
-    const metric=getMetric(item,currentPeriod);
-    const online=getStat(item,'online');
-    const events=getStat(item,'events');
-    const penalties=getStat(item,'penalties');
-    const avatar=/^https:\/\//i.test(String(item.avatar_url||'')) ? String(item.avatar_url) : FALLBACK_AVATAR;
-    const medal=rank===1 ? '' : `<div class="place-badge"><div class="medal">${rank}</div></div>`;
-    const crown=rank===1 ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>1 МЕСТО</div>` : '';
-    const topClass=rank===1 ? ' top' : '';
-    const label=rank===1 ? '1 МЕСТО' : rank===2 ? '2 МЕСТО' : '3 МЕСТО';
-    return `
-      <div class="card-wrap">
-        <article class="rank-card ${info.className}${topClass}" data-dept="${info.short}">
-          ${crown}
-          ${medal}
-          <div class="rank-card-body">
-            <div class="dept-watermark"><strong>${info.short}</strong><small>${escapeHtml(info.label)}</small></div>
-            <div class="dept-emblem">${emblemSvg()}</div>
-            <div class="character-strip"></div>
-            <div class="info-panel-card">
-              <div class="identity-row">
-                <img class="chief-avatar" src="${escapeHtml(avatar)}" alt="Аватар ${escapeHtml(item.nickname||info.short)}" onerror="this.onerror=null;this.src='${FALLBACK_AVATAR}'">
-                <div>
-                  <div class="chief-name">${escapeHtml(item.nickname?.trim() || 'Не назначен')}</div>
-                  <div class="chief-id">${item.account_number ? '['+escapeHtml(item.account_number)+']' : ''}</div>
-                  <div style="margin-top:10px"><span class="dept-pill">${info.short}</span></div>
-                </div>
-                <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
-              </div>
-              <div class="stat-main">
-                <div><small>${currentPeriod==='day' ? 'Активность за день' : 'Активность за неделю'}</small><div class="stat-value">${metric}<span>АШ</span></div></div>
-                <div class="bars" aria-hidden="true"><i></i><i></i><i></i></div>
-              </div>
-              <div class="meta-row">
-                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg><div><b>${online}</b><span>Онлайн</span></div></div>
-                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-file"/></svg><div><b>${events}</b><span>Проведено мероприятий</span></div></div>
-                <div class="meta-box"><svg viewBox="0 0 24 24"><use href="#ic-star"/></svg><div><b>${penalties}</b><span>Выдано наказаний</span></div></div>
-              </div>
-              <div class="activity-link"><span>${escapeHtml(info.rankHint)}</span><svg viewBox="0 0 24 24"><use href="#ic-arrow"/></svg></div>
+    return null;
+  };
+  function showToast(message){toastNode.textContent=message;toastNode.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastNode.classList.remove('visible'),4200)}
+  function status(message,okay){stateText.textContent=message;stateText.parentElement.style.color=okay?'#5af1c3':'#ffcf57';const led=stateText.previousElementSibling;led.style.background=okay?'#4deeb8':'#ffcf57';led.style.boxShadow=okay?'0 0 14px #4deeb8':'0 0 14px #ffcf57'}
+  function shield(){return `<svg viewBox="0 0 160 160" aria-hidden="true"><circle class="ring" cx="80" cy="80" r="70"/><circle class="ring" cx="80" cy="80" r="58"/><path class="line" d="M46 110h68M60 100 80 56l20 44M80 56v54M55 42h50M44 50c12-9 25-14 36-14 16 0 29 6 36 14M52 119c17 9 39 9 56 0M31 80h16M113 80h16"/></svg>`}
+  function card(person,rank,rankReady){
+    const info=DEPT[person.department];
+    const value=metric(person,period);
+    const isFirst=rank===1;
+    const label=rankReady?`${rank} МЕСТО`:'РЕЙТИНГ ОЖИДАЕТСЯ';
+    const badge=isFirst
+      ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>${rankReady?'1 МЕСТО':'ОЖИДАНИЕ'}</div>`
+      : `<div class="place-badge"><div class="medal">${rankReady?rank:'—'}</div></div>`;
+    const avatar=safeAvatar(person.avatar_url);
+    const score=value===null?'—':new Intl.NumberFormat('ru-RU',{maximumFractionDigits:1}).format(value);
+    return `<div class="card-wrap ${info.cls}${isFirst?' rank-one':''}"><div class="float-shell"><article class="rank-card ${info.cls}${isFirst?' top':''}" aria-label="${info.title}, ${rankReady?'место '+rank:'ожидается рейтинг'}">
+      ${badge}
+      <div class="rank-card-body">
+        <div class="dept-watermark"><strong>${info.title}</strong><small>${info.city}</small></div>
+        <div class="dept-emblem">${shield()}</div>
+        <div class="character-strip"></div>
+        <div class="info-panel-card">
+          <div class="identity-row">
+            <img class="chief-avatar" alt="Аватар ${htmlEscape(person.nickname||info.title)}" src="${htmlEscape(avatar)}">
+            <div><div class="chief-name">${htmlEscape(person.nickname||'Не назначен')}</div>
+              <div class="chief-id">${person.account_number?'['+htmlEscape(person.account_number)+']':''}</div>
+              <span class="dept-pill">${info.title}</span>
             </div>
           </div>
-        </article>
-        <div class="pedestal"><div class="pedestal-ring"></div><div class="pedestal-label">${label}</div></div>
-      </div>`;
+          <div class="stat-main"><div><small>${period==='day'?'Активность за день':'Активность за неделю'}</small><div class="stat-value">${score}<span>АШ</span></div>${value===null?'<div class="stat-note">Данные ещё не подключены</div>':''}</div><div class="bars" aria-hidden="true"><i></i><i></i><i></i></div></div>
+        </div>
+      </div>
+    </article></div><div class="pedestal"><div class="pedestal-ring"></div><div class="pedestal-label">${label}</div></div></div>`;
   }
-  function normalizeItem(item, dept){
-    return {
-      department:dept,
-      nickname:String(item?.nickname || '').trim(),
-      account_number:item?.account_number || '',
-      avatar_url:item?.avatar_url || '',
-      activity_day:getMetric({...item,department:dept},'day'),
-      activity_week:getMetric({...item,department:dept},'week'),
-      online:getStat({...item,department:dept},'online'),
-      events:getStat({...item,department:dept},'events'),
-      penalties:getStat({...item,department:dept},'penalties'),
-      trend:getTrend({...item,department:dept})
-    };
-  }
-  async function fetchChiefs(signal){
-    const endpoints=[API_PRIMARY,API_FALLBACK];
-    let lastError=null;
-    for(const base of endpoints){
-      try{
-        const res=await fetch(base+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal});
-        if(!res.ok) throw new Error('HTTP '+res.status+' ['+base+']');
-        const data=await res.json();
-        if(data?.ok!==true || !Array.isArray(data.items)) throw new Error('Некорректный ответ API ['+base+']');
-        return data.items;
-      }catch(err){lastError=err;if(signal.aborted) throw err;}
+  function render(){
+    const byDept=Object.fromEntries(['LSPD','SFPD','LVPD'].map(dept=>[dept,{department:dept,...(items.find(x=>String(x.department||'').toUpperCase()===dept)||{})}]));
+    const all=[byDept.LSPD,byDept.SFPD,byDept.LVPD];
+    const hasRank=all.every(x=>!!String(x.nickname||'').trim()&&metric(x,period)!==null);
+    const ordered=hasRank
+      ? [...all].sort((a,b)=>metric(b,period)-metric(a,period)||a.department.localeCompare(b.department))
+      : [byDept.SFPD,byDept.LSPD,byDept.LVPD];
+    for(let i=0;i<ordered.length;i++){
+      const slot=i+1;slots[slot].innerHTML=card(ordered[i],slot,hasRank);
+      const avatar=slots[slot].querySelector('.chief-avatar');
+      avatar.onerror=()=>{avatar.onerror=null;avatar.src=FALLBACK_AVATAR};
     }
-    throw lastError || new Error('Нет ответа API');
-  }
-  function renderGraph(items){
-    const width=600, height=200, padding=16;
-    ['LSPD','SFPD','LVPD'].forEach(dep=>{
-      const item=items.find(x=>x.department===dep) || normalizeItem(null,dep);
-      const trend=getTrend(item);
-      document.getElementById('graphLine'+dep).setAttribute('d', buildLinePath(trend,width,height,padding));
-      document.getElementById('graphArea'+dep).setAttribute('d', buildAreaPath(trend,width,height,padding));
-    });
-  }
-  function render(items){
-    const normalized=['LSPD','SFPD','LVPD'].map(dep=>normalizeItem(items.find(x=>String(x.department||'').toUpperCase()===dep),dep));
-    const ranked=[...normalized].sort((a,b)=>getMetric(b,currentPeriod)-getMetric(a,currentPeriod));
-    slotMap[1].innerHTML=createCard(ranked[0],1);
-    slotMap[2].innerHTML=createCard(ranked[1],2);
-    slotMap[3].innerHTML=createCard(ranked[2],3);
-    appointedCount.textContent=String(normalized.filter(x=>x.nickname).length);
-    const values=ranked.map(x=>getMetric(x,currentPeriod)).filter(v=>Number.isFinite(v));
-    avgActivity.textContent=values.length ? (values.reduce((a,b)=>a+b,0)/values.length).toFixed(1) : '—';
-    leaderTodayAvatar.src=/^https:\/\//i.test(String(ranked[0].avatar_url||'')) ? String(ranked[0].avatar_url) : FALLBACK_AVATAR;
-    leaderTodayAvatar.onerror=()=>{leaderTodayAvatar.onerror=null;leaderTodayAvatar.src=FALLBACK_AVATAR};
-    leaderTodayName.textContent=ranked[0].nickname || 'Не назначен';
-    leaderTodayDept.textContent=ranked[0].department;
-    leaderTodayDept.style.color=DEPT_INFO[ranked[0].department]?.accent || '#ffcf57';
-    leaderTodayScore.innerHTML=`${getMetric(ranked[0],currentPeriod)}<span>АШ</span>`;
-    renderGraph(normalized);
   }
   async function refresh(){
-    lastController?.abort();
-    const controller=new AbortController();
-    lastController=controller;
-    refreshBtn.disabled=true;
-    setState('загрузка...', false);
-    const timer=setTimeout(()=>controller.abort(),15000);
+    controller?.abort();const next=new AbortController();controller=next;refreshBtn.disabled=true;status('обновление...',false);
+    const timeout=setTimeout(()=>next.abort(),12000);
     try{
-      const items=await fetchChiefs(controller.signal);
-      if(lastController!==controller) return;
-      render(items);
-      setState('онлайн', true);
-    }catch(error){
-      if(lastController!==controller) return;
-      console.warn('[Chiefs] refresh failed', error);
-      render([]);
-      setState('частично офлайн', false);
-      toast('Не удалось быстро загрузить часть данных. Показан резервный вариант.');
-    }finally{
-      clearTimeout(timer);
-      if(lastController===controller){lastController=null;refreshBtn.disabled=false;}
-    }
+      const res=await fetch(API+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal:next.signal});
+      if(!res.ok)throw new Error('HTTP '+res.status);
+      const data=await res.json();
+      if(!data||data.ok!==true||!Array.isArray(data.items))throw new Error('Неверный ответ сервера');
+      if(controller!==next)return;
+      items=data.items;render();status('обновлено',true);
+    }catch(err){
+      if(controller!==next)return;
+      console.warn('[Police] Chiefs refresh:',err);
+      status('нет соединения',false);showToast('Не удалось обновить руководство, попробуй ещё раз.');
+    }finally{clearTimeout(timeout);if(controller===next){controller=null;refreshBtn.disabled=false}}
   }
-  async function showAdminLink(){
-    const token=window.PoliceSession?.get?.();
-    if(!token) return;
-    const endpoints=[API_PRIMARY,API_FALLBACK];
-    for(const base of endpoints){
-      try{
-        const response=await fetch(base+'/api/auth/me',{headers:{Authorization:'Bearer '+token,Accept:'application/json'},cache:'no-store'});
-        if(!response.ok) continue;
-        const data=await response.json();
-        if(['developer','admin'].includes(data?.user?.role)){editChiefsLink.hidden=false;}
-        break;
-      }catch{}
-    }
+  async function showAdmin(){
+    const token=window.PoliceSession?.get?.();if(!token)return;
+    try{const response=await fetch(API+'/api/auth/me',{headers:{Authorization:'Bearer '+token,Accept:'application/json'},cache:'no-store'});
+      if(!response.ok)return;const data=await response.json();if(['developer','admin'].includes(data?.user?.role))editChiefsLink.hidden=false;
+    }catch{}
   }
-
-  todayLabel.textContent=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());
-  periodButtons.forEach(btn=>btn.addEventListener('click',()=>{
-    currentPeriod=btn.dataset.period;
-    periodButtons.forEach(node=>node.setAttribute('aria-pressed', String(node===btn)));
-    refresh();
-  }));
+  document.getElementById('todayLabel').textContent=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date());
+  periodButtons.forEach(btn=>btn.addEventListener('click',()=>{period=btn.dataset.period;periodButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render()}));
   refreshBtn.addEventListener('click',refresh);
-  window.addEventListener('pageshow',event=>{ if(event.persisted) refresh(); });
-  render([]); refresh(); showAdminLink();
+  window.addEventListener('pageshow',event=>{if(event.persisted)refresh()});
+  render();refresh();showAdmin();
 })();
 </script>
 </body>
