@@ -347,7 +347,7 @@ header.header a.brand.pd-unified-brand strong{
 <a class="feature" style="--accent:#b494ff" href="#" data-soon="Справочник полиции"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#56e2bc" href="#news"><img class="feature-bg" src="png_police_site/05_news.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/news.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Новости и обновления</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#f1bd67" href="leadership.html"><img class="feature-bg" src="png_police_site/06_staff.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/staff.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Руководство полиции</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" style="--accent:#ff9a64" href="#chiefs"><img class="feature-bg" src="png_police_site/07_chief_activity.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/chief_activity.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Активность шефов</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#ff9a64" href="chiefs.html"><img class="feature-bg" src="png_police_site/07_chief_activity.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/chief_activity.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Активность шефов</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ad8cff" href="#ratings"><img class="feature-bg" src="png_police_site/08_top_employees.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/top_employees.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Топ сотрудников</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" id="quests" style="--accent:#55ccff" href="#quests" data-soon="Квесты для старшего состава [8-10]"><img class="feature-bg" src="png_police_site/09_quests.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/quests.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Квесты для старшего состава [8-10]</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" id="drawings" style="--accent:#fa83b4" href="#drawings" data-soon="Розыгрыши"><img class="feature-bg" src="png_police_site/10_giveaways.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/giveaways.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Розыгрыши / рулетка</strong></span><span class="arrow">↗</span></span></a>
@@ -422,7 +422,7 @@ document.querySelectorAll('[data-soon]').forEach(el=>el.addEventListener('click'
 document.querySelectorAll('[data-article]').forEach(el=>el.addEventListener('click',()=>toast(el.dataset.article)));
 $('bellBtn').onclick=()=>toast('Новых уведомлений нет');
 $('nav').addEventListener('click',()=> $('nav').classList.remove('open'));
-const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','#chiefs'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Розыгрыши','#drawings'],['Личный кабинет','https://police-department.ru/entrance.html']];
+const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Розыгрыши','#drawings'],['Личный кабинет','https://police-department.ru/entrance.html']];
 const escapeHTML=t=>t.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showSearch(){ $('searchOverlay').classList.add('open');$('globalSearch').value='';renderSearch('');setTimeout(()=>$('globalSearch').focus(),10)}
 function hideSearch(){$('searchOverlay').classList.remove('open')}
@@ -486,7 +486,7 @@ async function openAdmin(){
  $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  // Render the selected panel immediately; network requests must not block tab clicks.
- setTab(location.hash==='#roles'?'roles':currentTab);
+ setTab(location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
  try{
    const me=await req('/api/auth/me');
    adminUser=me.user;
@@ -498,6 +498,7 @@ async function openAdmin(){
    }
    document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
    if(location.hash==='#roles') {setTab('roles');return;}
+    if(location.hash==='#chiefs') {setTab('chiefs');await loadChiefs();return;}
    const results=await Promise.allSettled([loadUsers(),loadChiefs(),loadLeadership()]);
    const failed=results.find(r=>r.status==='rejected');
    if(failed) error('Некоторые данные не загрузились: '+failed.reason.message);
@@ -621,7 +622,7 @@ document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
  b.onclick=()=>setTab(b.dataset.pdTab);
 });
 window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
-window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');});
+window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();

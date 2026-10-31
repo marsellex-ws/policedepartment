@@ -9,6 +9,7 @@
     'index.html': ['/api/portal/leadership', '/api/portal/chiefs'],
     'admin.html': ['/api/portal/leadership', '/api/portal/chiefs'],
     'leadership.html': ['/api/portal/leadership'],
+    'chiefs.html': ['/api/portal/chiefs'],
     'reestr.html': ['/api/punishments?limit=100&offset=0'],
     'exams.html': ['/api/exams'],
     'entrance.html': []
