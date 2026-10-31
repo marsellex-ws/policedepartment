@@ -458,6 +458,42 @@
     }
     @media(prefers-reduced-motion:reduce){.float-shell{animation:none!important}.rank-card{transition:none}}
 
+    /* Ranking badges float above the cards; distinct 1/2/3 places. */
+    .rank-banner{position:absolute;top:-65px;left:50%;transform:translateX(-50%);z-index:30;
+      display:flex;justify-content:center;align-items:center;gap:11px;min-width:175px;height:49px;padding:0 21px;
+      border-radius:15px;white-space:nowrap;font-size:17px;font-weight:1000;letter-spacing:.065em;
+      background:linear-gradient(145deg,rgba(20,40,69,.88),rgba(7,15,35,.90));
+      border:1px solid rgba(140,200,255,.64);color:#e6f5ff;box-shadow:inset 0 1px rgba(255,255,255,.21),0 9px 28px #0008,0 0 19px #6fb9ff2c;
+      backdrop-filter:blur(14px);pointer-events:none}
+    .rank-banner::before{content:'';position:absolute;bottom:-13px;left:50%;width:1px;height:12px;background:linear-gradient(180deg,#a9d7ff99,transparent)}
+    .rank-banner svg{width:25px;height:25px;flex:0 0 25px;stroke:currentColor;stroke-width:2.3;fill:none}
+    .rank-banner.gold{border-color:#ffe1a6;color:#fff2cc;background:linear-gradient(140deg,rgba(109,66,19,.92),rgba(29,21,23,.94));
+      box-shadow:0 0 30px #ffc54d5a,inset 0 1px #fff4b474,0 14px 35px #000b}
+    .rank-banner.silver{border-color:#b3d8fc;color:#e3f2ff}
+    .rank-banner.bronze{border-color:#ffa6b7;color:#ffe1e7}
+    .rank-banner.pending{opacity:.73}
+    .rank-banner.gold svg{fill:#ffd57733}
+    @keyframes rankEnter{from{opacity:.2;transform:translateY(28px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .slot.ranking-moved .card-wrap{animation:rankEnter .68s cubic-bezier(.18,.7,.22,1) both}
+    .weeks-history{max-width:1470px;margin:10px auto 38px;padding:24px 26px 27px;border:1px solid #5186c448;border-radius:22px;
+      background:linear-gradient(145deg,rgba(8,21,47,.82),rgba(7,14,33,.86));backdrop-filter:blur(18px);box-shadow:0 16px 40px #0008}
+    .weeks-history[hidden]{display:none!important}
+    .weeks-heading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:12px;margin-bottom:21px}
+    .weeks-heading h2{margin:0;color:#f0f6ff;font-weight:1000;letter-spacing:.055em;font-size:clamp(18px,2.3vw,27px)}
+    .weeks-heading span{font-size:12px;color:#92afcf}
+    .weeks-chart{display:grid;grid-template-columns:repeat(8,minmax(100px,1fr));gap:10px;overflow-x:auto;padding:9px 1px 16px;scrollbar-color:#4e8cc3 #081931}
+    .week-col{min-width:100px;padding:12px 9px 11px;border:1px solid #6194c52b;border-radius:14px;background:#07172b9c;display:grid;grid-template-rows:auto 146px auto;gap:10px;align-items:end}
+    .week-total{display:flex;justify-content:center;align-items:baseline;gap:3px;text-align:center;font-size:17px;color:#daeaff;font-weight:950}
+    .week-total span{font-size:10px;font-weight:750;color:#91aacc}
+    .week-bars{display:flex;align-items:end;justify-content:center;gap:9px;border-bottom:1px solid #5b83ab50;padding:0 7px 2px;height:146px}
+    .week-bar{position:relative;display:block;width:18px;min-height:0;height:var(--bar-height);border-radius:5px 5px 0 0;background:var(--bar-color);
+      box-shadow:0 0 14px color-mix(in srgb,var(--bar-color) 40%,transparent);transition:height .35s}
+    .week-bar:empty{opacity:.9}.week-bar.is-empty{background:#304b66;opacity:.35;min-height:2px}
+    .week-label{text-align:center;color:#a7c3e0;font-size:11px;font-weight:850;white-space:nowrap}
+    .weeks-legend{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:25px;margin-top:8px;color:#c0d2e8;font-size:12px;font-weight:800}
+    .weeks-legend span{display:inline-flex;align-items:center;gap:7px}.weeks-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--legend-color)}
+    .weeks-empty{margin:16px 0 0;text-align:center;color:#8faac8;font-size:12px}
+    @media(max-width:850px){.rank-banner{top:-48px;min-width:150px;height:43px;font-size:14px}.podium-scene{row-gap:90px!important}.weeks-history{padding:20px 10px}.weeks-chart{grid-template-columns:repeat(8,110px)}.week-col{min-width:110px}}
   </style>
 </head>
 <body>
@@ -511,6 +547,12 @@
       </div>
     </div>
   </section>
+  <section class="weeks-history" id="weeksHistory" aria-label="АО за последние восемь недель" hidden>
+    <div class="weeks-heading"><h2>АКТИВНОСТЬ ЗА 8 НЕДЕЛЬ</h2><span>АО действующих шефов · Пн–Вс · Москва</span></div>
+    <div class="weeks-chart" id="weeksChart" role="group" aria-label="История активности LSPD, SFPD и LVPD"></div>
+    <div class="weeks-legend"><span><i style="--legend-color:#53f0c4"></i>LSPD</span><span><i style="--legend-color:#63b8ff"></i>SFPD</span><span><i style="--legend-color:#ff5a9b"></i>LVPD</span></div>
+    <p class="weeks-empty" id="weeksEmpty" hidden>Пока нет записей АО за эти недели.</p>
+  </section>
 </main>
 
 <footer class="footer">
@@ -540,13 +582,11 @@
   const toastNode=document.getElementById('toast');
   const stateText=document.getElementById('apiStateText');
   const periodButtons=[...document.querySelectorAll('[data-period]')];
-  let items=[],period='day',controller=null,toastTimer=0;
+  let items=[],historyWeeks=[],period='day',controller=null,toastTimer=0,lastRankOrder='';
   const htmlEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const safeAvatar=v=>/^https:\/\//i.test(String(v||'')) ? String(v) : FALLBACK_AVATAR;
   const metric=(person,mode)=>{
-    const candidates=mode==='day'
-      ? [person?.activity_day,person?.day_activity,person?.metric_day,person?.stats?.day]
-      : [person?.activity_week,person?.week_activity,person?.metric_week,person?.stats?.week];
+    const candidates=mode==='day' ? [person?.ao_day] : [person?.ao_week];
     for(const value of candidates){
       if(value===null||value===undefined||value==='')continue;
       const number=Number(value);
@@ -561,14 +601,14 @@
     const info=DEPT[person.department];
     const value=metric(person,period);
     const isFirst=rank===1;
-    const label=rankReady?`${rank} МЕСТО`:'';
-    const badge=!rankReady?'':isFirst
-      ? `<div class="place-crown"><svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>1 МЕСТО</div>`
-      : `<div class="place-badge"><div class="medal">${rank}</div></div>`;
+    const bannerType=rank===1?'gold':rank===2?'silver':'bronze';
+    const bannerIcon=rank===1?`<svg viewBox="0 0 24 24"><use href="#ic-crown"/></svg>`
+      :`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="m8 4-2-3m10 3 2-3"/></svg>`;
+    const badge=`<div class="rank-banner ${bannerType}${rankReady?'':' pending'}" title="${rankReady?'Место по количеству АО':'Статистика АО ещё не заполнена'}">${bannerIcon}<span>${rank} МЕСТО</span></div>`;
+    const label='';
     const avatar=safeAvatar(person.avatar_url);
     const score=value===null?'—':new Intl.NumberFormat('ru-RU',{maximumFractionDigits:1}).format(value);
-    return `<div class="card-wrap ${info.cls}${isFirst?' rank-one':''}"><div class="float-shell"><article class="rank-card ${info.cls}${isFirst?' top':''}" aria-label="${info.title}, ${rankReady?'место '+rank:'ожидается рейтинг'}">
-      ${badge}
+    return `<div class="card-wrap ${info.cls}${isFirst?' rank-one':''}"><div class="float-shell">${badge}<article class="rank-card ${info.cls}${isFirst?' top':''}" aria-label="${info.title}, ${rankReady?'место '+rank:'ожидается рейтинг'}">
       <div class="rank-card-body">
         <div class="dept-watermark"><strong>${info.title}</strong><small>${info.city}</small></div>
         <div class="dept-emblem">${shield()}</div>
@@ -581,7 +621,7 @@
               <span class="dept-pill">${info.title}</span>
             </div>
           </div>
-          <div class="stat-main"><div><small>${period==='day'?'Активность за день':'Активность за неделю'}</small><div class="stat-value">${score}<span>АШ</span></div>${value===null?'<div class="stat-note">Данные ещё не подключены</div>':''}</div><div class="bars" aria-hidden="true"><i></i><i></i><i></i></div></div>
+          <div class="stat-main"><div><small>${period==='day'?'Активность за день':'Активность за неделю'}</small><div class="stat-value">${score}<span>АО</span></div>${value===null?'':''}</div><div class="bars" aria-hidden="true"><i></i><i></i><i></i></div></div>
         </div>
       </div>
     </article></div><div class="pedestal"><div class="pedestal-ring"></div><div class="pedestal-label">${label}</div></div></div>`;
@@ -589,15 +629,43 @@
   function render(){
     const byDept=Object.fromEntries(['LSPD','SFPD','LVPD'].map(dept=>[dept,{department:dept,...(items.find(x=>String(x.department||'').toUpperCase()===dept)||{})}]));
     const all=[byDept.LSPD,byDept.SFPD,byDept.LVPD];
-    const hasRank=all.every(x=>!!String(x.nickname||'').trim()&&metric(x,period)!==null);
+    const hasRank=all.some(x=>metric(x,period)!==null);
     const ordered=hasRank
-      ? [...all].sort((a,b)=>metric(b,period)-metric(a,period)||a.department.localeCompare(b.department))
+      ? [...all].sort((a,b)=>(metric(b,period)??-1)-(metric(a,period)??-1)||a.department.localeCompare(b.department))
       : [byDept.SFPD,byDept.LSPD,byDept.LVPD];
+    const rankOrder=ordered.map(x=>x.department).join('|');
+    const moved=lastRankOrder!==''&&rankOrder!==lastRankOrder;lastRankOrder=rankOrder;
     for(let i=0;i<ordered.length;i++){
       const slot=i+1;slots[slot].innerHTML=card(ordered[i],slot,hasRank);
+      if(moved){slots[slot].classList.remove('ranking-moved');void slots[slot].offsetWidth;slots[slot].classList.add('ranking-moved');}
       const avatar=slots[slot].querySelector('.chief-avatar');
       avatar.onerror=()=>{avatar.onerror=null;avatar.src=FALLBACK_AVATAR};
     }
+  }
+  function renderWeeks(){
+    const section=document.getElementById('weeksHistory');
+    section.hidden=period!=='week';
+    if(section.hidden)return;
+    const labels=new Intl.DateTimeFormat('ru-RU',{day:'2-digit',month:'short',timeZone:'UTC'});
+    const valid=historyWeeks.filter(w=>w&&/^\d{4}-\d{2}-\d{2}$/.test(w.start));
+    const allValues=valid.flatMap(w=>['LSPD','SFPD','LVPD'].map(d=>w.totals?.[d]).filter(v=>Number.isFinite(v)));
+    const maxValue=Math.max(1,...allValues);
+    document.getElementById('weeksChart').innerHTML=valid.map(w=>{
+      const start=labels.format(new Date(w.start+'T12:00:00Z'));
+      const end=labels.format(new Date(w.end+'T12:00:00Z'));
+      const total=['LSPD','SFPD','LVPD'].map(d=>w.totals?.[d]).filter(v=>Number.isFinite(v));
+      const sum=total.length?total.reduce((a,b)=>a+b,0):null;
+      const bars=['LSPD','SFPD','LVPD'].map(d=>{
+        const n=w.totals?.[d];
+        const validValue=Number.isFinite(n)&&n>=0;
+        const color=DEPT[d].accent;
+        const height=validValue&&n>0?Math.max(4,Math.round(n/maxValue*132)):0;
+        const value=validValue?n+' АО':'нет данных';
+        return `<div class="week-bar${validValue?'':' is-empty'}" title="${d}: ${value}" role="img" aria-label="${d}: ${value}" style="--bar-color:${color};--bar-height:${height}px"></div>`;
+      }).join('');
+      return `<div class="week-col"><div class="week-total">${sum??'—'} <span>АО</span></div><div class="week-bars">${bars}</div><div class="week-label">${start} – ${end}</div></div>`;
+    }).join('');
+    document.getElementById('weeksEmpty').hidden=allValues.length>0;
   }
   async function refresh(){
     controller?.abort();const next=new AbortController();controller=next;status('Обновляем данные...');
@@ -608,16 +676,18 @@
       const data=await res.json();
       if(!data||data.ok!==true||!Array.isArray(data.items))throw new Error('Неверный ответ сервера');
       if(controller!==next)return;
-      items=data.items;render();status('Данные руководства получены');
+      items=data.items;historyWeeks=Array.isArray(data.activity?.weeks)?data.activity.weeks:[];render();renderWeeks();status('Данные руководства получены');
     }catch(err){
       if(controller!==next)return;
       console.warn('[Police] Chiefs refresh:',err);
       status('Временная ошибка соединения');showToast('Не удалось получить данные руководства.');
     }finally{clearTimeout(timeout);if(controller===next){controller=null}}
   }
-  periodButtons.forEach(btn=>btn.addEventListener('click',()=>{period=btn.dataset.period;periodButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render()}));
+  periodButtons.forEach(btn=>btn.addEventListener('click',()=>{period=btn.dataset.period;periodButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render();renderWeeks()}));
   window.addEventListener('pageshow',event=>{if(event.persisted)refresh()});
-  render();refresh();
+  window.addEventListener('focus',()=>{if(!document.hidden&&!controller)refresh()});
+  setInterval(()=>{if(!document.hidden&&!controller)refresh()},90_000);
+  render();renderWeeks();refresh();
 })();
 </script>
 </body>

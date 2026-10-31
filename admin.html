@@ -317,7 +317,19 @@ header.header a.brand.pd-unified-brand strong{
     <form id="pdVkForm" class="pd-admin-subcard"><h4>Привязка VK</h4><label for="pdVkUrl">Ссылка на страницу</label><input type="url" id="pdVkUrl" placeholder="https://vk.com/id123456" autocomplete="url"><button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить привязку</button></form>
     </div></section>
   </div>
-  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
+  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div>
+    <section class="pd-admin-card pd-ao-entry" style="margin-top:20px" aria-labelledby="pdAoTitle">
+      <div class="pd-admin-card-head"><h3 id="pdAoTitle">Учёт активности шефов · АО</h3></div>
+      <p class="pd-hint">Выбери департамент, дату по московскому времени и количество АО за этот день. Повторное сохранение заменяет результат за выбранную дату. История сохраняется за конкретным номером аккаунта шефа.</p>
+      <form id="pdAoForm" style="display:grid;grid-template-columns:repeat(3,minmax(130px,1fr)) auto;align-items:end;gap:12px">
+        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">Департамент<select id="pdAoDepartment" required><option>LSPD</option><option>SFPD</option><option>LVPD</option></select></label>
+        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">Дата (МСК)<input type="date" id="pdAoDate" required></label>
+        <label style="display:grid;gap:6px;font-size:12px;color:#bcd4eb">АО за день<input id="pdAoValue" type="number" min="0" max="100000" step="1" required placeholder="Например: 15"></label>
+        <button class="pd-admin-btn pd-admin-primary" type="submit" id="pdAoSubmit">Сохранить АО</button>
+      </form>
+      <p id="pdAoStatus" role="status" aria-live="polite" style="min-height:1.5em;font-size:12px;color:#9fcbe7;margin:10px 0 0"></p>
+    </section>
+  </div>
   <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
   <section id="pdAdminRoles" class="pd-roles-layout hidden" aria-label="Выдача ролей">
     <div class="pd-admin-card pd-roles-search-card">
@@ -626,6 +638,40 @@ window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
 window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
+})();
+</script>
+<style id="pdAoStyles">
+@media(max-width:940px){#pdAoForm{grid-template-columns:repeat(2,minmax(120px,1fr))!important}}
+@media(max-width:550px){#pdAoForm{grid-template-columns:1fr!important}}
+</style>
+<script id="pdAoLogic">
+(() => {'use strict';
+  const form=document.getElementById('pdAoForm');
+  if(!form)return;
+  const dateEl=document.getElementById('pdAoDate');
+  const statusEl=document.getElementById('pdAoStatus');
+  const button=document.getElementById('pdAoSubmit');
+  const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Moscow',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  dateEl.value=today;dateEl.max=today;
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    const token=window.PoliceSession?.get?.();
+    if(!token){statusEl.textContent='Сессия истекла. Войди в аккаунт заново.';return;}
+    const department=document.getElementById('pdAoDepartment').value;
+    const value=document.getElementById('pdAoValue').value.trim();
+    if(!['LSPD','SFPD','LVPD'].includes(department)||!/^\d{1,6}$/.test(value)||Number(value)>100000){statusEl.textContent='Проверь департамент и значение АО (0–100000).';return;}
+    button.disabled=true;statusEl.textContent='Сохраняем...';
+    try{
+      const res=await fetch('https://police-api-b2y4.onrender.com/api/portal/admin/chiefs/'+department+'/activity',{
+        method:'PUT',headers:{Accept:'application/json','Content-Type':'application/json',Authorization:'Bearer '+token},
+        body:JSON.stringify({date:dateEl.value,ao:Number(value)}),cache:'no-store'
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||data.ok!==true)throw new Error(data.error||'Сервер: '+res.status);
+      statusEl.textContent='Сохранено: '+department+' · '+dateEl.value+' · '+value+' АО. Рейтинг обновится при следующей загрузке.';
+    }catch(err){statusEl.textContent='Не удалось сохранить: '+(err.message||'Ошибка сети');}
+    finally{button.disabled=false;}
+  });
 })();
 </script>
 </body>
