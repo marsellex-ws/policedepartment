@@ -53,7 +53,32 @@
     @media(max-width:670px){.shell{width:calc(100% - 18px)}.top{height:74px}.brand img{width:35px;height:39px}.brand strong{font-size:12px}.kicker{margin-top:22px;font-size:9px}.subtitle{font-size:10px;letter-spacing:.09em}.title{font-size:clamp(39px,9.6vw,57px)}.tabs{margin-bottom:14px}.tabs button{font-size:12px;padding:11px 13px 15px}.arena-frame{padding:10px 8px;border-radius:18px}.frame-head{margin:4px 4px 12px}.hud-left{gap:6px}.hud-stat{padding:8px;gap:6px}.hud-stat .stat-icon{width:25px;height:25px;font-size:16px}.hud-stat small{font-size:8px}.hud-stat b{font-size:19px}.hud-stat b span{font-size:11px}.hud-stat .meter{margin-top:5px}.timer-panel strong{font-size:30px}.range{height:435px}.range-top,.range-corner,.range-bottom{font-size:8px}.target{width:88px;min-height:112px}.target .health{padding:4px;left:0;right:0;gap:3px}.target .health b{font-size:10px}.target .health-bar{min-width:13px;max-width:26px}.target .orb{width:61px;height:61px;margin-top:27px;border-radius:17px}.target .orb .glyph{font-size:27px}.target .name{width:86px;font-size:9px;margin-top:6px}.start-prompt{padding:19px}.start-prompt h2{font-size:17px}.start-btn{font-size:14px;min-height:53px;min-width:210px}.sub-btn{min-height:51px}.instructions{gap:8px}.instruction{padding:13px;min-height:136px}.instruction small{font-size:11px}.footinner,.links{justify-content:center;text-align:center}}
     @media(max-width:440px){.hud-stat .stat-icon{display:none}.hud-stat{padding:7px 8px}.hud-stat small{font-size:8px}.instructions{grid-template-columns:1fr}.instruction{min-height:0}.range{height:395px}.frame-live{font-size:9px}.result-card h2{font-size:30px}}
     @media(prefers-reduced-motion:reduce){.target .orb,.target.destroyed,.result-card{animation-duration:.01ms!important}.start-btn{transition:none}}
-  </style>
+  
+/* Tactical range Mk-II — physical auto turret, destructible armor, timed powerups */
+.target .health{padding:5px 4px;gap:3px;min-height:24px}.target .health b{font-size:10px}
+.target .armor-health{position:absolute;top:25px;left:4px;right:4px;z-index:2;display:flex;align-items:center;justify-content:space-around;gap:5px;padding:4px 5px;border-radius:8px;background:#07172bcf;border:1px solid #70b8ff80;min-height:19px}
+.target .armor-health b{font-size:9px;color:#96d3ff;white-space:nowrap}.target .armor-track{height:3px;min-width:16px;flex:1;background:#244567;border-radius:4px;overflow:hidden}.target .armor-track i{display:block;width:100%;height:100%;background:#67bfff;box-shadow:0 0 8px #6abfff}
+.target .armor-health.no-armor{opacity:.14}.target .orb{margin-top:50px}.target .glyph img{width:74px;height:74px;border-radius:16px;object-fit:cover}.target .glyph{display:grid;place-items:center}.target .orb:before{pointer-events:none}
+.physical-turret{z-index:9;position:absolute;left:50%;bottom:-16px;width:260px;height:205px;transform:translateX(-50%);pointer-events:none;filter:drop-shadow(0 14px 20px #000b)}
+.turret-swivel{position:absolute;bottom:30px;left:50%;width:80px;height:190px;transform-origin:50% 91%;transition:transform .115s cubic-bezier(.22,.7,.2,1);}
+.turret-barrel{position:absolute;bottom:40px;left:50%;width:42px;height:149px;transform:translateX(-50%);border:2px solid #70a7e3;border-bottom:0;border-radius:16px 16px 7px 7px;background:linear-gradient(90deg,#08152b,#4c759c 23%,#0d2e53 37%,#123453 55%,#83aed9 74%,#081429);box-shadow:inset 0 0 12px #001027,0 0 18px #268ffb66,6px 7px 8px #000a;transition:transform .07s}
+.turret-rail{position:absolute;top:15px;bottom:12px;left:calc(50% - 4px);width:8px;border-left:2px solid #90d7ff70;border-right:2px solid #90d7ff70;background:#0a1830}
+.turret-bore{position:absolute;top:-9px;left:-3px;right:-3px;height:29px;border-radius:42%;background:radial-gradient(ellipse,#010715 0 29%,#3e78ae 33%,#061428 55%,#a2c8f2 64%,#142c44 72%);border:2px solid #84bffe;box-shadow:0 0 18px #2caeff88}
+.turret-muzzle{display:none;position:absolute;top:-55px;left:50%;transform:translateX(-50%);height:75px;width:70px;clip-path:polygon(50% 0,65% 31%,100% 29%,76% 51%,100% 77%,62% 71%,50% 100%,38% 70%,0 78%,22% 50%,0 27%,37% 32%);background:radial-gradient(#fff 0,#eaffff 16%,#7ad8ff 34%,#249cffaa 55%,transparent 75%);filter:drop-shadow(0 0 15px #70dfff)}
+.physical-turret.firing .turret-muzzle{display:block}.physical-turret.firing .turret-barrel{transform:translateX(-50%) translateY(8px)}
+.turret-neck{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);height:45px;width:73px;border-radius:18px;background:linear-gradient(90deg,#152d4f,#79b4eb,#0f284a);border:2px solid #74a8e3}
+.turret-housing{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:224px;height:98px;border-radius:55px 55px 20px 20px;background:linear-gradient(135deg,#2d5074,#071429 28%,#204365 58%,#071b34);border:2px solid #75a8d5;box-shadow:inset 0 0 25px #000c,0 0 18px #1c83dd44;display:grid;place-items:center}
+.turret-shield{color:#b7ddff;font-size:28px;font-weight:1000;letter-spacing:.25em;text-shadow:0 0 20px #2f8ddf}.turret-shield small{display:block;font-size:10px;letter-spacing:.32em;text-align:center}
+.turret-led{position:absolute;width:18px;height:9px;bottom:26px;border-radius:5px}.turret-led.left{left:20px;background:#468fff;box-shadow:0 0 16px #378bff}.turret-led.right{right:20px;background:#ff496f;box-shadow:0 0 16px #ff497c}
+.time-bonus{position:absolute;left:0;top:0;z-index:10;pointer-events:none;width:80px;height:80px;border:2px solid #ffe682;border-radius:24px;background:radial-gradient(circle at 40% 20%,#ffdb7b91,#9a5428 72%,#322333);box-shadow:0 0 35px #ffc85d99,inset 0 0 20px #fff4a248;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;transform:translate3d(0,0,0)}
+.time-bonus span{font-size:29px}.time-bonus b{font-size:13px;color:#fff7c7;text-shadow:0 1px 6px #000}
+.debris{position:absolute;z-index:24;pointer-events:none}.debris i{position:absolute;width:5px;height:8px;box-shadow:0 0 11px currentColor;border-radius:1px;animation:burst .6s cubic-bezier(.1,.55,.5,1) both}
+@keyframes burst{to{transform:translate(var(--dx),var(--dy)) rotate(420deg);opacity:0}}
+.demo-indicators{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;align-items:center;margin-top:11px;font-size:11px;font-weight:950;letter-spacing:.08em;color:#9fcdeb}.demo-indicators span{padding:7px 13px;border:1px solid #4b87b66b;background:#0920389c;border-radius:9px}.demo-indicators b{color:#76f4c7;font-size:15px}
+.won-list{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px auto 10px;max-height:240px;overflow-y:auto;padding:3px}.won-item{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid #4868909a;border-radius:12px;padding:9px;background:#061b32b8}.won-item.easy{border-color:#4ddfab8c}.won-item.medium{border-color:#6bbaff8c}.won-item.hard{border-color:#ff66868c}.won-pic{width:46px;height:46px;border-radius:10px;background:#173652;display:grid;place-items:center;font-size:26px;overflow:hidden;flex-shrink:0}.won-pic img{width:100%;height:100%;object-fit:cover}.won-item b{display:block;font-size:12px}.won-item small{display:block;font-size:9px;color:#9dbddd}.won-item em{margin-left:auto;font-size:10px;color:#799ebc;font-style:normal}
+.result-glyph{display:none}.result-card{max-height:calc(100vh - 44px);overflow-y:auto}
+@media(max-width:670px){.turret-housing{width:170px;height:77px}.physical-turret{width:195px;height:166px}.turret-swivel{height:159px;bottom:25px}.turret-barrel{height:120px}.target .orb{margin-top:46px}.target .glyph img{width:56px;height:56px}.target .armor-health b{font-size:8px}.won-list{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="wallpaper" aria-hidden="true"></div>
@@ -71,115 +96,190 @@
       <div class="frame-head"><div class="frame-label"><div class="symbol">⌖</div><div><strong>POLICE SHOOTING RANGE / 01</strong><small>ТРЕНИРОВОЧНАЯ СИМУЛЯЦИЯ • ДЕМО-РЕЖИМ</small></div></div><div class="frame-live" id="operationState">СИСТЕМА ГОТОВА</div></div>
       <div class="hud" aria-label="Результаты и таймер">
         <div class="hud-left">
-          <div class="hud-stat easy"><div class="stat-icon">◎</div><div class="stat-body"><small>ЛЁГКИЕ / 3 ЦЕЛИ</small><b id="easyValue">0 <span>/ 3</span></b><div class="meter"><i id="easyMeter"></i></div></div></div>
-          <div class="hud-stat medium"><div class="stat-icon">⬡</div><div class="stat-body"><small>СРЕДНИЕ / 2 ЦЕЛИ</small><b id="mediumValue">0 <span>/ 2</span></b><div class="meter"><i id="mediumMeter"></i></div></div></div>
-          <div class="hud-stat hard"><div class="stat-icon">✦</div><div class="stat-body"><small>СЛОЖНЫЕ / 1 ЦЕЛЬ</small><b id="hardValue">0 <span>/ 1</span></b><div class="meter"><i id="hardMeter"></i></div></div></div>
+          <div class="hud-stat easy"><div class="stat-icon">◎</div><div class="stat-body"><small>ЛЁГКИЕ · СБИТО</small><b id="easyValue">0</b><div class="meter"><i id="easyMeter"></i></div></div></div>
+          <div class="hud-stat medium"><div class="stat-icon">⬡</div><div class="stat-body"><small>СРЕДНИЕ · СБИТО</small><b id="mediumValue">0</b><div class="meter"><i id="mediumMeter"></i></div></div></div>
+          <div class="hud-stat hard"><div class="stat-icon">✦</div><div class="stat-body"><small>СЛОЖНЫЕ · СБИТО</small><b id="hardValue">0</b><div class="meter"><i id="hardMeter"></i></div></div></div>
         </div>
         <div class="timer-panel"><small>ВРЕМЯ РАУНДА</small><strong id="timeLeft">30.0</strong><div class="timer-track"><i id="timeMeter"></i></div></div>
       </div>
       <div class="range" id="range" aria-label="Поле для стрельбы. Наведите курсор на цель и нажмите или удерживайте кнопку мыши">
         <div class="range-wall" aria-hidden="true"></div><div class="lane-marker" aria-hidden="true"></div><div class="laser" aria-hidden="true"></div>
-        <div class="range-top"><i></i> S.W.A.T. / TARGET SIMULATION</div><div class="range-corner">LIVE FIRE • 30 SEC</div><div class="range-bottom">⌖ НАВЕДИ ПРИЦЕЛ И НАЖМИ</div>
-        <div class="targets" id="targets"></div><div class="crosshair" id="crosshair" aria-hidden="true"><b></b></div>
-        <div class="range-shield" id="rangeShield"><div class="start-prompt"><div class="start-icon">⌖</div><h2>ТАКТИЧЕСКАЯ ОПЕРАЦИЯ</h2><p>За 30 секунд сбей 3 лёгкие, 2 средние или 1 сложную цель. Удерживай левую кнопку для автоматической стрельбы. На телефоне нажимай на цели.</p></div></div>
+        <div class="range-top"><i></i> S.W.A.T. / TARGET SIMULATION</div><div class="range-corner">LIVE FIRE • BONUS TIME</div><div class="range-bottom">⌖ НАВЕДИ ПРИЦЕЛ И НАЖМИ</div>
+        <div class="targets" id="targets"></div>
+        <div id="physicalTurret" class="physical-turret" aria-hidden="true"><div id="turretSwivel" class="turret-swivel"><div class="turret-barrel"><span class="turret-rail"></span><span class="turret-bore"></span><span class="turret-muzzle"></span></div><span class="turret-neck"></span></div><div class="turret-housing"><div class="turret-shield">PD <small>MK-II</small></div><i class="turret-led left"></i><i class="turret-led right"></i></div></div><div class="crosshair" id="crosshair" aria-hidden="true"><b></b></div>
+        <div class="range-shield" id="rangeShield"><div class="start-prompt"><div class="start-icon">⌖</div><h2>ТАКТИЧЕСКАЯ ОПЕРАЦИЯ</h2><p>Каждая уничтоженная цель даёт свой приз. Стреляй по летающим наградам, пробивай броню и сбивай дополнительные секунды. Удерживай левую кнопку мыши для стрельбы.</p></div></div>
       </div>
-      <div class="action-row"><button class="start-btn" id="startBtn" type="button">⌖ НАЧАТЬ ОПЕРАЦИЮ</button><button class="sub-btn" id="resetBtn" type="button">↺ СБРОСИТЬ</button></div>
+      <div class="action-row"><button type="button" class="sub-btn" id="soundToggle" aria-pressed="true">♫ Звук: ВКЛ</button><button class="start-btn" id="startBtn" type="button">⌖ НАЧАТЬ ОПЕРАЦИЮ</button><button class="sub-btn" id="resetBtn" type="button">↺ СБРОСИТЬ</button></div>
+      <div class="demo-indicators"><span id="catalogState">ЗАГРУЗКА ПРИЗОВ…</span><span>СБИТО ПРИЗОВ: <b id="winCount">0</b></span></div>
       <div class="status-line" id="statusLine" role="status" aria-live="polite">Демо-режим: выигрыши не начисляются на аккаунт.</div>
     </div>
     <div class="instructions" aria-label="Правила игры">
-      <div class="instruction easy"><strong><i></i> ЛЁГКИЕ • 1 HP</strong><small>Без брони. Уничтожь <b>3 цели</b>, чтобы открыть награду лёгкого уровня: деньги, птица, опыт или обычный подарок.</small></div>
-      <div class="instruction medium"><strong><i></i> СРЕДНИЕ • 3 HP</strong><small>Цели с бронёй. Уничтожь <b>2 цели</b>, чтобы открыть транспорт, снаряжение или аксессуар.</small></div>
-      <div class="instruction hard"><strong><i></i> СЛОЖНЫЕ • 6 HP</strong><small>Усиленная броня. Уничтожь <b>1 цель</b>, чтобы получить награду высокой категории.</small></div>
-      <div class="instruction fallback"><strong><i></i> ГАРАНТИРОВАННЫЙ ПРИЗ</strong><small>Если за 30 секунд не выполнен ни один порог, выпадет <b>случайная лёгкая награда</b>. При нескольких порогах побеждает самая высокая категория.</small></div>
+      <div class="instruction easy"><strong><i></i> ЛЁГКИЕ</strong><small>Без брони. HP устанавливается в админке. Каждый сбитый приз попадает в итоговый список наград.</small></div>
+      <div class="instruction medium"><strong><i></i> СРЕДНИЕ</strong><small>Сначала нужно снять броню, затем HP. Уничтоженная цель приносит именно тот приз, который изображён на ней.</small></div>
+      <div class="instruction hard"><strong><i></i> СЛОЖНЫЕ</strong><small>Прочные летающие цели с большим запасом HP и брони. Все параметры редактируются в админке.</small></div>
+      <div class="instruction fallback"><strong><i></i> ДОПОЛНИТЕЛЬНОЕ ВРЕМЯ</strong><small>На арене появляется движущийся таймер +5/+10 сек. Если не сбито ни одной цели — автоматически выпадает <b>случайный лёгкий приз</b>.</small></div>
     </div>
   </section>
   <section id="panel-contests" class="tab-panel contests" role="tabpanel" aria-labelledby="tab-contests" hidden><span>🏆</span><h2>КОНКУРСЫ</h2><p>Этот раздел подготовлен. Конкурсы и задания для сотрудников полиции добавим позднее.</p></section>
 </main>
 <footer class="footer"><div class="shell footinner"><p>© marsellex · С 2024 по настоящее время</p><nav class="links" aria-label="Полезные ссылки"><a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a><a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a><a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a><a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a><a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a></nav></div></footer>
-<div class="result-layer" id="resultLayer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card" id="resultCard"><div class="result-badge" id="resultBadge">ОПЕРАЦИЯ ЗАВЕРШЕНА</div><div class="result-glyph" id="resultGlyph">🎁</div><h2 id="resultTitle">ПОЛУЧЕН ПРИЗ</h2><p id="resultDescription"></p><div class="result-mini"><b id="resultTier">КАТЕГОРИЯ: ЛЁГКАЯ</b><b id="resultStats">0 попаданий</b></div><button type="button" class="result-close" id="resultClose">ПОНЯТНО</button></div></div>
+<div class="result-layer" id="resultLayer" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle"><div class="result-card" id="resultCard"><div class="result-badge" id="resultBadge">ОПЕРАЦИЯ ЗАВЕРШЕНА</div><div class="result-glyph" id="resultGlyph">🏆</div><h2 id="resultTitle">ПОЛУЧЕН ПРИЗ</h2><p id="resultDescription"></p><div class="won-list" id="resultWins"></div><div class="result-mini"><b id="resultTier">КАТЕГОРИЯ: ЛЁГКАЯ</b><b id="resultStats">0 попаданий</b></div><button type="button" class="result-close" id="resultClose">ПОНЯТНО</button></div></div>
 <script>
 (()=>{'use strict';
-  const $=id=>document.getElementById(id);
-  const DUR=30000,INTERVAL=160;
-  const CONFIG={
-    easy:{hp:1,need:3,label:'ЛЁГКАЯ',items:[['Деньги','💵'],['Птица','🕊️'],['Опыт','✨'],['Подарок','🎁'],['Купон','🎟️']]},
-    medium:{hp:3,need:2,label:'СРЕДНЯЯ',items:[['Транспорт','🚘'],['Снаряжение','🧰'],['Аксессуар','🕶️'],['Кейс','🧳']]},
-    hard:{hp:6,need:1,label:'СЛОЖНАЯ',items:[['Эксклюзив','👑'],['Редкий транспорт','🏎️'],['VIP','💎'],['Редкий кейс','🔐']]}
-  };
-  // All rewards here are simulated locally. Never rely on these values for a real economy.
-  const arena=$('range'),layer=$('targets'),crosshair=$('crosshair'),start=$('startBtn'),resetBtn=$('resetBtn');
-  const byTier={easy:0,medium:0,hard:0};
-  const targetTypes=['easy','easy','medium','hard','easy','medium','hard'];
-  const ui={easy:$('easyValue'),medium:$('mediumValue'),hard:$('hardValue'),easyMeter:$('easyMeter'),mediumMeter:$('mediumMeter'),hardMeter:$('hardMeter')};
-  let targets=[],mode='idle',elapsed=0,startedAt=0,frameAt=0,reqId=0,shots=0,hits=0,pressed=false,lastShot=0,aim={x:0,y:0},pointerType='mouse',lastActive=document.activeElement,resizeObserver=null;
-  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-  function rand(){if(window.crypto?.getRandomValues){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296}return Math.random()}
-  const between=(a,b)=>a+(b-a)*rand();
-  const pick=a=>a[Math.min(a.length-1,Math.floor(rand()*a.length))];
-  const size=()=>window.matchMedia('(max-width:670px)').matches?88:122;
-  function dims(){return {w:arena.clientWidth,h:arena.clientHeight,t:size()}}
-  function makeTarget(type,index,position){
-    const c=CONFIG[type],d=dims(),w=d.w,h=d.h,tw=d.t;
-    const pad=tw/2+9;
-    let x=position?.[0]*w || between(pad,Math.max(pad+1,w-pad));
-    let y=position?.[1]*h || between(65,h-145);
-    x=clamp(x,pad,Math.max(pad,w-pad));y=clamp(y,53,h-132);
-    const el=document.createElement('div');el.className='target '+type;el.dataset.type=type;
-    const health=document.createElement('div');health.className='health';
-    const hp=document.createElement('b');hp.textContent='HP '+c.hp+'/'+c.hp;
-    const bar=document.createElement('span');bar.className='health-bar';const barFill=document.createElement('i');bar.append(barFill);health.append(hp,bar);
-    const orb=document.createElement('div');orb.className='orb';const icon=document.createElement('span');icon.className='glyph';orb.append(icon);
-    const name=document.createElement('span');name.className='name';el.append(health,orb,name);layer.append(el);
-    const o={type,el,hpEl:hp,barFill,name,icon,x,y,dx:between(22,48)*(rand()>.5?1:-1),dy:between(14,37)*(rand()>.5?1:-1),hp:c.hp,maxHp:c.hp,alive:true,respawnAt:0,index};
-    changePrize(o);return o;
+ const $=id=>document.getElementById(id);
+ const API='https://police-api-b2y4.onrender.com';
+ const FALLBACK_PRIZES=[
+  {id:'local1',name:'Деньги',tier:'easy',hp:1,armor:0,icon:'💵',image_url:''},
+  {id:'local2',name:'Птица',tier:'easy',hp:2,armor:0,icon:'🕊️',image_url:''},
+  {id:'local3',name:'Опыт',tier:'easy',hp:3,armor:0,icon:'✨',image_url:''},
+  {id:'local4',name:'Транспорт',tier:'medium',hp:5,armor:30,icon:'🚘',image_url:''},
+  {id:'local5',name:'Снаряжение',tier:'medium',hp:8,armor:45,icon:'🧰',image_url:''},
+  {id:'local6',name:'Аксессуар',tier:'medium',hp:6,armor:25,icon:'🕶️',image_url:''},
+  {id:'local7',name:'VIP',tier:'hard',hp:25,armor:120,icon:'👑',image_url:''},
+  {id:'local8',name:'Редкий кейс',tier:'hard',hp:35,armor:150,icon:'🔐',image_url:''},
+  {id:'local9',name:'Эксклюзив',tier:'hard',hp:45,armor:200,icon:'💎',image_url:''}];
+ const DEFAULTS={round_seconds:30,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};
+ const CATEGORIES={easy:{name:'ЛЁГКИЕ',color:'#53f1b0'},medium:{name:'СРЕДНИЕ',color:'#63b9ff'},hard:{name:'СЛОЖНЫЕ',color:'#ff698d'}};
+ const arena=$('range'),layer=$('targets'),crosshair=$('crosshair'),start=$('startBtn'),resetBtn=$('resetBtn');
+ const ui={easy:$('easyValue'),medium:$('mediumValue'),hard:$('hardValue'),easyMeter:$('easyMeter'),mediumMeter:$('mediumMeter'),hardMeter:$('hardMeter')};
+ let settings={...DEFAULTS},catalog=FALLBACK_PRIZES,targets=[],bonus=null,mode='idle',deadline=0,lastFrame=0,lastShot=0,pressed=false;
+ let aim={x:200,y:200},shotCount=0,hitCount=0,won=[],kills={easy:0,medium:0,hard:0},soundOn=true,audio=null,loaded=false;
+ let maxBonusUsed=0,nextBonus=0,bonusSpawnSerial=0,lastActive=null;
+ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+ function random(){if(crypto?.getRandomValues){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/4294967296}return Math.random()}
+ const between=(a,b)=>a+(b-a)*random();
+ const pick=a=>a[Math.floor(random()*a.length)];
+ const small=()=>matchMedia('(max-width:670px)').matches;
+ const size=()=>small()?88:122;
+ const dims=()=>({w:arena.clientWidth,h:arena.clientHeight,t:size()});
+ const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const safeImage=v=>/^https:\/\/pbwgvyhchpzmgqjyqxzv\.supabase\.co\/storage\/v1\/object\/public\/ws-avatars\/range-prizes\//i.test(v||'')?v:'';
+ function imageMarkup(p){const src=safeImage(p.image_url);return src?`<img src="${escapeHtml(src)}" alt="" loading="lazy" draggable="false">`:`<span>${escapeHtml(p.icon||'🎁')}</span>`}
+ function tone(frequency=500,duration=.07,type='sine',volume=.035){if(!soundOn)return;try{
+  audio ||= new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();
+  const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(frequency,audio.currentTime);
+  o.frequency.exponentialRampToValueAtTime(Math.max(65,frequency*.54),audio.currentTime+duration);
+  g.gain.setValueAtTime(volume,audio.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+duration);
+  o.connect(g).connect(audio.destination);o.start();o.stop(audio.currentTime+duration+.005);
+ }catch{}}
+ function shotSound(){tone(150,.07,'sawtooth',.018)}
+ function hitSound(armored){tone(armored?760:500,.10,armored?'triangle':'square',.023)}
+ function destroySound(){tone(340,.19,'sawtooth',.034);setTimeout(()=>tone(780,.24,'triangle',.034),75)}
+ function bonusSound(){tone(960,.21,'sine',.04);setTimeout(()=>tone(1380,.16,'sine',.029),110)}
+ function status(msg,good=false){$('statusLine').textContent=msg;$('statusLine').classList.toggle('strong',good)}
+ function updateCounters(){for(const tier of Object.keys(kills)){ui[tier].textContent=kills[tier];ui[tier+'Meter'].style.width=Math.min(100,kills[tier]*20)+'%'}$('winCount').textContent=won.length}
+ function hpBar(o){o.hpEl.textContent=`HP ${Math.ceil(o.hp)}/${o.maxHp}`;o.barFill.style.width=(o.hp/o.maxHp*100)+'%';o.armorEl.textContent=`БРОНЯ ${Math.ceil(o.armor)}/${o.maxArmor}`;o.armorFill.style.width=o.maxArmor?o.armor/o.maxArmor*100+'%':'0%';o.armorBar.classList.toggle('no-armor',o.maxArmor===0)}
+ function choosePrize(tier){const list=catalog.filter(p=>p.tier===tier);return list.length?pick(list):null}
+ function makeTarget(tier,index,position){const prize=choosePrize(tier);if(!prize)return null;
+  const el=document.createElement('div');el.className='target '+tier;el.dataset.tier=tier;
+  el.innerHTML=`<div class="health"><b class="hp-label"></b><span class="health-bar"><i></i></span></div><div class="armor-health"><b></b><span class="armor-track"><i></i></span></div><div class="orb"><span class="glyph"></span></div><span class="name"></span>`;
+  layer.append(el);
+  const o={tier,index,el,prize,x:0,y:0,vx:0,vy:0,alive:true,respawnAt:0,hp:0,maxHp:0,armor:0,maxArmor:0,
+    hpEl:el.querySelector('.hp-label'),barFill:el.querySelector('.health-bar i'),armorEl:el.querySelector('.armor-health b'),armorFill:el.querySelector('.armor-track i'),armorBar:el.querySelector('.armor-health'),name:el.querySelector('.name'),icon:el.querySelector('.glyph')};
+  configureTarget(o,prize);
+  const d=dims(),radius=d.t/2+7;
+  o.x=clamp(position?.[0]*d.w||between(radius,d.w-radius),radius,d.w-radius);
+  o.y=clamp(position?.[1]*d.h||between(80,d.h-152),70,d.h-152);
+  velocity(o);positionTarget(o);return o;
+ }
+ function configureTarget(o,p){o.prize=p;o.hp=o.maxHp=Number(p.hp)||1;o.armor=o.maxArmor=Number(p.armor)||0;o.name.textContent=p.name;
+  const url=safeImage(p.image_url);o.icon.innerHTML=url?`<img src="${escapeHtml(url)}" alt="" draggable="false">`:escapeHtml(p.icon||'🎁');hpBar(o)}
+ function velocity(o){const base=between(55,115)*Number(settings.speed_multiplier||2.1);let a=between(.25,Math.PI*1.75);o.vx=Math.cos(a)*base*(random()>.5?1:-1);o.vy=Math.sin(a)*base*.62}
+ function positionTarget(o){const d=dims(),pad=d.t/2;o.x=clamp(o.x,pad,Math.max(pad,d.w-pad));o.y=clamp(o.y,58,Math.max(58,d.h-130));o.el.style.transform=`translate3d(${o.x-pad}px,${o.y-27}px,0)`}
+ function buildTargets(){layer.replaceChildren();targets=[];
+  const list=catalog.filter(p=>p.is_enabled!==false),types=['easy','easy','medium','hard','easy','medium','hard'];
+  let enabled=types.filter(tier=>list.some(x=>x.tier===tier));if(!enabled.length)return;
+  const positions=[[.14,.2],[.78,.26],[.44,.52],[.62,.18],[.28,.68],[.82,.66],[.13,.45]];
+  for(let i=0;i<enabled.length;i++){const o=makeTarget(enabled[i],i,positions[i]);if(o)targets.push(o)}
+ }
+ function spawnAgain(o){const p=choosePrize(o.tier);if(!p){o.el.remove();return}configureTarget(o,p);const d=dims(),pad=d.t/2;
+  o.x=between(pad,Math.max(pad+1,d.w-pad));o.y=between(60,Math.max(62,d.h-146));velocity(o);
+  o.alive=true;o.respawnAt=0;o.el.classList.remove('destroyed','hit','crack');positionTarget(o)}
+ function textAt(x,y,msg,cls=''){const el=document.createElement('span');el.className='kill-msg '+cls;el.textContent=msg;el.style.left=clamp(x-35,4,arena.clientWidth-80)+'px';el.style.top=clamp(y-48,3,arena.clientHeight-20)+'px';arena.append(el);setTimeout(()=>el.remove(),900)}
+ function effect(x,y,color='#8ce2ff',num=9){const root=document.createElement('div');root.className='debris';root.style.left=x+'px';root.style.top=y+'px';
+  for(let i=0;i<num;i++){const bit=document.createElement('i'),theta=i/num*Math.PI*2+between(-.22,.22),radius=between(30,85);bit.style.setProperty('--dx',(Math.cos(theta)*radius)+'px');bit.style.setProperty('--dy',(Math.sin(theta)*radius)+'px');bit.style.background=color;root.append(bit)}arena.append(root);setTimeout(()=>root.remove(),700)}
+ function hitPulse(x,y,miss){const el=document.createElement('span');el.className='impact'+(miss?' miss':'');el.style.left=x+'px';el.style.top=y+'px';arena.append(el);setTimeout(()=>el.remove(),500)}
+ function aimTo(e){const r=arena.getBoundingClientRect();aim={x:clamp(e.clientX-r.left,0,r.width),y:clamp(e.clientY-r.top,0,r.height)};
+  const gunX=r.width/2,gunY=r.height-18;const angle=clamp(Math.atan2(aim.x-gunX,gunY-aim.y)*180/Math.PI,-73,73);
+  $('turretSwivel').style.transform=`translateX(-50%) rotate(${angle}deg)`;
+  crosshair.style.left=aim.x+'px';crosshair.style.top=aim.y+'px';crosshair.style.display=e.pointerType==='touch'?'none':'block';
+ }
+ function fire(now){if(mode!=='running'||now-lastShot<155)return;lastShot=now;shotCount++;shotSound();
+  const gun=$('physicalTurret');gun.classList.remove('firing');void gun.offsetWidth;gun.classList.add('firing');setTimeout(()=>gun.classList.remove('firing'),100);
+  let best=null,bestDistance=Infinity;
+  for(const o of targets){if(!o.alive)continue;const rect=o.el.querySelector('.orb').getBoundingClientRect(),a=arena.getBoundingClientRect();const cx=rect.left+rect.width*.5-a.left,cy=rect.top+rect.height*.5-a.top;
+    const dist=Math.hypot(aim.x-cx,aim.y-cy);if(dist<(small()?34:47)&&dist<bestDistance){best=o;bestDistance=dist}}
+  if(bonus){const r=bonus.el.getBoundingClientRect(),a=arena.getBoundingClientRect(),cx=r.left+r.width*.5-a.left,cy=r.top+r.height*.5-a.top;if(Math.hypot(aim.x-cx,aim.y-cy)<(small()?45:52)){
+      takeBonus(bonus);hitPulse(aim.x,aim.y,false);return;
+  }}
+  hitPulse(aim.x,aim.y,!best);if(!best)return;
+  hitCount++;const armored=best.armor>0;const damage=15;
+  if(best.armor>0){const blocked=Math.min(best.armor,damage);best.armor-=blocked;best.hp=Math.max(0,best.hp-(damage-blocked))}else best.hp=Math.max(0,best.hp-damage);
+  hpBar(best);hitSound(armored);best.el.classList.remove('hit');void best.el.offsetWidth;best.el.classList.add('hit');setTimeout(()=>best.el.classList.remove('hit'),160);
+  if(armored){effect(aim.x,aim.y,'#81c8ff',best.armor===0?16:4);textAt(best.x,best.y,best.armor===0?'БРОНЯ ПРОБИТА':'−БРОНЯ');if(best.armor===0)tone(190,.22,'sawtooth',.04)}else{textAt(best.x,best.y,'−HP')}
+  if(best.hp>0)return;
+  best.alive=false;best.respawnAt=now+between(950,1550);best.el.classList.add('destroyed');kills[best.tier]++;won.push({...best.prize});updateCounters();destroySound();effect(aim.x,aim.y,CATEGORIES[best.tier].color,16);
+  textAt(best.x,best.y,'+'+best.prize.name,'kill-award');status('Приз «'+best.prize.name+'» добавлен к выигрышам! Всего: '+won.length,true);
+ }
+ function timeBonus(now){if(settings.max_extra_seconds<=0||!settings.bonus_interval||bonus)return;
+  const values=[Number(settings.bonus_a),Number(settings.bonus_b)],value=pick(values);
+  const el=document.createElement('div');el.className='time-bonus';el.innerHTML=`<span>⏱</span><b>+${value} сек</b>`;arena.append(el);
+  const d=dims();bonus={el,value,x:between(54,Math.max(55,d.w-54)),y:between(72,Math.max(74,d.h-170)),vx:between(140,210)*(random()>.5?1:-1),vy:between(85,145)*(random()>.5?1:-1),expiresAt:now+6000};moveBonus(bonus)
+ }
+ function moveBonus(b){const d=dims();b.x=clamp(b.x,38,Math.max(38,d.w-38));b.y=clamp(b.y,38,Math.max(38,d.h-120));b.el.style.transform=`translate3d(${b.x-40}px,${b.y-40}px,0)`}
+ function removeBonus(){if(bonus){bonus.el.remove();bonus=null}}
+ function takeBonus(b){const room=Math.max(0,Number(settings.max_extra_seconds)-maxBonusUsed),amount=Math.min(room,b.value);if(amount){deadline+=amount*1000;maxBonusUsed+=amount;bonusSound();effect(b.x,b.y,'#ffe77a',13);textAt(b.x,b.y,'+'+amount+' СЕКУНД','time-award');status('Бонус времени: +'+amount+' секунд!',true)}else textAt(b.x,b.y,'ЛИМИТ ВРЕМЕНИ');removeBonus();nextBonus=performance.now()+Number(settings.bonus_interval)*1000}
+ function step(now,dt){const d=dims(),pad=d.t*.5;
+  for(const o of targets){if(!o.alive){if(mode==='running'&&now>=o.respawnAt)spawnAgain(o);continue}
+    const mult=mode==='running'?1:.22;o.x+=o.vx*dt*mult;o.y+=o.vy*dt*mult;
+    if(o.x<pad||o.x>d.w-pad){o.x=clamp(o.x,pad,Math.max(pad,d.w-pad));o.vx*=-1}
+    if(o.y<54||o.y>d.h-130){o.y=clamp(o.y,54,Math.max(54,d.h-130));o.vy*=-1}
+    positionTarget(o)
   }
-  function changePrize(o){const prize=pick(CONFIG[o.type].items);o.prize=prize;o.name.textContent=prize[0];o.icon.textContent=prize[1]}
-  function position(o){const {w,h,t}=dims();const left=clamp(o.x,t/2,Math.max(t/2,w-t/2));const top=clamp(o.y,38,Math.max(38,h-t));o.x=left;o.y=top;o.el.style.transform=`translate3d(${left-t/2}px,${top-27}px,0)`}
-  function createAll(){layer.replaceChildren();targets=[];const positions=[[.14,.22],[.79,.28],[.44,.55],[.63,.15],[.27,.70],[.84,.73],[.14,.49]];targetTypes.forEach((type,i)=>targets.push(makeTarget(type,i,positions[i])));targets.forEach(position)}
-  function updateMeters(){for(const tier of Object.keys(CONFIG)){ui[tier].innerHTML=`${byTier[tier]} <span>/ ${CONFIG[tier].need}</span>`;ui[tier+'Meter'].style.width=Math.min(100,byTier[tier]/CONFIG[tier].need*100)+'%'}}
-  function setStatus(msg,good=false){$('statusLine').textContent=msg;$('statusLine').classList.toggle('strong',good)}
-  function gameReset(){mode='idle';elapsed=0;pressed=false;shots=0;hits=0;lastShot=0;for(const tier of Object.keys(byTier))byTier[tier]=0;updateMeters();$('timeLeft').textContent='30.0';$('timeLeft').classList.remove('danger');$('timeMeter').style.width='100%';$('rangeShield').classList.remove('hidden');$('operationState').textContent='СИСТЕМА ГОТОВА';start.textContent='⌖ НАЧАТЬ ОПЕРАЦИЮ';start.disabled=false;resetBtn.disabled=false;setStatus('Демо-режим: выигрыши не начисляются на аккаунт.');$('resultLayer').hidden=true;crosshair.style.display='none';createAll()}
-  function run(){if(mode==='running')return;gameReset();mode='running';startedAt=performance.now();elapsed=0;start.textContent='⌖ ОПЕРАЦИЯ ИДЁТ';start.disabled=true;resetBtn.disabled=true;$('rangeShield').classList.add('hidden');$('operationState').textContent='ЦЕЛИ В ДВИЖЕНИИ';setStatus('Стреляй по летающим призам: кликай или удерживай левую кнопку мыши.');}
-  function eventPosition(e){const r=arena.getBoundingClientRect();return{x:clamp(e.clientX-r.left,0,r.width),y:clamp(e.clientY-r.top,0,r.height)}}
-  function aimAt(e){aim=eventPosition(e);pointerType=e.pointerType||'mouse';crosshair.style.display=pointerType==='touch'?'none':'block';crosshair.style.left=aim.x+'px';crosshair.style.top=aim.y+'px'}
-  function feedback(x,y,miss=false){const el=document.createElement('span');el.className='impact'+(miss?' miss':'');el.style.left=x+'px';el.style.top=y+'px';arena.append(el);setTimeout(()=>el.remove(),500);crosshair.classList.add('bang');setTimeout(()=>crosshair.classList.remove('bang'),90)}
-  function floatingText(o,label){const el=document.createElement('span');el.className='kill-msg';el.textContent=label;el.style.left=Math.max(9,o.x-30)+'px';el.style.top=Math.max(10,o.y-48)+'px';arena.append(el);setTimeout(()=>el.remove(),900)}
-  function shoot(now){if(mode!=='running'||now-lastShot<INTERVAL)return;lastShot=now;shots++;
-    let best=null,dist=Infinity;const r=size()*.48;
-    for(const o of targets){if(!o.alive)continue;const distance=Math.hypot(aim.x-o.x,aim.y-(o.y+24));if(distance<r&&distance<dist){best=o;dist=distance}}
-    feedback(aim.x,aim.y,!best);if(!best)return;
-    hits++;best.hp--;best.hpEl.textContent=`HP ${best.hp}/${best.maxHp}`;best.barFill.style.width=best.hp/best.maxHp*100+'%';best.el.classList.remove('hit');void best.el.offsetWidth;best.el.classList.add('hit');setTimeout(()=>best.el.classList.remove('hit'),190);
-    if(best.hp>0){floatingText(best,'−1 HP');return}
-    best.alive=false;best.respawnAt=now+between(850,1650);best.el.classList.add('destroyed');byTier[best.type]++;updateMeters();floatingText(best,'УНИЧТОЖЕНО +1');
-    const label=byTier.hard>=1?'Сложная категория открыта':byTier.medium>=2?'Средняя категория открыта':byTier.easy>=3?'Лёгкая категория открыта':'Цель уничтожена';setStatus(label,true);
-  }
-  function respawn(o){const d=dims(),t=d.t;o.x=between(t/2+8,Math.max(t/2+9,d.w-t/2-8));o.y=between(68,Math.max(70,d.h-132));o.dx=between(21,49)*(rand()>.5?1:-1);o.dy=between(15,37)*(rand()>.5?1:-1);o.hp=o.maxHp;o.hpEl.textContent=`HP ${o.hp}/${o.maxHp}`;o.barFill.style.width='100%';changePrize(o);o.alive=true;o.respawnAt=0;o.el.classList.remove('destroyed');position(o)}
-  function step(now,dt){const {w,h,t}=dims();const radius=t*.48;
-    for(const o of targets){if(!o.alive){if(mode==='running'&&now>o.respawnAt)respawn(o);continue}
-      o.x+=o.dx*dt;o.y+=o.dy*dt;
-      if(o.x<radius||o.x>w-radius){o.x=clamp(o.x,radius,Math.max(radius,w-radius));o.dx*=-1}
-      if(o.y<54||o.y>h-137){o.y=clamp(o.y,54,Math.max(54,h-137));o.dy*=-1}
-      position(o);
-    }
-  }
-  function tick(now){if(!frameAt)frameAt=now;const dt=clamp((now-frameAt)/1000,0,.055);frameAt=now;
-    if(mode==='running'){elapsed=Math.min(DUR,now-startedAt);const left=Math.max(0,(DUR-elapsed)/1000);$('timeLeft').textContent=left.toFixed(1);$('timeLeft').classList.toggle('danger',left<=10);$('timeMeter').style.width=left/30*100+'%';if(left<=0){finish()}else if(pressed){shoot(now)}}
-    if(!document.hidden)step(now,mode==='running'?dt:dt*.3);reqId=requestAnimationFrame(tick)
-  }
-  function finish(){if(mode!=='running')return;mode='finished';pressed=false;start.disabled=false;resetBtn.disabled=false;start.textContent='⌖ ИГРАТЬ СНОВА';$('operationState').textContent='ОПЕРАЦИЯ ЗАВЕРШЕНА';$('timeLeft').textContent='0.0';$('timeMeter').style.width='0%';const tier=byTier.hard>=1?'hard':byTier.medium>=2?'medium':'easy';const fallback=byTier.hard<1&&byTier.medium<2&&byTier.easy<3;
-    const prize=pick(CONFIG[tier].items);$('resultCard').style.setProperty('--win-color',tier==='hard'?'#ff658d':tier==='medium'?'#65baff':'#58e7b2');$('resultGlyph').textContent=prize[1];$('resultTitle').textContent=prize[0];$('resultBadge').textContent=fallback?'ГАРАНТИРОВАННЫЙ ЛЁГКИЙ ПРИЗ':'ОПЕРАЦИЯ ЗАВЕРШЕНА • НАГРАДА';$('resultDescription').textContent=fallback?'Ни один призовой порог не достигнут. По правилам игры выпала случайная лёгкая награда.':'Ты выполнил условие категории «'+CONFIG[tier].label+'» и открыл демонстрационную награду.';$('resultTier').textContent='КАТЕГОРИЯ: '+CONFIG[tier].label;$('resultStats').textContent=`${hits} попаданий · ${shots} выстрелов`;setStatus('Операция завершена! Демо-выигрыш: '+prize[0],true);$('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus()}
-  function closeResult(){$('resultLayer').hidden=true;start.focus()}
-  start.addEventListener('click',run);resetBtn.addEventListener('click',gameReset);$('resultClose').addEventListener('click',closeResult);$('resultLayer').addEventListener('click',e=>{if(e.target===$('resultLayer'))closeResult()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('resultLayer').hidden)closeResult()});
-  arena.addEventListener('pointermove',e=>{aimAt(e)});
-  arena.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')aimAt(e)});
-  arena.addEventListener('pointerleave',()=>{pressed=false;crosshair.style.display='none'});
-  arena.addEventListener('pointerdown',e=>{if(mode!=='running')return;if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();aimAt(e);pressed=e.pointerType!=='touch';lastShot=0;shoot(performance.now());if(pressed){try{arena.setPointerCapture(e.pointerId)}catch{}}});
-  arena.addEventListener('pointerup',()=>pressed=false);arena.addEventListener('pointercancel',()=>pressed=false);arena.addEventListener('lostpointercapture',()=>pressed=false);
-  window.addEventListener('blur',()=>pressed=false);
-  const rouletteTab=$('tab-roulette'),contestsTab=$('tab-contests');function setTab(contests){if(contests&&mode==='running')return;rouletteTab.setAttribute('aria-selected',String(!contests));contestsTab.setAttribute('aria-selected',String(contests));$('panel-roulette').hidden=contests;$('panel-contests').hidden=!contests}
-  rouletteTab.addEventListener('click',()=>setTab(false));contestsTab.addEventListener('click',()=>setTab(true));
-  window.addEventListener('resize',()=>targets.forEach(position));
-  gameReset();reqId=requestAnimationFrame(tick);
+  if(bonus){bonus.x+=bonus.vx*dt;bonus.y+=bonus.vy*dt;const d=dims();if(bonus.x<42||bonus.x>d.w-42)bonus.vx*=-1;if(bonus.y<48||bonus.y>d.h-122)bonus.vy*=-1;moveBonus(bonus);if(now>=bonus.expiresAt){removeBonus();nextBonus=now+Number(settings.bonus_interval)*1000}}
+ }
+ function updateClock(now){const left=Math.max(0,(deadline-now)/1000);$('timeLeft').textContent=left.toFixed(1);$('timeLeft').classList.toggle('danger',left<=10);$('timeMeter').style.width=(Math.min(1,left/Number(settings.round_seconds))*100)+'%';return left}
+ function tick(now){if(!lastFrame)lastFrame=now;const dt=clamp((now-lastFrame)/1000,0,.075);lastFrame=now;
+  if(mode==='running'){const left=updateClock(now);if(left<=0)finish();else{if(!bonus&&now>=nextBonus&&maxBonusUsed<Number(settings.max_extra_seconds)){timeBonus(now);nextBonus=now+Number(settings.bonus_interval)*1000}if(pressed)fire(now)}}
+  if(!document.hidden)step(now,dt);requestAnimationFrame(tick)
+ }
+ function resetGame(){mode='idle';pressed=false;lastShot=0;shotCount=hitCount=0;won=[];kills={easy:0,medium:0,hard:0};maxBonusUsed=0;removeBonus();
+  updateCounters();$('timeLeft').textContent=Number(settings.round_seconds).toFixed(1);$('timeMeter').style.width='100%';$('timeLeft').classList.remove('danger');$('rangeShield').classList.remove('hidden');$('resultLayer').hidden=true;
+  start.textContent='⌖ НАЧАТЬ ОПЕРАЦИЮ';start.disabled=false;resetBtn.disabled=false;crosshair.style.display='none';$('operationState').textContent='СИСТЕМА ГОТОВА';status('Демо: все сбитые призы сохраняются в итогах раунда, но не начисляются на аккаунт.');buildTargets();
+ }
+ function begin(){if(mode==='running'||!catalog.length)return;resetGame();mode='running';const now=performance.now();deadline=now+Number(settings.round_seconds)*1000;nextBonus=now+Number(settings.bonus_interval)*1000;
+  start.textContent='⌖ ОПЕРАЦИЯ ИДЁТ';start.disabled=true;resetBtn.disabled=true;arena.scrollIntoView({behavior:'smooth',block:'center'});$('rangeShield').classList.add('hidden');$('operationState').textContent='ОГОНЬ ПО ЦЕЛЯМ';status('Сбивай призы, подбирай дополнительное время и успей забрать больше наград.');tone(640,.16,'triangle',.05)
+ }
+ function finish(){if(mode!=='running')return;mode='finished';pressed=false;removeBonus();start.disabled=false;resetBtn.disabled=false;start.textContent='⌖ ИГРАТЬ СНОВА';$('operationState').textContent='ОПЕРАЦИЯ ЗАВЕРШЕНА';$('timeLeft').textContent='0.0';$('timeMeter').style.width='0%';
+  const fallback=!won.length;
+  if(fallback){const p=choosePrize('easy')||pick(FALLBACK_PRIZES.filter(x=>x.tier==='easy'));won.push({...p});kills[p.tier]=(kills[p.tier]||0)+1;updateCounters()}
+  const list=$('resultWins');list.innerHTML=won.map((p,i)=>`<div class="won-item ${escapeHtml(p.tier)}"><div class="won-pic">${imageMarkup(p)}</div><div><b>${escapeHtml(p.name)}</b><small>${escapeHtml(CATEGORIES[p.tier]?.name||'ПРИЗ')}</small></div><em>#${i+1}</em></div>`).join('');
+  $('resultBadge').textContent=fallback?'ГАРАНТИРОВАННЫЙ ЛЁГКИЙ ПРИЗ':'ОПЕРАЦИЯ ЗАВЕРШЕНА';$('resultTitle').textContent=fallback?'ВЫПАЛ ПРИЗ':'ТВОИ НАГРАДЫ · '+won.length;
+  $('resultDescription').textContent=fallback?'Ты не уничтожил ни одной цели, поэтому получил случайный лёгкий приз. Демонстрационная награда.':'Каждая уничтоженная цель принесла свой приз. Это демо, награды пока не выдаются аккаунтам.';
+  $('resultTier').textContent='ПРИЗОВ: '+won.length;$('resultStats').textContent=hitCount+' попаданий · '+shotCount+' выстрелов';
+  $('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus();status('Раунд завершён · призов: '+won.length,true);tone(970,.24,'triangle',.04)
+ }
+ function close(){ $('resultLayer').hidden=true;start.focus() }
+ async function loadCatalog(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),14000);let response;
+    try{response=await fetch(API+'/api/portal/range',{signal:c.signal,cache:'no-store',headers:{Accept:'application/json'}})}finally{clearTimeout(t)}
+    if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(!data.ok||!Array.isArray(data.prizes))throw Error('Неверный ответ API');
+    catalog=data.prizes.filter(p=>CATEGORIES[p.tier] && p.is_enabled!==false && Number(p.hp)>=1 && Number(p.hp)<=200 && Number(p.armor)>=0 && Number(p.armor)<=200);
+    if(data.settings)settings={...DEFAULTS,...data.settings};loaded=true;$('catalogState').textContent='НАСТРОЙКИ С SUPABASE';
+    if(mode==='idle'){resetGame();if(!catalog.length){start.disabled=true;status('В админке нет активных призов. Добавьте хотя бы один приз.',false)}}
+  }catch(err){console.warn('[Police Range] using local demo catalog',err);$('catalogState').textContent='ЛОКАЛЬНЫЙ ДЕМО-НАБОР';}
+ }
+ start.addEventListener('click',begin);resetBtn.addEventListener('click',()=>{if(mode!=='running')resetGame()});
+ $('resultClose').addEventListener('click',close);$('resultLayer').addEventListener('click',e=>{if(e.target===$('resultLayer'))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('resultLayer').hidden)close()});
+ arena.addEventListener('pointermove',aimTo);arena.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch')aimTo(e)});
+ arena.addEventListener('pointerleave',()=>{pressed=false;crosshair.style.display='none'});
+ arena.addEventListener('pointerdown',e=>{if(mode!=='running'||e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();aimTo(e);pressed=e.pointerType!=='touch';lastShot=0;fire(performance.now());if(pressed)try{arena.setPointerCapture(e.pointerId)}catch{}});
+ arena.addEventListener('pointerup',()=>pressed=false);arena.addEventListener('pointercancel',()=>pressed=false);arena.addEventListener('lostpointercapture',()=>pressed=false);
+ window.addEventListener('blur',()=>pressed=false);
+ $('soundToggle').addEventListener('click',()=>{soundOn=!soundOn;$('soundToggle').textContent=soundOn?'♫ Звук: ВКЛ':'♫ Звук: ВЫКЛ';$('soundToggle').setAttribute('aria-pressed',String(soundOn))});
+ const rouletteTab=$('tab-roulette'),contestsTab=$('tab-contests');function setTab(contests){if(contests&&mode==='running')return;rouletteTab.setAttribute('aria-selected',String(!contests));contestsTab.setAttribute('aria-selected',String(contests));$('panel-roulette').hidden=contests;$('panel-contests').hidden=!contests}
+ rouletteTab.addEventListener('click',()=>setTab(false));contestsTab.addEventListener('click',()=>setTab(true));
+ window.addEventListener('resize',()=>{targets.forEach(positionTarget);if(bonus)moveBonus(bonus)});
+ resetGame();requestAnimationFrame(tick);loadCatalog();
 })();
 </script>
 </body>

@@ -261,6 +261,30 @@ header.header a.brand.pd-unified-brand strong{
 }
 @media(max-width:650px){.pd-admin-tabs{gap:5px}.pd-admin-tabs button,.pd-admin-tabs button.selected{flex:0 0 auto;padding:10px 11px 13px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){.pd-admin-tabs .pd-admin-tab-indicator{transition:none}}
+
+/* Range administration */
+#pdAdminRange{display:grid;gap:19px}#pdAdminRange.hidden{display:none!important}
+#pdAdminRange .range-admin-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+#pdAdminRange .range-admin-head h3{margin:0 0 7px;font-size:23px;color:#edf9ff}
+#pdAdminRange .range-admin-head p{margin:0;color:#a1bfd7;font-size:12px}
+#pdAdminRange #rangeAdminStatus{font-size:12px;min-height:16px;font-weight:750}
+#pdAdminRange .range-settings,#pdAdminRange .range-add{display:grid;gap:15px}
+#pdAdminRange .range-settings-grid,#pdAdminRange .range-form-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#pdAdminRange label{font-size:11px;color:#bad2e6;font-weight:750;display:grid;gap:7px}
+#pdAdminRange input:not([type=checkbox]):not([type=file]),#pdAdminRange select{width:100%;min-width:0;background:#071a2c;color:#eef8ff;border:1px solid #365c7c;border-radius:9px;padding:10px}
+#pdAdminRange input[type=file]{max-width:100%;font-size:10px}
+#pdAdminRange label.range-check{display:flex;align-items:center;gap:8px}
+#pdAdminRange .range-prize-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+#pdAdminRange .range-rowtop{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+#pdAdminRange .range-rowtop b{display:block;font-size:16px}#pdAdminRange .range-rowtop small{display:block;font-size:11px;margin-top:4px}
+#pdAdminRange .range-thumb{width:72px;height:72px;border:1px solid #42678d;border-radius:13px;object-fit:cover;flex-shrink:0}
+#pdAdminRange .range-emoji{display:grid;place-items:center;background:#102c44;font-size:34px}
+#pdAdminRange .range-id{margin-left:auto;color:#7997b0;font-size:10px}
+#pdAdminRange .range-rowactions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+#pdAdminRange .range-list-header{font-size:22px;margin:0}#pdAdminRange .range-list-header span{font-size:14px;color:#7abbed}
+#pdAdminRange .range-form-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:1120px){#pdAdminRange .range-prize-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){#pdAdminRange .range-prize-grid,#pdAdminRange .range-settings-grid,#pdAdminRange .range-form-fields{grid-template-columns:1fr}}
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js"></script>
@@ -305,6 +329,7 @@ header.header a.brand.pd-unified-brand strong{
     <button type="button" data-pd-tab="chiefs" role="tab" aria-controls="pdAdminChiefs" aria-selected="false">Активность шефов</button>
     <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false">Руководство полиции</button>
     <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false">Выдача ролей</button>
+    <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false">Тир и призы</button>
     <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
   </nav>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
@@ -318,6 +343,7 @@ header.header a.brand.pd-unified-brand strong{
   </div>
   <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
   <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
+  <section id="pdAdminRange" class="hidden" aria-label="Тир и призы"></section>
   <section id="pdAdminRoles" class="pd-roles-layout hidden" aria-label="Выдача ролей">
     <div class="pd-admin-card pd-roles-search-card">
       <div class="pd-admin-card-head"><h3>Поиск сотрудника</h3></div>
@@ -460,6 +486,7 @@ restore();
 </script>
 
 <script src="role-manager.js"></script>
+<script src="range-admin.js"></script>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
@@ -486,7 +513,7 @@ async function openAdmin(){
  $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  // Render the selected panel immediately; network requests must not block tab clicks.
- setTab(location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
+ setTab(location.hash==='#range'?'range':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
  try{
    const me=await req('/api/auth/me');
    adminUser=me.user;
@@ -497,6 +524,7 @@ async function openAdmin(){
      return;
    }
    document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
+   if(location.hash==='#range') {setTab('range');return;}
    if(location.hash==='#roles') {setTab('roles');return;}
     if(location.hash==='#chiefs') {setTab('chiefs');await loadChiefs();return;}
    const results=await Promise.allSettled([loadUsers(),loadChiefs(),loadLeadership()]);
@@ -604,7 +632,7 @@ function positionTabLine(){
 }
 function setTab(tab){
  if(adminUser?.role==='minister'&&tab!=='roles')tab='roles';
- const allowed=['users','chiefs','leadership','roles'];if(!allowed.includes(tab))return;
+ const allowed=['users','chiefs','leadership','roles','range'];if(!allowed.includes(tab))return;
  currentTab=tab;
  document.querySelectorAll('[data-pd-tab]').forEach(b=>{
    const active=b.dataset.pdTab===tab;
@@ -615,14 +643,16 @@ function setTab(tab){
  $('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');
  $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
  $('pdAdminRoles').classList.toggle('hidden',tab!=='roles');
+ $('pdAdminRange').classList.toggle('hidden',tab!=='range');
  error('');requestAnimationFrame(positionTabLine);
  if(tab==='roles')window.PoliceRoleManager?.init();
+ if(tab==='range')window.PoliceRangeAdmin?.init();
 }
 document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
  b.onclick=()=>setTab(b.dataset.pdTab);
 });
 window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
-window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');});
+window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#range')setTab('range');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
