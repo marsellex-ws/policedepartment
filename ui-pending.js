@@ -1,6 +1,7 @@
-/* Police Department — prevent repeated actions while network work is pending.
- * Designed to coexist with api-fetch-retry.js (GET-only retries).
- */
+/* Police Department — pending network actions.
+   Do not disable submit buttons until AFTER the form's own submit listeners
+   have had an opportunity to run. Otherwise range-admin.js detects a disabled
+   submit button and silently exits before sending the request. */
 (() => {
   'use strict';
   if (window.__pdUiPendingInstalled) return;
@@ -59,9 +60,12 @@
     if (action.activated || action.finished || !action.button) return;
     action.activated = true;
     const button = action.button;
-    if (button.disabled) return;
-    button.disabled = true;
-    button.dataset.pdBusyOwned = 'true';
+    // An app can manage its own disabled state. Show its spinner without
+    // taking ownership of that disabled state or re-enabling it prematurely.
+    if (!button.disabled) {
+      button.disabled = true;
+      button.dataset.pdBusyOwned = 'true';
+    }
     button.classList.add('pd-async-busy');
     button.setAttribute('aria-busy', 'true');
     if (button instanceof HTMLInputElement) {
@@ -72,13 +76,18 @@
   }
 
   function createAction(button, form = null) {
-    const action = { button, form, time: performance.now(), pending: 0,
-      activated: false, finished: false, timer: null, originalValue: undefined };
+    const action = {
+      button, form, time: performance.now(), pending: 0,
+      activated: false, finished: false, timer: null, originalValue: undefined
+    };
     lastAction = action;
     if (form) {
       activeForms.set(form, action);
-      activate(action);
-      // Don't keep an invalid/non-API form permanently blocked.
+      // CRITICAL: never disable the submitter synchronously in a capture-phase
+      // submit listener. The form handler must be able to check button.disabled.
+      queueMicrotask(() => {
+        if (!action.finished) activate(action);
+      });
       scheduleFinish(action, 3000);
     }
     return action;
@@ -109,8 +118,7 @@
     createAction(button || null, form);
   }, true);
 
-  // Attach pending UI only to fetches originating immediately after a button action.
-  // Don't retry writes; don't change the response/error, only observe completion.
+  // Observe fetches instead of altering request/response behavior.
   window.fetch = function (...args) {
     const action = lastAction && !lastAction.finished &&
       performance.now() - lastAction.time < 1500 ? lastAction : null;

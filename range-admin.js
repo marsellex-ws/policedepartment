@@ -139,9 +139,9 @@
  async function load(force=false){if(busy||loaded&&!force)return;busy=true;try{
    const r=await api('/api/portal/admin/range');prizes=r.prizes||[];settings=r.settings||{round_seconds:30,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};render();loaded=true;msg('Настройки и призы загружены');
   }catch(err){if(!loaded){ROOT.innerHTML='<div class="pd-admin-card"><div id="rangeAdminStatus"></div><button class="pd-admin-btn" id="rangeAdminRetry">Повторить</button></div>';ROOT.querySelector('#rangeAdminRetry').onclick=()=>load(true)}msg(err.message,true)}finally{busy=false}}
- async function saveSettings(e){e.preventDefault();const btn=e.target.querySelector('[type="submit"]');if(btn.disabled)return;btn.disabled=true;try{const data=Object.fromEntries(FIELDS.map(f=>[f,Number(e.target.elements[f].value)]));await api('/api/portal/admin/range/settings','PUT',data);settings=data;msg('Настройки тира сохранены')}catch(err){msg(err.message,true)}finally{btn.disabled=false}}
+ async function saveSettings(e){e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(form.dataset.rangeSubmitting==='1')return;form.dataset.rangeSubmitting='1';btn.disabled=true;try{const data=Object.fromEntries(FIELDS.map(f=>[f,Number(e.target.elements[f].value)]));await api('/api/portal/admin/range/settings','PUT',data);settings=data;feedback('Настройки тира сохранены',false,form)}catch(err){feedback(describeError(err),true,form)}finally{delete form.dataset.rangeSubmitting;btn.disabled=false}}
  async function createPrize(e){
-   e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(btn.disabled)return;
+   e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(form.dataset.rangeSubmitting==='1')return;form.dataset.rangeSubmitting='1';
    const oldText=btn.textContent;btn.disabled=true;btn.textContent='Добавляю...';
    try{
      const data=formData(form);
@@ -154,10 +154,10 @@
      const newCard=[...ROOT.querySelectorAll('.range-prize-card')].find(c=>c.dataset.id===result.item.id);
      if(newCard){newCard.style.outline='2px solid #58e6bb';setTimeout(()=>newCard.style.removeProperty('outline'),3000)}
    }catch(err){feedback(describeError(err),true,form)}
-   finally{if(btn.isConnected){btn.disabled=false;btn.textContent=oldText}}
+   finally{delete form.dataset.rangeSubmitting;if(btn.isConnected){btn.disabled=false;btn.textContent=oldText}}
  }
  async function savePrize(e){
-   e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(btn.disabled)return;
+   e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(form.dataset.rangeSubmitting==='1')return;form.dataset.rangeSubmitting='1';
    const oldText=btn.textContent;btn.disabled=true;btn.textContent='Сохраняю...';
    try{
      const prize=prizes.find(x=>x.id===form.dataset.id),data=formData(form);
@@ -165,7 +165,7 @@
      await api('/api/portal/admin/range/prizes/'+encodeURIComponent(form.dataset.id),'PUT',data);
      busy=false;await load(true);feedback('Приз «'+data.name+'» успешно сохранён!',false);
    }catch(err){feedback(describeError(err),true,form)}
-   finally{if(btn.isConnected){btn.disabled=false;btn.textContent=oldText}}
+   finally{delete form.dataset.rangeSubmitting;if(btn.isConnected){btn.disabled=false;btn.textContent=oldText}}
  }
  async function deletePrize(e){
    const btn=e.target.closest('[data-delete]');if(!btn||btn.disabled)return;
