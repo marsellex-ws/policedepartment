@@ -103,16 +103,30 @@
 .range-shield{background:linear-gradient(180deg,transparent,rgba(0,10,25,.10));}
 @media(max-width:670px){.tabs{padding:5px;gap:4px}.tabs button{font-size:12px;padding:13px 5px}.hud{justify-content:center}.timer-panel{max-width:100%;width:230px;min-height:72px}.demo-indicators{font-size:14px}}
 
+
+/* Police Department — bonus landing title and four prominent sections */
+.bonuses-main-title{font-size:clamp(18px,4.65vw,72px);white-space:nowrap;letter-spacing:-.05em;line-height:1.13;margin:34px auto 9px;text-align:center;font-weight:1000}
+.bonuses-main-title .bonuses-word{display:inline-block;margin-right:.20em;background:linear-gradient(120deg,#ff8acc 8%,#ef55ac 67%,#ffacd9);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.bonuses-main-title .police-word{background:linear-gradient(98deg,#edfaff 8%,#7fcfff 65%,#a3b8ff);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.tabs{width:min(780px,100%);gap:7px}
+.tabs button{min-width:0;white-space:nowrap}
+.bonus-coming{min-height:425px;max-width:930px;margin:0 auto 38px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;text-align:center;border-radius:23px;border:1px solid rgba(109,171,238,.41);background:radial-gradient(ellipse at 50% 30%,rgba(39,112,192,.25),transparent 58%),linear-gradient(145deg,#0a1e36ed,#061429ec);box-shadow:0 20px 55px #0005}
+.bonus-coming .coming-emblem{width:92px;height:92px;display:grid;place-items:center;font-size:55px;color:#8ccfff;border-radius:24px;border:1px solid #5d9dce70;background:linear-gradient(145deg,#174879,#101e4b);box-shadow:0 0 35px #1764ca4a}
+.bonus-coming h2{font-size:clamp(25px,4vw,40px);letter-spacing:.09em;margin:6px 0 0}
+.bonus-coming p{font-size:14px;color:#a3c4e0;margin:0}
+@media(max-width:670px){.bonuses-main-title{font-size:clamp(17px,4.25vw,30px);letter-spacing:-.06em;margin-top:24px}.tabs button{font-size:10.5px;padding:12px 3px}.tabs{gap:3px}.bonus-coming{min-height:320px}}
+@media(max-width:370px){.bonuses-main-title{font-size:16px}.tabs button{font-size:9.5px}}
 </style>
 </head>
 <body>
 <div class="wallpaper" aria-hidden="true"></div>
 <header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
 <main class="shell">
-  <h1 class="title">ТАКТИЧЕСКИЙ <span>ТИР</span></h1>
+  <h1 class="title bonuses-main-title"><span class="bonuses-word">БОНУСЫ</span> <span class="police-word">POLICE DEPARTMENT</span></h1>
   <div class="tabs" role="tablist" aria-label="Разделы бонусов">
     <button type="button" role="tab" id="tab-roulette" aria-controls="panel-roulette" aria-selected="true">ТИР</button>
-    <button type="button" role="tab" id="tab-cases" aria-selected="false" aria-disabled="true" title="Кейсы — скоро" disabled>КЕЙСЫ</button>
+    <button type="button" role="tab" id="tab-cases" aria-controls="panel-cases" aria-selected="false">КЕЙСЫ</button>
+    <button type="button" role="tab" id="tab-scratch" aria-controls="panel-scratch" aria-selected="false">СКРЕТЧ</button>
     <button type="button" role="tab" id="tab-contests" aria-controls="panel-contests" aria-selected="false">КОНКУРСЫ</button>
   </div>
   <section id="panel-roulette" class="tab-panel" role="tabpanel" aria-labelledby="tab-roulette">
@@ -130,6 +144,12 @@
       <div class="demo-indicators">Выбито призов: <b id="winCount">0</b></div>
       <div class="status-line" id="statusLine" role="status" aria-live="polite">Демо-режим: выигрыши не начисляются на аккаунт.</div>
     </div>
+  </section>
+  <section id="panel-cases" class="tab-panel bonus-coming" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <div class="coming-emblem" aria-hidden="true">◇</div><h2>КЕЙСЫ</h2><p>Раздел в разработке</p>
+  </section>
+  <section id="panel-scratch" class="tab-panel bonus-coming" role="tabpanel" aria-labelledby="tab-scratch" hidden>
+    <div class="coming-emblem" aria-hidden="true">✦</div><h2>СКРЕТЧ</h2><p>Раздел в разработке</p>
   </section>
   <section id="panel-contests" class="tab-panel contests" role="tabpanel" aria-labelledby="tab-contests" hidden><span>🏆</span><h2>КОНКУРСЫ</h2><p>Этот раздел подготовлен. Конкурсы и задания для сотрудников полиции добавим позднее.</p></section>
 </main>
@@ -288,8 +308,16 @@
  arena.addEventListener('pointerup',()=>pressed=false);arena.addEventListener('pointercancel',()=>pressed=false);arena.addEventListener('lostpointercapture',()=>pressed=false);
  window.addEventListener('blur',()=>pressed=false);
  $('soundToggle').addEventListener('click',()=>{soundOn=!soundOn;$('soundToggle').textContent=soundOn?'♫ Звук: ВКЛ':'♫ Звук: ВЫКЛ';$('soundToggle').setAttribute('aria-pressed',String(soundOn))});
- const rouletteTab=$('tab-roulette'),contestsTab=$('tab-contests');function setTab(contests){if(contests&&mode==='running')return;rouletteTab.setAttribute('aria-selected',String(!contests));contestsTab.setAttribute('aria-selected',String(contests));$('panel-roulette').hidden=contests;$('panel-contests').hidden=!contests}
- rouletteTab.addEventListener('click',()=>setTab(false));contestsTab.addEventListener('click',()=>setTab(true));
+ const bonusTabs=['roulette','cases','scratch','contests'];
+ function setBonusTab(tab){
+   if(!bonusTabs.includes(tab)||(mode==='running'&&tab!=='roulette'))return;
+   for(const item of bonusTabs){
+     const active=item===tab;
+     $('tab-'+item).setAttribute('aria-selected',String(active));
+     $('panel-'+item).hidden=!active;
+   }
+ }
+ for(const item of bonusTabs){$('tab-'+item).addEventListener('click',()=>setBonusTab(item));}
  window.addEventListener('resize',()=>{targets.forEach(positionTarget);if(bonus)moveBonus(bonus)});
  resetGame();requestAnimationFrame(tick);loadCatalog();
 })();

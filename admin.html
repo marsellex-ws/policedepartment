@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#07111e">
 <meta name="description" content="Полиция Платинума — единый портал Absolute Role Play Platinum">
-<title>Полиция Платинума — Единый портал</title>
+<title>Админка</title>
 <style>
 :root{color-scheme:dark;--bg:#07111e;--panel:#10243a;--border:#284863;--text:#ecf5ff;--muted:#92acc4;--blue:#4ba7ff;--red:#f35b79;--cyan:#54d4f4;--green:#55d9af;--gold:#f2bd65;--violet:#a48bff}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:radial-gradient(ellipse 65% 32% at 52% 0%,#13385b90,transparent),linear-gradient(180deg,#07111d,#081624 62%,#050e18);color:var(--text);font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif;overflow-x:hidden}
@@ -285,6 +285,22 @@ header.header a.brand.pd-unified-brand strong{
 #pdAdminRange .range-form-fields{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:1120px){#pdAdminRange .range-prize-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){#pdAdminRange .range-prize-grid,#pdAdminRange .range-settings-grid,#pdAdminRange .range-form-fields{grid-template-columns:1fr}}
+
+/* Separate settings, prize catalog and cases without duplicating the live API editor */
+#pdAdminRange[data-view="settings"] #rangeNewPrize,
+#pdAdminRange[data-view="settings"] .range-list-header,
+#pdAdminRange[data-view="settings"] #rangePrizeGrid {display:none!important}
+#pdAdminRange[data-view="prizes"] #rangeSettingsForm {display:none!important}
+#pdAdminRange .range-admin-head h3,
+#pdAdminRange .range-admin-head p,
+#pdAdminRange #rangeSettingsForm .pd-hint {display:none!important}
+#pdAdminRange[data-view="settings"] .range-admin-head {display:none!important}
+#pdAdminRange .range-admin-head {justify-content:flex-end}
+#pdAdminRange .range-add h3,#pdAdminRange .range-settings h3{font-size:21px;margin:0;color:#eaf7ff}
+#pdAdminRange .range-list-header{font-size:20px}
+#pdAdminCases .pd-cases-placeholder{min-height:220px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;text-align:center;border:1px solid #406c98;border-radius:20px;background:linear-gradient(145deg,#0e2945,#091728)}
+#pdAdminCases .pd-cases-placeholder h3{margin:0;font-size:24px}
+#pdAdminCases .pd-cases-placeholder p{margin:0;color:#98b8d6;font-size:13px}
 </style>
   <script src="api-fetch-retry.js"></script>
   <script src="ui-pending.js?v=20261031fix2"></script>
@@ -329,7 +345,9 @@ header.header a.brand.pd-unified-brand strong{
     <button type="button" data-pd-tab="chiefs" role="tab" aria-controls="pdAdminChiefs" aria-selected="false">Активность шефов</button>
     <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false">Руководство полиции</button>
     <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false">Выдача ролей</button>
-    <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false">Тир и призы</button>
+    <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false">Настройки тира</button>
+    <button type="button" data-pd-tab="prizes" role="tab" aria-controls="pdAdminRange" aria-selected="false">Призы</button>
+    <button type="button" data-pd-tab="cases" role="tab" aria-controls="pdAdminCases" aria-selected="false">Кейсы</button>
     <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
   </nav>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
@@ -343,7 +361,10 @@ header.header a.brand.pd-unified-brand strong{
   </div>
   <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
   <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
-  <section id="pdAdminRange" class="hidden" aria-label="Тир и призы"></section>
+  <section id="pdAdminRange" data-view="settings" class="hidden" aria-label="Настройки тира и призы"></section>
+  <section id="pdAdminCases" class="hidden" aria-label="Кейсы">
+    <div class="pd-admin-card pd-cases-placeholder"><h3>Кейсы</h3><p>Тестовый раздел</p></div>
+  </section>
   <section id="pdAdminRoles" class="pd-roles-layout hidden" aria-label="Выдача ролей">
     <div class="pd-admin-card pd-roles-search-card">
       <div class="pd-admin-card-head"><h3>Поиск сотрудника</h3></div>
@@ -513,7 +534,7 @@ async function openAdmin(){
  $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  // Render the selected panel immediately; network requests must not block tab clicks.
- setTab(location.hash==='#range'?'range':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
+ setTab(location.hash==='#range'?'range':location.hash==='#prizes'?'prizes':location.hash==='#cases'?'cases':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
  try{
    const me=await req('/api/auth/me');
    adminUser=me.user;
@@ -525,6 +546,8 @@ async function openAdmin(){
    }
    document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
    if(location.hash==='#range') {setTab('range');return;}
+   if(location.hash==='#prizes') {setTab('prizes');return;}
+   if(location.hash==='#cases') {setTab('cases');return;}
    if(location.hash==='#roles') {setTab('roles');return;}
     if(location.hash==='#chiefs') {setTab('chiefs');await loadChiefs();return;}
    const results=await Promise.allSettled([loadUsers(),loadChiefs(),loadLeadership()]);
@@ -632,7 +655,7 @@ function positionTabLine(){
 }
 function setTab(tab){
  if(adminUser?.role==='minister'&&tab!=='roles')tab='roles';
- const allowed=['users','chiefs','leadership','roles','range'];if(!allowed.includes(tab))return;
+ const allowed=['users','chiefs','leadership','roles','range','prizes','cases'];if(!allowed.includes(tab))return;
  currentTab=tab;
  document.querySelectorAll('[data-pd-tab]').forEach(b=>{
    const active=b.dataset.pdTab===tab;
@@ -643,16 +666,18 @@ function setTab(tab){
  $('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');
  $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
  $('pdAdminRoles').classList.toggle('hidden',tab!=='roles');
- $('pdAdminRange').classList.toggle('hidden',tab!=='range');
+ $('pdAdminRange').classList.toggle('hidden',tab!=='range'&&tab!=='prizes');
+ $('pdAdminRange').dataset.view=tab==='range'?'settings':'prizes';
+ $('pdAdminCases').classList.toggle('hidden',tab!=='cases');
  error('');requestAnimationFrame(positionTabLine);
  if(tab==='roles')window.PoliceRoleManager?.init();
- if(tab==='range')window.PoliceRangeAdmin?.init();
+ if(tab==='range'||tab==='prizes')window.PoliceRangeAdmin?.init();
 }
 document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
  b.onclick=()=>setTab(b.dataset.pdTab);
 });
 window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
-window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#range')setTab('range');});
+window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#range')setTab('range');if(location.hash==='#prizes')setTab('prizes');if(location.hash==='#cases')setTab('cases');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
