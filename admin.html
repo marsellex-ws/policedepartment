@@ -348,6 +348,7 @@ header.header a.brand.pd-unified-brand strong{
     <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false">Настройки тира</button>
     <button type="button" data-pd-tab="prizes" role="tab" aria-controls="pdAdminRange" aria-selected="false">Призы</button>
     <button type="button" data-pd-tab="cases" role="tab" aria-controls="pdAdminCases" aria-selected="false">Кейсы</button>
+    <button type="button" data-pd-tab="quests" role="tab" aria-controls="pdAdminQuests" aria-selected="false">Квесты и баллы</button>
     <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
   </nav>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
@@ -361,6 +362,7 @@ header.header a.brand.pd-unified-brand strong{
   </div>
   <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
   <div id="pdAdminLeadership" class="hidden"><div class="pd-admin-grid" id="pdLeadershipEditor"></div></div>
+  <section id="pdAdminQuests" class="hidden" aria-label="Квесты и баллы"></section>
   <section id="pdAdminRange" data-view="settings" class="hidden" aria-label="Настройки тира и призы"></section>
   <section id="pdAdminCases" class="hidden" aria-label="Кейсы">
     <div class="pd-admin-card pd-cases-placeholder"><h3>Кейсы</h3><p>Тестовый раздел</p></div>
@@ -396,7 +398,7 @@ header.header a.brand.pd-unified-brand strong{
 <a class="feature" style="--accent:#f1bd67" href="leadership.html"><img class="feature-bg" src="png_police_site/06_staff.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/staff.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Руководство полиции</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ff9a64" href="chiefs.html"><img class="feature-bg" src="png_police_site/07_chief_activity.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/chief_activity.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Активность шефов</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ad8cff" href="#ratings"><img class="feature-bg" src="png_police_site/08_top_employees.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/top_employees.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Топ сотрудников</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" id="quests" style="--accent:#55ccff" href="#quests" data-soon="Квесты для старшего состава [8-10]"><img class="feature-bg" src="png_police_site/09_quests.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/quests.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Квесты для старшего состава [8-10]</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" id="quests" style="--accent:#55ccff" href="quests.html"><img class="feature-bg" src="png_police_site/09_quests.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/quests.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Квесты для 8–10 рангов</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" id="drawings" style="--accent:#fa83b4" href="bonuses.html"><img class="feature-bg" src="png_police_site/10_giveaways.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/giveaways.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Бонусы</strong></span><span class="arrow">↗</span></span></a>
 </section>
 <section class="dashboard">
@@ -469,7 +471,7 @@ document.querySelectorAll('[data-soon]').forEach(el=>el.addEventListener('click'
 document.querySelectorAll('[data-article]').forEach(el=>el.addEventListener('click',()=>toast(el.dataset.article)));
 $('bellBtn').onclick=()=>toast('Новых уведомлений нет');
 $('nav').addEventListener('click',()=> $('nav').classList.remove('open'));
-const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','#quests'],['Бонусы','bonuses.html'],['Личный кабинет','https://police-department.ru/entrance.html']];
+const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','#services'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты для старшего состава [8-10]','quests.html'],['Бонусы','bonuses.html'],['Личный кабинет','https://police-department.ru/entrance.html']];
 const escapeHTML=t=>t.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showSearch(){ $('searchOverlay').classList.add('open');$('globalSearch').value='';renderSearch('');setTimeout(()=>$('globalSearch').focus(),10)}
 function hideSearch(){$('searchOverlay').classList.remove('open')}
@@ -491,7 +493,7 @@ function readSharedSession(){return PoliceSession.get();}
 let token=readSharedSession(),user=null;
 const roles={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const dialog=$('pdLoginDialog');
-function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';PoliceRoleUI.decorateExisting(user);$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer','minister'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
+function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';PoliceRoleUI.decorateExisting(user);$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer','minister','leader'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
 async function api(path,opts={}){const headers={'Accept':'application/json'};if(opts.data!==undefined)headers['Content-Type']='application/json';if(opts.auth)headers.Authorization='Bearer '+token;
 const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Object.assign(new Error(json.error||'Ошибка сервера ('+response.status+')'),{status:response.status});return json;}
 async function restore(){if(!token){render();return;}try{user=(await api('/api/auth/me',{auth:true})).user;restore.failures=0;}catch(e){if(e.status===401){clearSharedSession();token=null;user=null;restore.failures=0;}else{console.warn('[Police] Не удалось проверить сессию, авторизация сохранена:',e.message);restore.failures=(restore.failures||0)+1;if(restore.failures<=3)setTimeout(()=>{if(token&&!user)restore()},2500*restore.failures);}}render();}window.addEventListener('online',()=>{if(token&&!user){restore.failures=0;restore()}});
@@ -508,6 +510,7 @@ restore();
 
 <script src="role-manager.js"></script>
 <script src="range-admin.js?v=20261031fix2"></script>
+<script src="quests-admin.js?v=20261102"></script>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
@@ -534,17 +537,18 @@ async function openAdmin(){
  $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
  // Render the selected panel immediately; network requests must not block tab clicks.
- setTab(location.hash==='#range'?'range':location.hash==='#prizes'?'prizes':location.hash==='#cases'?'cases':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
+ setTab(location.hash==='#quests'?'quests':location.hash==='#range'?'range':location.hash==='#prizes'?'prizes':location.hash==='#cases'?'cases':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':currentTab);
  try{
    const me=await req('/api/auth/me');
    adminUser=me.user;
-   if(!['developer','admin','minister'].includes(adminUser?.role)) throw Error('Недостаточно прав');
-   if(adminUser.role==='minister'){
-     document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('hidden',b.dataset.pdTab!=='roles'));
-     setTab('roles');
+   if(!['developer','admin','minister','leader'].includes(adminUser?.role)) throw Error('Недостаточно прав');
+   if(adminUser.role==='minister'||adminUser.role==='leader'){
+     document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('hidden',adminUser.role==='leader'?b.dataset.pdTab!=='quests':!['roles','quests'].includes(b.dataset.pdTab)));
+     setTab(adminUser.role==='leader'?'quests':location.hash==='#roles'?'roles':'quests');
      return;
    }
    document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
+   if(location.hash==='#quests') {setTab('quests');return;}
    if(location.hash==='#range') {setTab('range');return;}
    if(location.hash==='#prizes') {setTab('prizes');return;}
    if(location.hash==='#cases') {setTab('cases');return;}
@@ -654,8 +658,9 @@ function positionTabLine(){
  line.style.left=(active.offsetLeft+(active.offsetWidth-width)/2)+'px';
 }
 function setTab(tab){
- if(adminUser?.role==='minister'&&tab!=='roles')tab='roles';
- const allowed=['users','chiefs','leadership','roles','range','prizes','cases'];if(!allowed.includes(tab))return;
+ if(adminUser?.role==='leader')tab='quests';
+ if(adminUser?.role==='minister'&&!['roles','quests'].includes(tab))tab='quests';
+ const allowed=['users','chiefs','leadership','roles','range','prizes','cases','quests'];if(!allowed.includes(tab))return;
  currentTab=tab;
  document.querySelectorAll('[data-pd-tab]').forEach(b=>{
    const active=b.dataset.pdTab===tab;
@@ -669,15 +674,17 @@ function setTab(tab){
  $('pdAdminRange').classList.toggle('hidden',tab!=='range'&&tab!=='prizes');
  $('pdAdminRange').dataset.view=tab==='range'?'settings':'prizes';
  $('pdAdminCases').classList.toggle('hidden',tab!=='cases');
+ $('pdAdminQuests').classList.toggle('hidden',tab!=='quests');
  error('');requestAnimationFrame(positionTabLine);
  if(tab==='roles')window.PoliceRoleManager?.init();
+ if(tab==='quests')window.PoliceQuestAdmin?.init();
  if(tab==='range'||tab==='prizes')window.PoliceRangeAdmin?.init();
 }
 document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
  b.onclick=()=>setTab(b.dataset.pdTab);
 });
 window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
-window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#range')setTab('range');if(location.hash==='#prizes')setTab('prizes');if(location.hash==='#cases')setTab('cases');});
+window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#range')setTab('range');if(location.hash==='#prizes')setTab('prizes');if(location.hash==='#cases')setTab('cases');if(location.hash==='#quests')setTab('quests');});
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
