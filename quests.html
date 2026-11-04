@@ -50,9 +50,33 @@ h1{font-size:clamp(22px,3.15vw,48px);font-style:normal;letter-spacing:-.04em;fon
 .balance-panel{padding-left:42px}.profile-img[src$="icon_shield.png"]{object-fit:contain;padding:9px}@media(max-width:570px){.balance-panel{padding-left:36px}}
 @media(max-width:790px){.sidebar{scrollbar-width:thin;scrollbar-color:#26506b transparent}}
 </style>
+<style>
+/* Shared Police Department page frame with calmer, easier-to-scan controls. */
+header.topbar{height:88px;min-height:88px;background-image:linear-gradient(90deg,rgba(3,13,23,.70),rgba(6,21,35,.40) 55%,rgba(3,13,23,.74)),url('reestr_shapk.png?v=2');background-position:center;background-size:cover;border-bottom:1px solid rgba(131,190,233,.25);box-shadow:0 8px 30px #0005}
+header.topbar .top-inner{width:min(1320px,calc(100% - 80px));min-height:88px;height:100%;gap:14px}
+header.topbar a.brand{gap:14px;letter-spacing:normal;font-family:Inter,'Segoe UI',Arial,sans-serif}
+header.topbar a.brand img{width:52px;height:54px;flex:0 0 52px;filter:drop-shadow(0 5px 14px #71caff40)}
+header.topbar a.brand b{border:0;padding:0;font-size:clamp(18px,1.72vw,25px);font-weight:950;letter-spacing:.01em;white-space:nowrap}
+.top-sub{display:none}
+.page{width:min(1320px,calc(100% - 80px));margin:28px auto 55px}
+.page-hero{min-height:230px;border:1px solid #28435d;border-radius:20px;clip-path:none;background:radial-gradient(ellipse at 73% 40%,#064f7159,transparent 50%),linear-gradient(115deg,#0c2237,#071324 60%,#181128);box-shadow:0 24px 70px #0004,inset 0 1px #a2e0ff12}
+.page-hero:after{left:4%;width:88%;height:1px;background:linear-gradient(90deg,transparent,#53e7ff,#b66cfa,transparent);box-shadow:none}
+.hero-copy{padding:32px 38px}
+.page-hero h1{white-space:normal;font-style:normal;font-size:clamp(28px,4vw,52px)}
+.dashboard{grid-template-columns:205px minmax(0,1fr);gap:20px}
+.sidebar,.game-panel,.rail-card,.main-panel{clip-path:none;border-radius:14px}
+.sidebar{top:102px;padding:14px 10px;background:#0b1c2ceb;border-color:#284863;box-shadow:0 12px 35px #0004}
+.side-nav{gap:5px}.side-nav button{height:46px;clip-path:none;border-radius:9px;border-color:transparent;background:transparent;padding:5px 10px}
+.side-nav button.active{background:#123b5d;border-color:#32678d}
+.game-panel{background:linear-gradient(135deg,#0c2136f5,#071524f5)}
+.content-head{border-radius:14px 14px 0 0}.quest-row,.reward-row{border-radius:12px}.row-cta,.btn-primary,.btn-secondary,select,input,textarea{border-radius:9px}
+.right-rail{gap:14px}
+@media(max-width:800px){header.topbar{height:74px;min-height:74px}header.topbar .top-inner{width:calc(100% - 34px);min-height:74px}.page{width:calc(100% - 34px);margin-top:18px}header.topbar a.brand{gap:9px}header.topbar a.brand img{width:35px;height:38px;flex-basis:35px}header.topbar a.brand b{font-size:clamp(13px,2.8vw,20px)}.dashboard{grid-template-columns:1fr;gap:12px}.sidebar{position:static}.side-nav button{min-width:105px}}
+@media(max-width:490px){header.topbar .top-inner{width:calc(100% - 24px)}header.topbar a.brand{gap:7px}header.topbar a.brand img{width:30px;height:34px;flex-basis:30px}header.topbar a.brand b{font-size:clamp(11px,2.7vw,13px)}.page{width:calc(100% - 24px)}.hero-copy{padding:24px 18px}}
+</style>
 </head>
 <body>
-<header class="topbar"><div class="top-inner"><a href="index.html" class="brand"><img src="quest_cyber_assets/emblems/police_badge.png" alt=""><b>POLICE DEPARTMENT</b></a><span class="top-sub">ОПЕРАТИВНЫЙ ЦЕНТР</span><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
+<header class="topbar"><div class="top-inner"><a href="index.html" class="brand pd-unified-brand" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><span><b>POLICE DEPARTMENT</b></span></a><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
 <main class="page">
  <section class="page-hero" aria-label="Заголовок"><div class="hero-copy"><div class="eyebrow">POLICE DEPARTMENT / ЛИЧНЫЙ КАБИНЕТ</div><h1>КВЕСТЫ <span class="logo-gradient">POLICE DEPARTMENT</span></h1><p class="hero-description">Выполняй задания. Зарабатывай баллы. Забирай награды.</p><div class="hero-tags"><span>LSPD</span><span>SFPD</span><span>LVPD</span><b>СИСТЕМА КВЕСТОВ</b></div></div><img class="hero-emblem" src="quest_cyber_assets/emblems/hero_shield.png" alt=""><span class="hero-orbit" aria-hidden="true"></span></section>
  <div class="dashboard">
