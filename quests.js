@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const API='https://police-api-b2y4.onrender.com',fmt=n=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(Number(n)||0);
+const API='https://api.police-department.ru',fmt=n=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(Number(n)||0);
 const $=id=>document.getElementById(id),h=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 const state={boot:null,view:'jobs',jobFilter:'all',shopFilter:'my',requests:[],history:[],ledger:[],roster:[],historyPage:1,historyLoaded:false,rosterLoaded:false,requestsLoaded:false,openKind:null,openItem:null,busy:false};
 const safeImg=(u,fallback='quest_cyber_assets/icon_shield.png')=>{try{if(!u)return fallback;const p=new URL(String(u),location.href);return (p.protocol==='https:'||(p.protocol==='http:'&&p.host===location.host))&&!p.username&&!p.password?p.href:fallback;}catch{return fallback}};

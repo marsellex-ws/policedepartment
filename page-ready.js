@@ -2,8 +2,8 @@
 (() => {
   'use strict';
   if (window.PoliceNavigation) return;
-  const API = 'https://police-api-b2y4.onrender.com';
-  const CACHE = 'pd_navigation_prefetch_v2';
+  const API = 'https://api.police-department.ru';
+  const CACHE = 'pd_navigation_prefetch_vercel_v3';
   const TTL = 25_000;
   const publicByPage = {
     'index.html': ['/api/portal/leadership', '/api/portal/chiefs'],

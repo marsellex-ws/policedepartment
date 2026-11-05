@@ -1,7 +1,7 @@
 /* Police Department: tactical range prize administration. All writes authenticated through Police API. */
 (()=>{'use strict';
  const ROOT=document.getElementById('pdAdminRange');if(!ROOT)return;
- const API='https://police-api-b2y4.onrender.com';
+ const API='https://api.police-department.ru';
  const FIELDS=['round_seconds','speed_multiplier','bonus_a','bonus_b','bonus_interval','max_extra_seconds'];
  const LIMITS={round_seconds:[10,120],speed_multiplier:[.5,5],bonus_a:[1,60],bonus_b:[1,60],bonus_interval:[3,40],max_extra_seconds:[0,180]};
  const TIER={easy:['Лёгкие','#52f4ad'],medium:['Средние','#67baff'],hard:['Сложные','#ff7195']};
