@@ -307,6 +307,7 @@ header.header a.brand.pd-unified-brand strong{
   <script src="site-session.js"></script>
   <script src="page-ready.js?v=render-20261105"></script>
   <script src="role-ui.js?v=render-20261105"></script>
+<script src="forum-avatar.js?v=20261106"></script>
 </head>
 <body class="pd-admin-only">
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -609,6 +610,7 @@ function setupEditors(parent,save){
    const picker=document.createElement('input');picker.type='file';picker.accept='image/png,image/jpeg';picker.setAttribute('aria-label','Выбрать аватарку (не более 300 КБ)');
    const hint=document.createElement('span');hint.className='pd-hint';hint.textContent='PNG или JPG · не более 300 КБ';
    avatar.before(picker,hint);
+   PoliceForumAvatar.attach({form,avatar,preview,picker,request:req,setImage:image,onSuccess:showMessage,onError:error});
    picker.onchange=async()=>{
       const file=picker.files?.[0];if(!file)return;
       if(file.size>300*1024||!['image/png','image/jpeg'].includes(file.type)){error('Разрешены PNG/JPG размером не более 300 КБ');picker.value='';return}
@@ -621,7 +623,7 @@ function setupEditors(parent,save){
  }
 
  if(avatar)avatar.addEventListener('input',()=>{const v=avatar.value.trim();if(!v||/^https:\/\//i.test(v))image(preview,v)});
- form.onsubmit=async e=>{e.preventDefault();error('');const data=Object.fromEntries(new FormData(form));const btn=form.querySelector('button[type=submit]');btn.disabled=true;
+ form.onsubmit=async e=>{e.preventDefault();if(form.dataset.avatarBusy==='1')return;error('');const data=Object.fromEntries(new FormData(form));const btn=form.querySelector('button[type=submit]');btn.disabled=true;
  try{await save(form.dataset.pdSave,data);showMessage('Изменения сохранены');window.pdRefreshPeople?.();}catch(x){error(x.message)}finally{btn.disabled=false}
  };
  });
