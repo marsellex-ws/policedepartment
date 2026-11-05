@@ -1,0 +1,42 @@
+name: Recover stuck Pages deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: 'Commit SHA of the stuck GitHub Pages deployment'
+        required: true
+        type: string
+
+permissions:
+  pages: write
+
+concurrency:
+  group: pages-recovery
+  cancel-in-progress: false
+
+jobs:
+  cancel-stuck-deployment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Cancel the specified Pages deployment
+        uses: actions/github-script@v7
+        env:
+          PAGES_DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+        with:
+          script: |
+            const deploymentId = process.env.PAGES_DEPLOYMENT_ID;
+            if (!/^[a-f0-9]{40}$/.test(deploymentId)) {
+              throw new Error('A full 40-character deployment commit SHA is required.');
+            }
+            const params = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pages_deployment_id: deploymentId
+            };
+            const before = await github.request('GET /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}', params);
+            core.info(`Current Pages deployment status: ${before.data.status}`);
+            // A stale deployment lock can remain even when GET already reports cancelled.
+            await github.request('POST /repos/{owner}/{repo}/pages/deployments/{pages_deployment_id}/cancel', params);
+            core.info('GitHub accepted the Pages deployment cancellation.');
