@@ -74,6 +74,8 @@
   }
 
   window.fetch = function policeFetch(input, init) {
+    const method = String(init?.method || input?.method || 'GET').toUpperCase();
+    if (method !== 'GET') return originalFetch(input, init);
     let request;
     try { request = new Request(input, init); }
     catch { return readWithRetries(input, init); }
