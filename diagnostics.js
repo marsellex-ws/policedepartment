@@ -12,15 +12,20 @@ async function probe(label,url,options={},expected=200){
 }
 $('run').onclick=async()=>{
  $('run').disabled=true;$('copy').disabled=true;lines=[];$('status').textContent='Проверяем соединение…';
- line('Police Department — диагностика v2');line('Время: '+new Date().toISOString());line('Браузер: '+navigator.userAgent);line('Страница: '+location.origin);line('Браузер считает сеть доступной: '+(navigator.onLine?'да':'нет'));
+ line('Police Department — диагностика v3');line('Время: '+new Date().toISOString());line('Браузер: '+navigator.userAgent);line('Страница: '+location.origin);line('Браузер считает сеть доступной: '+(navigator.onLine?'да':'нет'));
  try{
   const response=await fetch('page-ready.js?v=diagnostics-'+Date.now(),{cache:'no-store'});const s=await response.text();line('Скрипт навигации: HTTP '+response.status+' | '+(s.includes('async function warm(')?'актуальная версия':'другая версия'));
  }catch(e){line('ОШИБКА | Файлы сайта | '+e.name+': '+e.message)}
  const primary='https://api.police-department.ru';
  const backup='https://test-api.police-department.ru';
+ const render='https://police-api-b2y4.onrender.com'; // Explicit diagnostic comparison only; production requests stay on the primary API.
  const stamp='?pd_diagnostic='+Date.now();
  // Sequential probes distinguish connection congestion from individual endpoint failures.
  const checks=[
+  ['Render: health',render+'/health',{},200],
+  ['Render: руководство',render+'/api/portal/leadership'+stamp,{},200],
+  ['Render: экзамены',render+'/api/exams'+stamp,{},200],
+  ['Render: auth С Authorization',render+'/api/auth/me'+stamp,{headers:{Authorization:'Bearer diagnostic-invalid-token','Content-Type':'application/json'}},401],
   ['Основной: health',primary+'/health',{},200],
   ['Основной: руководство',primary+'/api/portal/leadership',{},200],
   ['Основной: руководство, уникальный URL',primary+'/api/portal/leadership'+stamp,{},200],
