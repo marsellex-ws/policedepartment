@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const API='https://api.police-department.ru/api/portal/quests/frozen';
+const API='https://police-api-b2y4.onrender.com/api/portal/quests/frozen';
 const $=id=>document.getElementById(id);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=value=>new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(Number(value)||0);

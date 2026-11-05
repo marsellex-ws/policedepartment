@@ -1,6 +1,6 @@
 /* Police Department role management. All permissions are enforced by Police API. */
 (()=>{'use strict';
- const API='https://api.police-department.ru', $=id=>document.getElementById(id), esc=x=>PoliceRoleUI.escape(x);
+ const API='https://police-api-b2y4.onrender.com', $=id=>document.getElementById(id), esc=x=>PoliceRoleUI.escape(x);
  let actor=null, selected=null, records=[], busy=false;
  const box=$('pdAdminRoles');if(!box)return;
  function notify(text,bad=false){const el=$('pdRolesStatus');el.textContent=text||'';el.classList.toggle('error',!!bad);}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru"><head>
-<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#061422"><title>Электронные экзамены</title>
   <link rel="icon" type="image/png" href="pd_photo.png?v=2">
 <style>
@@ -107,11 +107,11 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
 @media (max-width:380px) {
   header.header a.brand.pd-unified-brand strong,header.top a.brand.pd-unified-brand strong {font-size:12px !important;letter-spacing:0 !important;}
 }
-</style>  <script src="api-fetch-retry.js?v=resilient-reads-20261105b"></script>
+</style>  <script src="api-fetch-retry.js?v=render-20261105"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=instant-navigation-20261105"></script>
-  <script src="role-ui.js?v=api-vercel-20261105"></script>
+  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="role-ui.js?v=render-20261105"></script>
 </head>
 <body><header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><span><strong>POLICE DEPARTMENT</strong></span></a><div class="headright"><div data-police-user-slot class="pd-header-user-slot"></div><button type="button" class="btn ghost hidden" id="manageBtn">⚙ Управление</button></div></div></header>
 <main class="shell page"><section id="landing"><div class="exam-title-block"><h1><span class="exam-title-blue">ЭЛЕКТРОННЫЕ</span><span class="exam-title-red">ЭКЗАМЕНЫ</span></h1></div><div class="exam-loading"><span class="status" id="loadStatus" role="status">Загрузка...</span></div><div class="exam-grid">
@@ -134,7 +134,7 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>Экзамены используют указанный игровой ник и сохраняют ответы и результаты в базе Police Department. Учётная запись требуется только для управления.</p><button type="button" class="btn primary" id="closePrivacy">Закрыть</button></div></dialog><div class="toast hidden" id="toast" role="status"></div>
 <script>
 'use strict';
-const API='https://api.police-department.ru';
+const API='https://police-api-b2y4.onrender.com';
 const KEY='pd_site_token';
 const AUTH_EXPIRES='pd_site_token_expires_at', AUTH_TTL=24*60*60*1000;
 function clearSharedSession(){PoliceSession.clear();}

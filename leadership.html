@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -168,11 +168,11 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
   header.header a.brand.pd-unified-brand strong,header.top a.brand.pd-unified-brand strong {font-size:12px !important;letter-spacing:0 !important;}
 }
 </style>
-  <script src="api-fetch-retry.js?v=resilient-reads-20261105b"></script>
+  <script src="api-fetch-retry.js?v=render-20261105"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=instant-navigation-20261105"></script>
-  <script src="role-ui.js?v=api-vercel-20261105"></script>
+  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="role-ui.js?v=render-20261105"></script>
 </head>
 <body>
 <header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><span><strong>POLICE DEPARTMENT</strong></span></a><div data-police-user-slot class="pd-header-user-slot"></div></div></header>
@@ -185,7 +185,7 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
 <dialog id="privacyDialog" class="privacy-dialog"><div class="privacy-inner"><h3>Конфиденциальность</h3><p>На странице отображаются игровые имена, должности и изображения руководства полиции. Данные обновляются через Police Department.</p><button class="close-privacy" type="button" id="closePrivacy">Закрыть</button></div></dialog>
 <script>
 (()=>{'use strict';
-const API='https://api.police-department.ru';
+const API='https://police-api-b2y4.onrender.com';
 const ASSET='leadership_police/';
 const groups=document.getElementById('leadershipGroups');const vacant=document.getElementById('vacantGrid'),vacantSection=document.getElementById('vacantSection');
 const status=document.getElementById('loading');

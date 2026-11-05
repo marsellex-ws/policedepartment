@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<link rel="preconnect" href="https://api.police-department.ru" crossorigin>
+<link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -286,11 +286,11 @@ header.header a.brand.pd-unified-brand strong{
 @media(max-width:650px){.pd-admin-tabs{gap:5px}.pd-admin-tabs button,.pd-admin-tabs button.selected{flex:0 0 auto;padding:10px 11px 13px;font-size:11px}}
 @media(prefers-reduced-motion:reduce){.pd-admin-tabs .pd-admin-tab-indicator{transition:none}}
 </style>
-  <script src="api-fetch-retry.js?v=resilient-reads-20261105b"></script>
+  <script src="api-fetch-retry.js?v=render-20261105"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=instant-navigation-20261105"></script>
-  <script src="role-ui.js?v=api-vercel-20261105"></script>
+  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="role-ui.js?v=render-20261105"></script>
 </head>
 <body>
 <!-- Самодостаточный набор иконок: не требует библиотек -->
@@ -400,7 +400,7 @@ function renderChiefs(){
 async function refreshPublicPeople(){
   const endpoints=['/api/portal/leadership','/api/portal/chiefs'];
   const results=await Promise.allSettled(endpoints.map(async path=>{
-    const response=await fetch('https://api.police-department.ru'+path);
+    const response=await fetch('https://police-api-b2y4.onrender.com'+path);
     if(!response.ok)throw new Error('HTTP '+response.status);
     const data=await response.json();
     if(!data||!Array.isArray(data.items))throw new Error('Некорректный ответ');
@@ -413,7 +413,7 @@ async function refreshPublicPeople(){
   }
   if(results.some(r=>r.status==='rejected')){
     console.warn('[Police] Не все публичные блоки загрузились');
-    // Повторы и тайм-ауты обрабатываются общим api-fetch-retry.js.
+    // Повторы и тайм-ауты обрабатываются общим api-fetch-retry.js?v=render-20261105.
     // Не запускаем скрытые дополнительные загрузки страницы.
   }
 }
@@ -439,7 +439,7 @@ renderRoster('watchers');renderRank('thefts');renderStats('today');renderChiefs(
 </script>
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id), KEY='pd_site_token', API='https://api.police-department.ru';
+const $=id=>document.getElementById(id), KEY='pd_site_token', API='https://police-api-b2y4.onrender.com';
 const AUTH_TTL=24*60*60*1000,AUTH_EXPIRES='pd_site_token_expires_at';
 function clearSharedSession(){PoliceSession.clear();}
 function saveSharedSession(value,expiresAt){PoliceSession.save(value,expiresAt);}
@@ -464,7 +464,7 @@ restore();
 
 <script>
 (()=>{'use strict';
-const $=id=>document.getElementById(id),API='https://api.police-department.ru';
+const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
 const escape=t=>String(t??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const labels={responsible:'Ответственный за PD',curator_lspd:'Куратор LSPD',curator_sfpd:'Куратор SFPD',curator_lvpd:'Куратор LVPD',minister:'Министр внутренних дел',leader_lspd:'Лидер LSPD',leader_sfpd:'Лидер SFPD',leader_lvpd:'Лидер LVPD',swat_deputy:'Заместитель SWAT',swat_commander:'Командир SWAT',swat_deputy_2:'Заместитель SWAT II'};
 const roleLabels={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
@@ -605,7 +605,7 @@ window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){s
 <script>
 (() => {
   'use strict';
-  const HEALTH_URL = 'https://api.police-department.ru/health';
+  const HEALTH_URL = 'https://police-api-b2y4.onrender.com/health';
   const INTERVAL_MS = 5 * 60 * 1000;
   let lastAttemptAt = Date.now();
   let inProgress = false;

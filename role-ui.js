@@ -1,6 +1,6 @@
 /* Shared role identity UI for Police Department. Reads only the public auth/me endpoint. */
 (()=>{'use strict';
- const API='https://api.police-department.ru';
+ const API='https://police-api-b2y4.onrender.com';
  const IMG='png_police_site/profile.png';
  const CONFIG={developer:['Разработчик','developer.png','#68b9ff'],admin:['Администратор','administrator.png','#ff788c'],minister:['Министр','minister.png','#f9c66b'],leader_lspd:['Лидер LSPD','leader_lspd.png','#70b7ff'],leader_sfpd:['Лидер SFPD','leader_sfpd.png','#67e6c9'],leader_lvpd:['Лидер LVPD','leader_lvpd.png','#cd99ff'],senior:['Старший состав','senior_staff.png','#f4b968'],user:['Пользователь','user.png','#adbed4']};
  function type(user){if(!user)return 'user';const role=user.role||'user',dep=String(user.role_department||user.department||'').toUpperCase();if(role==='leader')return 'leader_'+(dep==='SFPD'?'sfpd':dep==='LVPD'?'lvpd':'lspd');return CONFIG[role]?role:'user';}
