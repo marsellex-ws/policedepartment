@@ -80,15 +80,6 @@
   }
   window.addEventListener('pagehide', resetNavigation);
   window.addEventListener('pageshow', resetNavigation);
-  function showError(url) {
-    document.getElementById('pd-nav-error')?.remove();
-    const el = document.createElement('div');
-    el.id='pd-nav-error';el.setAttribute('role','alert');
-    const message=document.createElement('span');message.textContent='Не удалось загрузить страницу. Проверь соединение.';
-    const retry=document.createElement('button');retry.type='button';retry.textContent='Повторить';retry.onclick=()=>{el.remove();go(url)};
-    const cancel=document.createElement('button');cancel.type='button';cancel.textContent='Закрыть';cancel.onclick=()=>el.remove();
-    el.append(message,retry,cancel);document.body.appendChild(el);
-  }
   async function go(href) {
     if (navigating) return;
     const to = new URL(href, location.href);
@@ -100,7 +91,7 @@
     const bar = line();bar.classList.add('pd-nav-visible');
     const controller = new AbortController();
     activeController = controller;
-    const timeout = setTimeout(() => controller.abort(), 8500);
+    const timeout = setTimeout(() => controller.abort(), 2500);
     activeTimeout = timeout;
     try {
       // Start HTML and public API requests together, not sequentially.
@@ -118,15 +109,16 @@
       if (!response.ok) throw new Error('Страница HTTP '+response.status);
       const cache=Object.fromEntries(results);
       sessionStorage.setItem(CACHE, JSON.stringify(cache));
-      location.assign(to.href); // full-page transition only after the public data is ready
+      location.assign(to.href); // Use prefetched data when available; it is never required for navigation.
       return;
     } catch (error) {
       // Ignore an abandoned request after Back/Forward restores a cached page.
       if (thisNavigation !== navGeneration) return;
       navigating = false;
-      console.warn('[Police] Navigation preload failed:', error);
+      console.warn('[Police] Optional navigation preload failed; opening page directly:', error);
       bar.classList.remove('pd-nav-visible');
-      showError(to.href);
+      controller.abort();
+      location.assign(to.href);
     } finally {
       clearTimeout(timeout);
       if (activeTimeout === timeout) activeTimeout = null;
