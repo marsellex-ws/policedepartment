@@ -9,9 +9,12 @@
   const originalFetch = window.fetch.bind(window);
   const API_ORIGIN = 'https://api.police-department.ru';
   const RETRYABLE = new Set([408, 425, 429, 500, 502, 503, 504]);
-  const MAX_ATTEMPTS = 2;
-  const PER_ATTEMPT_MS = 3200;
+  const MAX_ATTEMPTS = 3;
+  const PER_ATTEMPT_MS = 8000;
   const BACKOFF_MS = 220;
+
+  const PUBLIC_PATHS = new Set(['/api/portal/leadership', '/api/portal/chiefs', '/api/exams', '/api/portal/range']);
+  const publicReads = new Map();
 
   function abortError() { return new DOMException('Request aborted', 'AbortError'); }
   function pause(ms, signal) {
@@ -28,7 +31,7 @@
     });
   }
 
-  window.fetch = async function policeFetch(input, init) {
+  async function readWithRetries(input, init) {
     let url;
     try { url = new URL(typeof input === 'string' ? input : input.url, location.href); }
     catch { return originalFetch(input, init); }
@@ -46,6 +49,8 @@
       const timer = setTimeout(() => { timedOut = true; controller.abort(); }, PER_ATTEMPT_MS);
       try {
         const response = await originalFetch(input, {...init, signal: controller.signal});
+        // Keep the timeout active until the body arrives, not only the headers.
+        if (response.ok) await response.clone().arrayBuffer();
         const ms = Math.round(performance.now() - started);
         if (!RETRYABLE.has(response.status) || attempt === MAX_ATTEMPTS) {
           if (attempt > 1) console.info('[Police API] GET восстановлен', url.pathname, `HTTP ${response.status}`, `${ms} мс`);
@@ -64,7 +69,32 @@
         clearTimeout(timer);
         signal?.removeEventListener('abort', onAbort);
       }
-      await pause(BACKOFF_MS, signal);
+      await pause(BACKOFF_MS * attempt + Math.random() * 150, signal);
     }
+  }
+
+  window.fetch = function policeFetch(input, init) {
+    let request;
+    try { request = new Request(input, init); }
+    catch { return readWithRetries(input, init); }
+    const url = new URL(request.url);
+    const cacheable = url.origin === API_ORIGIN && request.method === 'GET' &&
+      PUBLIC_PATHS.has(url.pathname) && !request.headers.has('Authorization') &&
+      !init?.signal && !(input instanceof Request) && request.cache !== 'reload' && request.cache !== 'no-store' && request.credentials !== 'include';
+    if (!cacheable) return readWithRetries(input, init);
+    const key = request.url + '|' + request.headers.get('Accept');
+    const previous = publicReads.get(key);
+    if (previous && previous.expires > Date.now()) return previous.promise.then(r => r.clone());
+    const entry = { expires: Infinity };
+    entry.promise = readWithRetries(input, init).then(response => {
+      if (response.ok) entry.expires = Date.now() + 5000;
+      else if (publicReads.get(key) === entry) publicReads.delete(key);
+      return response;
+    }).catch(error => {
+      if (publicReads.get(key) === entry) publicReads.delete(key);
+      throw error;
+    });
+    publicReads.set(key, entry);
+    return entry.promise.then(r => r.clone());
   };
 })();
