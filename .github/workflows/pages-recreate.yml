@@ -1,0 +1,113 @@
+name: Recreate GitHub Pages configuration
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Type RECREATE_PAGES to confirm temporary site downtime'
+        required: true
+        type: string
+
+permissions:
+  pages: write
+
+concurrency:
+  group: pages-maintenance
+  cancel-in-progress: false
+
+jobs:
+  recreate-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Validate approval and back up the current Pages settings
+        id: backup
+        uses: actions/github-script@v7
+        env:
+          CONFIRMATION: ${{ inputs.confirmation }}
+        with:
+          script: |
+            if (process.env.CONFIRMATION !== 'RECREATE_PAGES') {
+              throw new Error('Explicit RECREATE_PAGES confirmation is required.');
+            }
+            const repo = {owner: context.repo.owner, repo: context.repo.repo};
+            const {data} = await github.request('GET /repos/{owner}/{repo}/pages', repo);
+            if (data.cname !== 'police-department.ru' || data.build_type !== 'legacy' ||
+                data.source?.branch !== 'main' || data.source?.path !== '/' || !data.https_enforced) {
+              throw new Error('Pages settings differ from the approved configuration; no changes made.');
+            }
+            const config = {
+              build_type: data.build_type,
+              source: data.source,
+              cname: data.cname,
+              https_enforced: data.https_enforced
+            };
+            require('fs').writeFileSync('pages-settings-backup.json', JSON.stringify(data, null, 2));
+            core.setOutput('config', JSON.stringify(config));
+            core.info('Approved Pages settings verified and backed up.');
+
+      - name: Preserve settings before any deletion
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-settings-before-recreation-${{ github.run_id }}
+          path: pages-settings-backup.json
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Recreate Pages and restore domain and HTTPS
+        id: recreate
+        uses: actions/github-script@v7
+        env:
+          PAGES_CONFIG: ${{ steps.backup.outputs.config }}
+        with:
+          script: |
+            const config = JSON.parse(process.env.PAGES_CONFIG);
+            const repo = {owner: context.repo.owner, repo: context.repo.repo};
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            await github.request('DELETE /repos/{owner}/{repo}/pages', repo);
+            core.info('Previous Pages configuration removed; restoring approved settings now.');
+            let created = false, lastError;
+            for (let attempt = 0; attempt < 6; attempt++) {
+              try {
+                await github.request('POST /repos/{owner}/{repo}/pages', {
+                  ...repo, build_type: config.build_type, source: config.source
+                });
+                created = true;
+                break;
+              } catch (error) {
+                lastError = error;
+                if (error.status === 409) {
+                  try {
+                    const existing = await github.request('GET /repos/{owner}/{repo}/pages', repo);
+                    if (existing.data.source?.branch === config.source.branch &&
+                        existing.data.source?.path === config.source.path) {
+                      created = true;
+                      break;
+                    }
+                  } catch {}
+                }
+                core.info(`Waiting for Pages recreation: HTTP ${error.status || 'unknown'}`);
+                await delay(4000);
+              }
+            }
+            if (!created) throw lastError || new Error('Pages recreation failed; settings backup is attached to this run.');
+            await github.request('PUT /repos/{owner}/{repo}/pages', {...repo, cname: config.cname});
+            core.info('Source main / and custom domain restored.');
+            let httpsReady = false;
+            for (let attempt = 0; attempt < 8; attempt++) {
+              try {
+                await github.request('PUT /repos/{owner}/{repo}/pages', {...repo, https_enforced: config.https_enforced});
+                httpsReady = true;
+                break;
+              } catch (error) {
+                if (![400, 422].includes(error.status)) throw error;
+                core.info('Waiting for the existing domain certificate to become ready.');
+                await delay(8000);
+              }
+            }
+            const final = await github.request('GET /repos/{owner}/{repo}/pages', repo);
+            core.info(JSON.stringify({source: final.data.source, cname: final.data.cname,
+              https_enforced: final.data.https_enforced, status: final.data.status}));
+            if (!httpsReady || !final.data.https_enforced) {
+              throw new Error('Source and domain restored; HTTPS enforcement is still pending certificate readiness.');
+            }
