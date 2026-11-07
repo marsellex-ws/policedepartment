@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#050b1c">
   <meta name="description" content="Активность шефов LSPD, SFPD и LVPD — Police Department">
   <title>Активность шефов</title>
-  <link rel="icon" type="image/png" href="pd_photo.png?v=2">
+  <link rel="icon" type="image/png" href="pd_favicon.png?v=20261107">
   <link rel="preconnect" href="https://police-api-b2y4.onrender.com" crossorigin>
   <link rel="preload" href="chiefs_assets/city-night.webp" as="image" type="image/webp">
-  <script src="api-fetch-retry.js?v=render-20261105"></script>
+  <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="site-session.js"></script>
   <script src="page-ready.js?v=render-20261105"></script>
   <script src="role-ui.js?v=render-20261105" defer></script>
@@ -53,7 +53,7 @@
     .wrap{width:min(1540px,calc(100% - 54px));margin-inline:auto;position:relative;z-index:1}
 
     .site-header{position:sticky;top:0;z-index:110;min-height:var(--header-h);border-bottom:1px solid rgba(120,181,255,.14);
-      background:linear-gradient(90deg,rgba(4,10,24,.95),rgba(7,14,34,.92) 50%,rgba(4,10,24,.96)),url('reestr_shapk.png') center/cover;
+      background:linear-gradient(90deg,rgba(4,10,24,.95),rgba(7,14,34,.92) 50%,rgba(4,10,24,.96)),url('reestr_shapk.webp') center/cover;
       backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.32)}
     .header-inner{min-height:var(--header-h);display:flex;align-items:center;gap:24px;justify-content:space-between}
     .brand{display:flex;align-items:center;gap:12px;min-width:0;flex-shrink:0}
@@ -113,7 +113,7 @@
     .card-wrap{position:relative;width:100%;max-width:410px;perspective:1600px}
     .slot.first .card-wrap{max-width:500px}
     .rank-card{
-      --accent:#62ffe3;--accent-rgb:98,255,227;--accent-soft:#4dd9b3;--scene:url('chiefs_assets/fone_lspd.png');
+      --accent:#62ffe3;--accent-rgb:98,255,227;--accent-soft:#4dd9b3;--scene:url('chiefs_assets/fone_lspd.webp');
       position:relative;isolation:isolate;transform-style:preserve-3d;border-radius:32px;overflow:visible;min-height:545px;
       background:linear-gradient(180deg,rgba(4,13,32,.78),rgba(5,12,30,.98));
       border:1px solid rgba(var(--accent-rgb),.36);box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), inset 0 0 42px rgba(var(--accent-rgb),.09), 0 28px 65px rgba(0,0,0,.38);
@@ -130,13 +130,13 @@
       linear-gradient(135deg, rgba(var(--accent-rgb),.32), transparent 20%, transparent 76%, rgba(var(--accent-rgb),.18)),
       linear-gradient(90deg, transparent 18%, rgba(255,255,255,.13) 48%, transparent 54%);
       background-size:100% 100%,250% 100%;background-position:0 0,120% 0;mix-blend-mode:screen;animation:cardSweep 11s linear infinite}
-    .rank-card.lspd{--accent:#53f0c4;--accent-rgb:83,240,196;--accent-soft:#35d49b;--scene:url('chiefs_assets/fone_lspd.png')}
-    .rank-card.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255;--accent-soft:#4d90f4;--scene:url('chiefs_assets/fone_sfpd.png')}
-    .rank-card.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155;--accent-soft:#e44580;--scene:url('chiefs_assets/fone_lvpd.png')}
+    .rank-card.lspd{--accent:#53f0c4;--accent-rgb:83,240,196;--accent-soft:#35d49b;--scene:url('chiefs_assets/fone_lspd.webp')}
+    .rank-card.sfpd{--accent:#63b8ff;--accent-rgb:99,184,255;--accent-soft:#4d90f4;--scene:url('chiefs_assets/fone_sfpd.webp')}
+    .rank-card.lvpd{--accent:#ff5a9b;--accent-rgb:255,90,155;--accent-soft:#e44580;--scene:url('chiefs_assets/fone_lvpd.webp')}
     .rank-card.top{--accent:#ffcf57;--accent-rgb:255,207,87;--accent-soft:#e8b948;box-shadow:inset 0 0 0 1px rgba(255,255,255,.05), inset 0 0 48px rgba(255,207,87,.12), 0 34px 90px rgba(0,0,0,.42), 0 0 44px rgba(255,194,58,.14)}
-    .rank-card.top.lspd{--scene:url('chiefs_assets/fone_lspd.png')}
-    .rank-card.top.sfpd{--scene:url('chiefs_assets/fone_sfpd.png')}
-    .rank-card.top.lvpd{--scene:url('chiefs_assets/fone_lvpd.png')}
+    .rank-card.top.lspd{--scene:url('chiefs_assets/fone_lspd.webp')}
+    .rank-card.top.sfpd{--scene:url('chiefs_assets/fone_sfpd.webp')}
+    .rank-card.top.lvpd{--scene:url('chiefs_assets/fone_lvpd.webp')}
     .rank-card-body{position:relative;padding:28px 24px 18px;min-height:545px;display:flex;flex-direction:column}
     .rank-card-body::before{content:"";position:absolute;left:16px;right:16px;top:16px;height:1px;background:linear-gradient(90deg,transparent,rgba(var(--accent-rgb),.36),transparent)}
 
@@ -241,7 +241,7 @@
 
     /* Police portal shared chrome: title + profile only. */
     :root{--header-h:78px}
-    .site-header{min-height:78px;background:linear-gradient(90deg,rgba(4,15,25,.87),rgba(6,19,30,.60) 42%,rgba(5,15,25,.88)),url('reestr_shapk.png') center/cover;
+    .site-header{min-height:78px;background:linear-gradient(90deg,rgba(4,15,25,.87),rgba(6,19,30,.60) 42%,rgba(5,15,25,.88)),url('reestr_shapk.webp') center/cover;
       border-bottom:1px solid rgba(124,185,231,.24);box-shadow:0 9px 36px rgba(1,7,15,.23)}
     .header-inner{min-height:78px;height:78px;justify-content:space-between}
     .brand{gap:12px}
@@ -513,7 +513,7 @@
 
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a>
+    <a class="brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.webp" alt=""><strong>POLICE DEPARTMENT</strong></a>
     <div class="right-tools"><div class="pd-header-user-slot" data-police-user-slot></div></div>
   </div>
 </header>
@@ -669,7 +669,7 @@
   }
   async function refresh(){
     controller?.abort();const next=new AbortController();controller=next;status('Обновляем данные...');
-    const timeout=setTimeout(()=>next.abort(),12000);
+    const timeout=setTimeout(()=>next.abort(),100000);
     try{
       const res=await fetch(API+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal:next.signal});
       if(!res.ok)throw new Error('HTTP '+res.status);

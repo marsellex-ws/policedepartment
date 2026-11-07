@@ -1,46 +1,37 @@
-/* Read-only connectivity checks. Never reads cookies, session storage or auth tokens. */
+/* Read-only production diagnostics: no cookies, session storage or user tokens. */
 (()=>{'use strict';
 const $=id=>document.getElementById(id);let lines=[];
-function line(s){lines.push(s);$('report').textContent=lines.join('\n');}
-async function probe(label,url,options={},expected=200){
- const started=performance.now();const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),7000);
- try{const response=await fetch(url,{...options,signal:controller.signal,cache:'no-store',credentials:'omit'});const text=await response.text();let data;try{data=JSON.parse(text)}catch{}
- const valid=data&&typeof data==='object'&&response.status===expected;
- line(`${valid?'OK':'ОШИБКА'} | ${label} | HTTP ${response.status} | ${Math.round(performance.now()-started)} мс | ${data?'JSON':'не JSON'}`);
- if(url.endsWith('/health')&&data)line(`  База настроена: ${data.database_configured===true?'да':'нет'}`);
- }catch(error){line(`ОШИБКА | ${label} | ${Math.round(performance.now()-started)} мс | ${error.name}: ${error.message}`)}finally{clearTimeout(timeout)}
+function line(value){lines.push(value);$('report').textContent=lines.join('\n');}
+async function probe(label,url,{format='json',expected=200,timeout=15000,headers={}}={}){
+ const started=performance.now(),controller=new AbortController();let responseTime=null;
+ const timer=setTimeout(()=>controller.abort(),timeout);
+ try{
+  const response=await fetch(url,{headers,signal:controller.signal,cache:'no-store',credentials:'omit'});responseTime=Math.round(performance.now()-started);
+  const bytes=await response.arrayBuffer();const elapsed=Math.round(performance.now()-started);let data=null;
+  if(format==='json')try{data=JSON.parse(new TextDecoder().decode(bytes))}catch{}
+  const valid=response.status===expected&&bytes.byteLength>0&&(format!=='json'||data&&typeof data==='object');
+  const entries=performance.getEntriesByName(response.url);const protocol=entries.at(-1)?.nextHopProtocol;
+  line(`${valid?'OK':'ОШИБКА'} | ${label} | HTTP ${response.status} | заголовки ${responseTime} мс | полностью ${elapsed} мс | ${bytes.byteLength} байт${protocol?' | '+protocol:''}${format==='json'&&!data?' | не JSON':''}`);
+  if(data&&url.includes('/health'))line('  База настроена: '+(data.database_configured===true?'да':'нет'));
+ }catch(error){line(`ОШИБКА | ${label} | ${Math.round(performance.now()-started)} мс | ${responseTime===null?'ответ не начался':'заголовки получены за '+responseTime+' мс'} | ${error.name}: ${error.message}`)}finally{clearTimeout(timer)}
 }
 $('run').onclick=async()=>{
- $('run').disabled=true;$('copy').disabled=true;lines=[];$('status').textContent='Проверяем соединение…';
- line('Police Department — диагностика v3');line('Время: '+new Date().toISOString());line('Браузер: '+navigator.userAgent);line('Страница: '+location.origin);line('Браузер считает сеть доступной: '+(navigator.onLine?'да':'нет'));
- try{
-  const response=await fetch('page-ready.js?v=diagnostics-'+Date.now(),{cache:'no-store'});const s=await response.text();line('Скрипт навигации: HTTP '+response.status+' | '+(s.includes('async function warm(')?'актуальная версия':'другая версия'));
- }catch(e){line('ОШИБКА | Файлы сайта | '+e.name+': '+e.message)}
- const primary='https://api.police-department.ru';
- const backup='https://test-api.police-department.ru';
- const render='https://police-api-b2y4.onrender.com'; // Explicit diagnostic comparison only; production requests stay on the primary API.
- const stamp='?pd_diagnostic='+Date.now();
- // Sequential probes distinguish connection congestion from individual endpoint failures.
+ $('run').disabled=true;$('copy').disabled=true;lines=[];
+ line('Police Department — диагностика v4');line('Время: '+new Date().toISOString());line('Браузер: '+navigator.userAgent);line('Страница: '+location.origin);line('Сеть доступна: '+(navigator.onLine?'да':'нет'));line('Service Worker: '+(navigator.serviceWorker?.controller?'активен':'нет'));
+ const api='https://police-api-b2y4.onrender.com',stamp='?pd_diagnostic='+Date.now();
  const checks=[
-  ['Render: health',render+'/health',{},200],
-  ['Render: руководство',render+'/api/portal/leadership'+stamp,{},200],
-  ['Render: экзамены',render+'/api/exams'+stamp,{},200],
-  ['Render: auth С Authorization',render+'/api/auth/me'+stamp,{headers:{Authorization:'Bearer diagnostic-invalid-token','Content-Type':'application/json'}},401],
-  ['Основной: health',primary+'/health',{},200],
-  ['Основной: руководство',primary+'/api/portal/leadership',{},200],
-  ['Основной: руководство, уникальный URL',primary+'/api/portal/leadership'+stamp,{},200],
-  ['Дополнительный: руководство',backup+'/api/portal/leadership'+stamp,{},200],
-  ['Основной: экзамены',primary+'/api/exams'+stamp,{},200],
-  ['Дополнительный: экзамены',backup+'/api/exams'+stamp,{},200],
-  ['Основной: auth БЕЗ Authorization',primary+'/api/auth/me'+stamp,{},401],
-  ['Основной: auth С Authorization',primary+'/api/auth/me'+stamp,{headers:{Authorization:'Bearer diagnostic-invalid-token','Content-Type':'application/json'}},401],
-  ['Дополнительный: auth С Authorization',backup+'/api/auth/me'+stamp,{headers:{Authorization:'Bearer diagnostic-invalid-token','Content-Type':'application/json'}},401]
+  ['GitHub Pages: HTML',new URL('index.html'+stamp,location.href).href,{format:'html'}],
+  ['GitHub Pages: JavaScript',new URL('api-fetch-retry.js'+stamp,location.href).href,{format:'script'}],
+  ['GitHub Pages: изображение',new URL('reestr_shapk.webp'+stamp,location.href).href,{format:'image'}],
+  ['Render: первый health',api+'/health'+stamp,{timeout:35000}],
+  ['Render: руководство',api+'/api/portal/leadership'+stamp,{}],
+  ['Render: шефы',api+'/api/portal/chiefs'+stamp,{}],
+  ['Render: экзамены',api+'/api/exams'+stamp,{}],
+  ['Render: Authorization / CORS',api+'/api/auth/me'+stamp,{headers:{Authorization:'Bearer diagnostic-invalid-token','Content-Type':'application/json'},expected:401}],
+  ['Render: повторный health',api+'/health'+stamp,{}]
  ];
- for(let i=0;i<checks.length;i++){
-  $('status').textContent=`Проверка ${i+1} из ${checks.length}…`;
-  await probe(...checks[i]);
- }
- $('status').textContent='Проверка завершена. Скопируй результат и отправь в чат.';$('run').disabled=false;$('copy').disabled=false;
+ try{for(let i=0;i<checks.length;i++){$('status').textContent=`Проверка ${i+1} из ${checks.length}…`;await probe(...checks[i]);}}
+ finally{$('run').disabled=false;$('copy').disabled=false;$('status').textContent='Проверка завершена. Скопируй результат и отправь в чат.';}
 };
-$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(lines.join('\n'));$('status').textContent='Результат скопирован.'}catch{$('status').textContent='Выдели текст результата и скопируй вручную.'}};
+$('copy').onclick=async()=>{try{await navigator.clipboard.writeText(lines.join('\n'));$('status').textContent='Результат скопирован.'}catch{$('status').textContent='Выдели и скопируй текст результата вручную.'}};
 })();

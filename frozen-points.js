@@ -8,7 +8,7 @@ let data={items:[],legacy:[],can_manage:false},status='frozen',action=null,busy=
 function notice(text,bad=false){$('frozenNotice').textContent=text;$('frozenNotice').classList.toggle('error',bad);}
 async function api(path='',body){
  const token=window.PoliceSession?.get();if(!token)throw Error('Войдите в аккаунт для просмотра заморозок.');
- const r=await fetch(API+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+token,Accept:'application/json',...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),cache:'no-store',signal:AbortSignal.timeout(20000)});
+ const r=await fetch(API+path,{method:body?'POST':'GET',headers:{Authorization:'Bearer '+token,Accept:'application/json',...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),cache:'no-store',signal:AbortSignal.timeout(body?20000:100000)});
  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw Error(r.status===503?'Учёт заморозок пока не подключён. Обратитесь к администратору.':j.error||'Не удалось выполнить запрос.');return j;
 }
 function matches(row){const q=$('frozenSearch').value.trim().toLocaleLowerCase('ru'),dept=$('frozenDepartment').value;return (dept==='all'||row.department===dept)&&(!q||String(row.nickname||'').toLocaleLowerCase('ru').includes(q));}

@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#040c1a">
   <meta name="description" content="Бонусы Police Department — демо тактического тира и конкурсы">
   <title>Бонусы</title>
-  <link rel="icon" href="pd_photo.png?v=2" type="image/png">
-  <script src="api-fetch-retry.js?v=render-20261105"></script>
+  <link rel="icon" href="pd_favicon.png?v=20261107" type="image/png">
+  <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="site-session.js"></script>
   <script src="page-ready.js?v=render-20261105"></script>
   <script src="role-ui.js?v=render-20261105" defer></script>
@@ -18,7 +18,7 @@
     .wallpaper{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 50% 40% at 15% 35%,rgba(15,96,155,.25),transparent 75%),radial-gradient(ellipse 44% 35% at 88% 35%,rgba(166,28,86,.17),transparent 74%),linear-gradient(180deg,rgba(3,8,20,.78),rgba(3,8,21,.89) 72%,#030916),url('chiefs_assets/city-night.webp') center/cover no-repeat}
     .wallpaper:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(115,170,245,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(115,170,245,.04) 1px,transparent 1px);background-size:70px 70px;mask-image:linear-gradient(transparent 3%,#000 55%,transparent)}
     .shell{width:min(1480px,calc(100% - 42px));margin:0 auto;position:relative;z-index:1}
-    .top{height:78px;position:sticky;top:0;z-index:75;border-bottom:1px solid rgba(96,155,213,.25);background:linear-gradient(90deg,rgba(4,17,31,.96),rgba(5,18,31,.89),rgba(4,15,29,.96)),url('reestr_shapk.png') center/cover;backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.3)}
+    .top{height:78px;position:sticky;top:0;z-index:75;border-bottom:1px solid rgba(96,155,213,.25);background:linear-gradient(90deg,rgba(4,17,31,.96),rgba(5,18,31,.89),rgba(4,15,29,.96)),url('reestr_shapk.webp') center/cover;backdrop-filter:blur(18px);box-shadow:0 14px 40px rgba(0,0,0,.3)}
     .topin{height:100%;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand img{width:43px;height:46px;object-fit:contain;filter:drop-shadow(0 0 12px rgba(79,167,255,.35))}.brand strong{font-size:clamp(13px,1.28vw,18px);font-weight:950;letter-spacing:.04em;white-space:nowrap}.pd-header-user-slot{margin-left:auto}
     main{min-height:calc(100vh - 164px);padding-bottom:30px}
     .kicker{margin:30px auto 6px;text-align:center;font-size:11px;letter-spacing:.26em;color:#75bfff;font-weight:900}.title{text-align:center;font-size:clamp(44px,5.9vw,82px);letter-spacing:-.052em;font-weight:1000;line-height:1.03;margin:5px 0 5px;text-shadow:0 8px 32px #0009}.title span{background:linear-gradient(94deg,#e5f8ff 9%,#55b6ff 57%,#f077bb);color:transparent;-webkit-background-clip:text;background-clip:text}.subtitle{text-align:center;margin:8px 0 20px;color:#9dbbd9;font-size:11px;letter-spacing:.21em;font-weight:850;text-transform:uppercase}
@@ -120,7 +120,7 @@
 </head>
 <body>
 <div class="wallpaper" aria-hidden="true"></div>
-<header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.png" alt=""><strong>POLICE DEPARTMENT</strong></a><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
+<header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.webp" alt=""><strong>POLICE DEPARTMENT</strong></a><div class="pd-header-user-slot" data-police-user-slot></div></div></header>
 <main class="shell">
   <h1 class="title bonuses-main-title"><span class="bonuses-word">БОНУСЫ</span> <span class="police-word">POLICE DEPARTMENT</span></h1>
   <div class="tabs" role="tablist" aria-label="Разделы бонусов">
@@ -292,7 +292,7 @@
   $('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus();status('');tone(970,.24,'triangle',.04)
  }
  function close(){ $('resultLayer').hidden=true;start.focus() }
- async function loadCatalog(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),14000);let response;
+ async function loadCatalog(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),100000);let response;
     try{response=await fetch(API+'/api/portal/range',{signal:c.signal,cache:'no-store',headers:{Accept:'application/json'}})}finally{clearTimeout(t)}
     if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(!data.ok||!Array.isArray(data.prizes))throw Error('Неверный ответ API');
     catalog=data.prizes.filter(p=>CATEGORIES[p.tier] && p.is_enabled!==false && Number(p.hp)>=1 && Number(p.hp)<=200 && Number(p.armor)>=0 && Number(p.armor)<=200);

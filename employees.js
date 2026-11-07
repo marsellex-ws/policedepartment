@@ -59,7 +59,7 @@ function renderHistory(){
 async function loadThefts(){
  if(loading)return;loading=true;loadError='';render();
  try{
-  const response=await fetch(API+'/api/portal/employees/thefts',{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(28000)});
+  const response=await fetch(API+'/api/portal/employees/thefts',{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(100000)});
   const data=await response.json();
   if(!response.ok||data.ok!==true||!['day','week','month'].every(p=>Array.isArray(data.periods?.[p]?.items)))throw Error(data.error||'Некорректный ответ сервера');
   live=data;

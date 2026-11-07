@@ -8,7 +8,7 @@ const deptOK=d=>['LSPD','SFPD','LVPD'].includes(d);
 const token=()=>window.PoliceSession?.get?.();
 const auth=async(path,method='GET',body)=>{
  const t=token();if(!t)throw Error('Войди в аккаунт Police Department');
- const c=new AbortController(),time=setTimeout(()=>c.abort(),20000);
+ const c=new AbortController(),time=setTimeout(()=>c.abort(),method==='GET'?100000:20000);
  try{const r=await fetch(API+path,{method,headers:{Authorization:'Bearer '+t,Accept:'application/json',...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body),cache:'no-store',signal:c.signal});const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok)throw Error(j.error||'Ошибка сервера '+r.status);return j}
  catch(e){if(e?.name==='AbortError')throw Error('Сервер не ответил. Повтори попытку.');throw e}
  finally{clearTimeout(time)}

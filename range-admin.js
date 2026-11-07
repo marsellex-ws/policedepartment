@@ -11,7 +11,7 @@
    const token=window.PoliceSession?.get?.();if(!token)throw Error('Необходимо авторизоваться');
    const headers={Authorization:'Bearer '+token,Accept:'application/json'};
    if(data!==undefined)headers['Content-Type']='application/json';
-   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),18000);
+   const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),method==='GET'?100000:18000);
    try{const res=await fetch(API+path,{method,headers,signal:ctrl.signal,cache:'no-store',body:data===undefined?undefined:JSON.stringify(data)});
       const body=await res.json().catch(()=>({}));if(!res.ok||body.ok===false)throw Error(body.error||'Ошибка ('+res.status+')');return body;
    }finally{clearTimeout(timer)}
