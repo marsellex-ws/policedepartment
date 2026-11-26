@@ -137,7 +137,7 @@
   ROOT.querySelector('#rangeAdminRefresh').addEventListener('click',()=>load(true));
  }
  async function load(force=false){if(busy||loaded&&!force)return;busy=true;try{
-   const r=await api('/api/portal/admin/range');prizes=r.prizes||[];settings=r.settings||{round_seconds:30,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};render();loaded=true;msg('Настройки и призы загружены');
+   const r=await window.PolicePublicData.admin('range');prizes=r.prizes||[];settings=r.settings||{round_seconds:30,speed_multiplier:2.1,bonus_a:5,bonus_b:10,bonus_interval:8,max_extra_seconds:45};render();loaded=true;msg('Настройки и призы загружены');
   }catch(err){if(!loaded){ROOT.innerHTML='<div class="pd-admin-card"><div id="rangeAdminStatus"></div><button class="pd-admin-btn" id="rangeAdminRetry">Повторить</button></div>';ROOT.querySelector('#rangeAdminRetry').onclick=()=>load(true)}msg(err.message,true)}finally{busy=false}}
  async function saveSettings(e){e.preventDefault();const form=e.target,btn=form.querySelector('[type="submit"]');if(form.dataset.rangeSubmitting==='1')return;form.dataset.rangeSubmitting='1';btn.disabled=true;try{const data=Object.fromEntries(FIELDS.map(f=>[f,Number(e.target.elements[f].value)]));await api('/api/portal/admin/range/settings','PUT',data);settings=data;feedback('Настройки тира сохранены',false,form)}catch(err){feedback(describeError(err),true,form)}finally{delete form.dataset.rangeSubmitting;btn.disabled=false}}
  async function createPrize(e){

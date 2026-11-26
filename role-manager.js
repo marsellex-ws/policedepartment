@@ -21,16 +21,16 @@
  $('pdRoleCurrentImage').src=m.src;preview();notify('');}
  function config(){const roles=allowedRoles();const select=$('pdAssignRole');select.replaceChildren(...roles.map(role=>{const o=document.createElement('option');o.value=role;o.textContent=label(role);return o;}));$('pdAssignDept').value='LSPD';selected=null;records=[];$('pdRolesResults').innerHTML='';$('pdRolesSelected').hidden=true;preview();}
  async function search(){if(busy)return;const q=$('pdRoleSearch').value.trim().toLowerCase();if(!/^[a-z0-9_.-]{2,32}$/.test(q)){notify('Введи минимум два символа логина.',true);return;}
-  busy=true;$('pdRolesFind').disabled=true;notify('Ищем пользователя…');try{const r=await request('/api/roles/users?search='+encodeURIComponent(q));records=r.items||[];selected=null;$('pdRolesSelected').hidden=true;$('pdRolesEmptyHint').hidden=false;list();notify(records.length?`Найдено: ${records.length}`:'Никого не нашли');}catch(e){notify(e.message,true);}finally{busy=false;$('pdRolesFind').disabled=false;preview();}
+  busy=true;$('pdRolesFind').disabled=true;notify('Ищем пользователя…');try{const r=await window.PolicePublicData.admin('role-users',q);records=r.items||[];selected=null;$('pdRolesSelected').hidden=true;$('pdRolesEmptyHint').hidden=false;list();notify(records.length?`Найдено: ${records.length}`:'Никого не нашли');}catch(e){notify(e.message,true);}finally{busy=false;$('pdRolesFind').disabled=false;preview();}
  }
  async function apply(){if(busy||!selected)return;const role=$('pdAssignRole').value,dep=['developer','admin','minister'].includes(role)?'ALL':$('pdAssignDept').value;
  if(selected.login.toLowerCase()===actor?.login?.toLowerCase())return notify('Свою роль менять нельзя',true);
  if(selected.role&&!confirm(`Изменить роль ${selected.nickname||selected.login} на «${role==='leader'?`Лидер ${dep}`:label(role)}»?`))return;
  busy=true;preview();notify('Сохраняем роль…');try{await request('/api/roles/assign','POST',{target_id:selected.id,role,department:dep});await searchAgain();notify('Роль назначена');}catch(e){notify(e.message,true);}finally{busy=false;preview();}}
  async function revoke(){if(busy||!canRevoke())return;if(!confirm(`Снять роль с ${selected.nickname||selected.login}?`))return;busy=true;preview();notify('Снимаем роль…');try{await request('/api/roles/revoke','POST',{target_id:selected.id});await searchAgain();notify('Роль снята');}catch(e){notify(e.message,true);}finally{busy=false;preview();}}
- async function searchAgain(){const q=$('pdRoleSearch').value.trim().toLowerCase();const r=await request('/api/roles/users?search='+encodeURIComponent(q));records=r.items||[];list();const same=records.find(p=>p.login?.toLowerCase()===selected?.login?.toLowerCase());if(same)pick(same.id);else{$('pdRolesSelected').hidden=true;selected=null;}}
+ async function searchAgain(){const q=$('pdRoleSearch').value.trim().toLowerCase();const r=await window.PolicePublicData.admin('role-users',q);records=r.items||[];list();const same=records.find(p=>p.login?.toLowerCase()===selected?.login?.toLowerCase());if(same)pick(same.id);else{$('pdRolesSelected').hidden=true;selected=null;}}
  async function init(){notify('');const token=PoliceSession.get();if(!token){notify('Войди в аккаунт, чтобы управлять ролями.',true);return;}
-  try{const me=await request('/api/auth/me');actor=me.user;if(!['developer','admin','minister'].includes(actor?.role))throw new Error('Нет доступа к выдаче ролей');config();}
+  try{const me=await window.PolicePublicData.admin('me');actor=me.user;if(!['developer','admin','minister'].includes(actor?.role))throw new Error('Нет доступа к выдаче ролей');config();}
   catch(e){notify(e.message,true);}
  }
  $('pdRolesFind').onclick=search;$('pdRoleSearch').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();search();}};

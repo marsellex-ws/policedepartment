@@ -11,6 +11,7 @@
 
   const urls = Object.freeze({
     leadership: url('pd_portal_leadership', {select: 'slot,nickname,avatar_url,vk_url,forum_url,gender'}),
+    leadershipOrder: url('pd_leadership_order', {select: 'slots,version', id: 'eq.1'}),
     chiefs: url('rpc/pd_public_chiefs'),
     thefts: url('pd_theft_snapshot', {select: 'payload', id: 'eq.1'}),
     exams: url('rpc/pd_public_exams'),
@@ -39,10 +40,40 @@
     return rows;
   }
 
+  async function admin(resource, search) {
+    const token = window.PoliceSession?.get();
+    if (!token) throw Object.assign(new Error('Войдите в профиль'), {status: 401});
+    const response = await window.fetch(url('rpc/pd_admin_read'), {
+      method: 'POST', headers: {...headers, 'Content-Type': 'application/json'},
+      credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({p_session_token: token, p_resource: resource, p_search: search})
+    });
+    if (!response.ok) {
+      const message = response.status === 401 ? 'Сессия истекла' :
+        response.status === 403 ? 'Недостаточно прав' : 'Не удалось загрузить данные (' + response.status + ')';
+      throw Object.assign(new Error(message), {status: response.status});
+    }
+    const data = await response.json();
+    if (resource === 'users' || resource === 'role-users') {
+      const avatarBase = new URL('/storage/v1/object/public/ws-avatars/', rest).href;
+      data.items = data.items.map(({avatar_path, ...item}) => ({
+        ...item,
+        avatar_url: item.avatar_url || (avatar_path ? avatarBase + avatar_path.split('/').map(encodeURIComponent).join('/') : null)
+      }));
+    }
+    return data;
+  }
+
   window.PolicePublicData = Object.freeze({
+    admin,
     urls,
     prefetch: (address, fetcher) => read(address, AbortSignal.timeout(8000), fetcher),
     leadership: signal => readRows(urls.leadership, signal),
+    async leadershipOrder(signal) {
+      const [layout] = await readRows(urls.leadershipOrder, signal);
+      if (!Array.isArray(layout?.slots) || !Number.isInteger(layout.version)) throw new Error('Не удалось загрузить порядок руководства');
+      return layout;
+    },
     async chiefs(signal) {
       const data = await read(urls.chiefs, signal);
       if (data?.ok !== true || !Array.isArray(data.items)) throw new Error('Не удалось получить список шефов');

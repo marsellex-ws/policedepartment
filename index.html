@@ -331,7 +331,8 @@ header.header a.brand.pd-unified-brand strong{
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="public-data.js?v=20261126"></script>
+  <script src="public-data.js?v=leadership-20261127"></script>
+  <script src="leadership-order.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 <script src="forum-avatar.js?v=20261106"></script>
@@ -430,11 +431,12 @@ function toast(text){const el=$('toast');el.textContent=text;el.classList.add('s
 function activateTabs(parent,btn){parent.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn))}
 let portalLeadership=[];let portalChiefs=[];
 const leadershipLabels={responsible:['Ответственный за PD','Ответственная за PD'],curator_lspd:['Куратор LSPD'],curator_sfpd:['Куратор SFPD'],curator_lvpd:['Куратор LVPD'],minister:['Министр внутренних дел'],leader_lspd:['Лидер LSPD'],leader_sfpd:['Лидер SFPD'],leader_lvpd:['Лидер LVPD'],swat_deputy:['Заместитель SWAT'],swat_commander:['Командир SWAT'],swat_deputy_2:['Заместитель SWAT II']};
+let publicLeadershipOrder=[];
 const leadershipGroups={watchers:['responsible','curator_lspd','curator_sfpd','curator_lvpd','minister'],leaders:['leader_lspd','leader_sfpd','leader_lvpd','swat_commander','swat_deputy','swat_deputy_2']};
 const leaderFallback='png_police_site/profile.png';
 function renderRoster(kind){
  if(kind==='senior'){$('roster').innerHTML=roster.senior.map(([name,desc,initial,href])=>`<div class="person"><div class="avatar">${initial}</div><div><strong>${name}</strong><small>${desc}</small></div><div class="contact"><a href="${href}" target="_blank" rel="noopener noreferrer" title="VK">VK</a></div></div>`).join('');return;}
- $('roster').innerHTML=(leadershipGroups[kind]||[]).map(slot=>{
+ $('roster').innerHTML=window.PoliceLeadershipOrder.sort(leadershipGroups[kind]||[],publicLeadershipOrder).map(slot=>{
   const x=portalLeadership.find(v=>v.slot===slot)||{},title=slot==='responsible'&&x.gender==='female'?leadershipLabels[slot][1]:leadershipLabels[slot][0];
   const nick=x.nickname||'Не назначен',href=x.vk_url||'',avatar=x.avatar_url||leaderFallback;
   return `<div class="person"><div class="avatar"><img loading="lazy" src="${escapeHTML(avatar)}" alt="" onerror="this.src='png_police_site/profile.png'"></div><div><strong>${escapeHTML(nick)}</strong><small>${escapeHTML(title)}</small></div><div class="contact">${href?`<a href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer" title="VK">VK</a>`:''}</div></div>`;
@@ -450,9 +452,11 @@ function renderChiefs(){
  }).join('');
 }
 async function refreshPublicPeople(){
-  const [leadership, chiefs] = await Promise.allSettled([
-    window.PolicePublicData.leadership(), window.PolicePublicData.chiefs()
+  const [leadership, chiefs, order] = await Promise.allSettled([
+    window.PolicePublicData.leadership(), window.PolicePublicData.chiefs(),
+    window.PolicePublicData.leadershipOrder()
   ]);
+  if (order.status === 'fulfilled') publicLeadershipOrder = order.value.slots;
   if (leadership.status === 'fulfilled') portalLeadership = leadership.value;
   if (chiefs.status === 'fulfilled') portalChiefs = chiefs.value.items;
   if (leadership.status === 'fulfilled' || chiefs.status === 'fulfilled') {
@@ -575,7 +579,7 @@ async function openAdmin(){
 }
 $('pdAdminOpen').onclick=()=>{PoliceNavigation.go('admin.html')};
 $('pdAdminClose').onclick=()=>{PoliceNavigation.go('index.html')};
-async function loadUsers(){const r=await req('/api/portal/admin/users');users=r.items||[];$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
+async function loadUsers(){const r=await window.PolicePublicData.admin('users');users=r.items;$('pdUsersCount').textContent='('+users.length+')';renderUsers();}
 function renderUsers(){
  const text=$('pdUserSearch').value.trim().toLowerCase();
  const filtered=users.filter(u=>[u.login,u.nickname,u.department].some(x=>String(x||'').toLowerCase().includes(text)));
