@@ -1,0 +1,154 @@
+.theft-page{
+  --line:#263d5d;
+  --ink:#e8f1ff;
+  --faint:#a4b8d4;
+  --night:#081323;
+  background:#070f1d;
+  color:var(--ink);
+}
+.theft-backdrop,.theft-dots{position:fixed;inset:0;pointer-events:none}
+.theft-backdrop{
+  background:linear-gradient(90deg,#060f1deb 0%,#081229bc 48%,#08132640 100%),
+    linear-gradient(0deg,#070e1a 1%,transparent 70%),url('png_police_site/hero_night.webp') 60% center/cover;
+}
+.theft-dots{
+  --dot-step:26px;
+  background:radial-gradient(circle,#ffffff42 1px,transparent 1.45px) 0 0/var(--dot-step) var(--dot-step);
+}
+@media (any-hover:hover) and (any-pointer:fine) and (prefers-reduced-motion:no-preference){
+  .theft-dots[data-hover]::before,.theft-dots[data-hover]::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle,var(--dot-color) 1.8px,transparent 2.25px) 0 0/var(--dot-step) var(--dot-step);
+    mask-image:radial-gradient(circle 118px at var(--x) var(--y),#000 10%,#0009 55%,transparent);
+    animation:theft-siren 5s ease-in-out infinite alternate;
+  }
+  .theft-dots[data-hover]::before{--dot-color:#54b7ff}
+  .theft-dots[data-hover]::after{--dot-color:#ff537d;animation-direction:alternate-reverse}
+}
+@keyframes theft-siren{from{opacity:.08}to{opacity:1}}
+.theft-main{width:min(1180px,calc(100% - 48px));flex:1;padding:32px 0 60px}
+.theft-intro{padding:2px 0 31px}
+.theft-back{color:#b6c9e6;font-size:13px;font-weight:650}
+.theft-back:hover{color:white}
+.theft-intro h1{
+  margin:18px 0 6px;
+  font-size:clamp(47px,9vw,106px);
+  font-weight:950;
+  line-height:.94;
+  letter-spacing:-.075em;
+  text-shadow:0 10px 44px #081631cf;
+}
+.theft-intro h1 span{color:#ff6380}
+.theft-intro p{margin:14px 0 0;color:#b7c9e2;font-size:clamp(13px,2vw,17px)}
+.theft-toolbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px;
+  background:#0a172bec;border:1px solid var(--line);border-radius:15px;
+  box-shadow:0 13px 35px #04101d66;
+}
+.theft-tabs,.theft-periods{display:flex;gap:4px;align-items:center}
+.theft-tabs button,.theft-periods button,.theft-action{
+  min-height:39px;border:1px solid transparent;border-radius:8px;padding:7px 13px;
+  background:transparent;color:#b0c5e2;font-size:13px;font-weight:750;white-space:nowrap;
+}
+.theft-tabs button[aria-pressed=true],.theft-periods button[aria-pressed=true]{
+  border-color:#4d86ce;background:#163055;color:#f4f8ff;box-shadow:inset 0 -2px #619eff;
+}
+.theft-action{border-color:#3c5b8a;background:#132746;color:#dceaff}
+.theft-action:hover:not(:disabled),.theft-tabs button:hover,.theft-periods button:hover{background:#233d67;color:#fff}
+.theft-action:disabled{opacity:.42;cursor:default}
+.theft-statusline{min-height:18px;color:#9fb3d2;font-size:12px;margin:10px 1px 22px}
+.theft-statusline[data-error]{color:#ff9ab2}
+.theft-section-header,.theft-panel-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.theft-section-header{margin:0 0 15px}
+.theft-section-header h2{font-size:clamp(21px,3vw,30px);margin:0;letter-spacing:-.04em}
+.theft-controls-row{display:flex;gap:10px;align-items:center}
+.theft-periods,.theft-week{padding:4px;border:1px solid var(--line);background:#0b192ce8;border-radius:10px}
+.theft-periods button{min-height:30px;font-size:12px}
+.theft-week{display:flex;align-items:center;gap:7px;padding:4px 8px;color:var(--faint);font-size:11px}
+.theft-week select,.theft-filter input{
+  background:#0b1a32;color:#e1efff;border:1px solid #354e75;border-radius:7px;padding:7px 9px;
+}
+.theft-week select{max-width:225px;font-size:12px}
+.theft-filter{display:grid;gap:4px;color:var(--faint);font-size:11px}
+.theft-filter input{min-width:230px;font-size:13px}
+.theft-filter input:focus-visible{outline:2px solid #8cd7ff;outline-offset:2px}
+.theft-metrics,.theft-podium{display:grid;gap:12px;margin-bottom:16px}
+.theft-metrics{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+.theft-metric,.theft-panel{
+  border:1px solid var(--line);border-radius:12px;background:#0b192bec;
+  box-shadow:0 13px 32px #03091650;
+}
+.theft-metric{padding:13px 16px}
+.theft-metric span,.theft-medal small,.theft-table small,.theft-current small{display:block;color:var(--faint);font-size:11px}
+.theft-metric strong{display:block;margin-top:4px;color:#d9ebff;font-size:clamp(18px,3vw,27px);font-variant-numeric:tabular-nums}
+.theft-podium{grid-template-columns:repeat(3,minmax(0,1fr));padding-top:8px}
+.theft-medal{
+  --medal:#b8daff;
+  min-width:0;position:relative;overflow:hidden;border:1px solid color-mix(in srgb,var(--medal) 40%,#293d57);
+  border-radius:16px;padding:17px;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--medal) 18%,#112645),#0b172bea 70%),
+    var(--scene) center 35%/cover;
+  box-shadow:inset 0 1px #ffffff26,0 12px 32px #030a16a0;
+}
+.theft-medal[data-place="1"]{--medal:#ffd786;--scene:url('employees_assets/rank-1.webp')}
+.theft-medal[data-place="2"]{--medal:#acdfff;--scene:url('employees_assets/rank-2.webp')}
+.theft-medal[data-place="3"]{--medal:#ffbc9d;--scene:url('employees_assets/rank-3.webp')}
+.theft-medal-tag{color:var(--medal);font-size:11px;font-weight:850;letter-spacing:.12em}
+.theft-medal-person{display:flex;gap:12px;align-items:center;margin:12px 0}
+.theft-medal-person h3{margin:0;font-size:clamp(15px,2.3vw,21px);overflow-wrap:anywhere;color:#f3f7ff}
+.theft-avatar{width:45px;height:45px;flex:0 0 45px;object-fit:cover;border-radius:50%;border:1px solid #88acd0}
+.theft-medal dl{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid #6c87ab52;margin:0;padding-top:12px}
+.theft-medal dt{font-size:10px;color:#c3d0e6}
+.theft-medal dd{font-size:clamp(14px,2.2vw,21px);font-weight:850;color:var(--medal);margin:4px 0 0;font-variant-numeric:tabular-nums}
+.theft-panel-header{padding:14px 17px;border-bottom:1px solid #263c5b}
+.theft-panel-header h3,.theft-panel-header h2{margin:0;font-size:16px}
+.theft-panel-header span{font-size:12px;color:var(--faint)}
+.theft-table-wrap{overflow-x:auto;border-radius:inherit}
+.theft-table{table-layout:auto;white-space:normal;font-variant-numeric:tabular-nums}
+.theft-table th{position:static;white-space:nowrap;padding:10px 13px;background:#0e2039;color:#aec7e9;font-size:11px;font-weight:700}
+.theft-table td{padding:9px 13px;width:auto;white-space:nowrap;font-size:12px;color:#d9e8ff}
+.theft-table td:first-child{width:auto}
+.theft-table tbody tr:hover{background:#23427075}
+.theft-identity{display:flex;align-items:center;gap:8px;max-width:290px}
+.theft-identity .theft-avatar{width:32px;height:32px;flex-basis:32px}
+.theft-person-button{cursor:pointer;color:inherit;background:none;border:0;padding:2px 0;text-align:left;font-weight:800}
+.theft-person-button:hover{text-decoration:underline}
+.theft-empty{padding:23px!important;text-align:center!important;color:var(--faint)!important}
+.theft-pager{display:flex;justify-content:center;align-items:center;gap:12px;padding:12px;border-top:1px solid var(--line);font-size:13px}
+.theft-pager .theft-action{min-height:33px}
+.theft-current{padding:18px}
+.theft-current h3{margin:0 0 12px}
+.theft-current-fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
+.theft-current-fields div{padding:13px;background:#132644;border:1px solid var(--line);border-radius:8px}
+.theft-current-fields dt{font-size:11px;color:var(--faint)}
+.theft-current-fields dd{font-size:14px;line-height:1.5;margin:5px 0 0;overflow-wrap:anywhere}
+.theft-badge{display:inline-block;padding:3px 8px;border-radius:20px;background:#243450;font-size:11px}
+.theft-badge.success{color:#89f0c1;background:#164737}
+.theft-badge.arrested{color:#b7d1ff;background:#284475}
+.theft-badge.failed{color:#ffadc0;background:#55293f}
+.theft-dialog{
+  max-width:min(560px,calc(100vw - 28px));width:100%;max-height:82vh;padding:0;
+  color:var(--ink);background:var(--night);border:1px solid #3c5b8a;border-radius:13px;
+}
+.theft-dialog::backdrop{background:#030814c9}
+@media(max-width:800px){
+  .theft-section-header{align-items:flex-start;flex-direction:column}
+  .theft-main{width:calc(100% - 28px)}
+}
+@media(max-width:600px){
+  .theft-main{padding-top:24px}
+  .theft-toolbar{align-items:stretch;flex-direction:column}
+  .theft-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .theft-tabs button,.theft-action{font-size:12px;padding-inline:8px}
+  .theft-controls-row{flex-wrap:wrap}
+  .theft-podium{grid-template-columns:1fr;gap:8px}
+  .theft-medal{padding:12px}
+  .theft-medal-person{margin:9px 0}
+  .theft-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .theft-metric{padding:9px 11px}
+  .theft-metric:last-child:nth-child(odd){grid-column:1/-1}
+  .theft-table td,.theft-table th{padding-inline:9px}
+  .theft-current-fields{grid-template-columns:1fr}
+}

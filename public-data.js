@@ -79,9 +79,24 @@
       if (data?.ok !== true || !Array.isArray(data.items)) throw new Error('Не удалось получить список шефов');
       return data;
     },
-    async thefts() {
-      const [snapshot] = await readRows(urls.thefts);
+    async thefts(signal) {
+      const [snapshot] = await readRows(urls.thefts, signal);
       return snapshot?.payload;
+    },
+    async theftPortal(section, signal) {
+      const select = {
+        current: 'updated_at,active:payload->active',
+        players: 'updated_at,players:payload->players,totals:payload->totals',
+        police: 'updated_at,weeks:payload->weeks,profiles_available:payload->profiles_available'
+      }[section];
+      const [snapshot] = await readRows(url('pd_theft_portal_snapshot', {select, section: 'eq.' + (section === 'players' ? 'archive' : section)}), signal);
+      if (!snapshot) throw new Error('Данные пока недоступны');
+      return snapshot;
+    },
+    async theftHistory(search, offset, signal) {
+      const page = await read(url('rpc/pd_public_theft_history', {p_search: search, p_offset: offset}), signal);
+      if (!page || !Array.isArray(page.items)) throw new Error('История пока недоступна');
+      return page;
     },
     async range(signal) {
       const [prizes, settings] = await Promise.all([
