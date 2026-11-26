@@ -12,6 +12,7 @@
   const urls = Object.freeze({
     leadership: url('pd_portal_leadership', {select: 'slot,nickname,avatar_url,vk_url,forum_url,gender'}),
     chiefs: url('rpc/pd_public_chiefs'),
+    thefts: url('pd_theft_snapshot', {select: 'payload', id: 'eq.1'}),
     exams: url('rpc/pd_public_exams'),
     registry: url('pd_punishments', {select: registryColumns, order: 'issued_at.desc', limit: 100, offset: 0}),
     prizes: url('pd_range_prizes', {
@@ -46,6 +47,10 @@
       const data = await read(urls.chiefs, signal);
       if (data?.ok !== true || !Array.isArray(data.items)) throw new Error('Не удалось получить список шефов');
       return data;
+    },
+    async thefts() {
+      const [snapshot] = await readRows(urls.thefts);
+      return snapshot?.payload;
     },
     async range(signal) {
       const [prizes, settings] = await Promise.all([
