@@ -2,19 +2,20 @@
 (() => {
   'use strict';
   if (window.PoliceNavigation) return;
-  const API = 'https://police-api-b2y4.onrender.com';
-  const CACHE = 'pd_navigation_prefetch_render_v4';
+  const publicData = window.PolicePublicData;
+  const {leadership, chiefs, exams, registry} = publicData.urls;
+  const CACHE = 'pd_navigation_prefetch_supabase';
   const TTL = 25_000;
   const publicByPage = {
-    'index.html': ['/api/portal/leadership', '/api/portal/chiefs'],
-    'admin.html': ['/api/portal/leadership', '/api/portal/chiefs'],
-    'leadership.html': ['/api/portal/leadership'],
-    'chiefs.html': ['/api/portal/chiefs'],
-    'reestr.html': ['/api/punishments?limit=100&offset=0'],
-    'exams.html': ['/api/exams'],
+    'index.html': [leadership, chiefs],
+    'admin.html': [leadership, chiefs],
+    'leadership.html': [leadership],
+    'chiefs.html': [chiefs],
+    'reestr.html': [registry],
+    'exams.html': [exams],
     'entrance.html': []
   };
-  const allowedAPI = new Set(Object.values(publicByPage).flat());
+  const publicUrls = new Set(Object.values(publicByPage).flat());
   const nativeFetch = window.fetch.bind(window);
   let navigating = false;
   const css = document.createElement('style');
@@ -37,11 +38,11 @@
       const url = new URL(typeof input === 'string' ? input : input.url, location.href);
       const method = String(init?.method || (typeof input === 'object' && input?.method) || 'GET').toUpperCase();
       const headers = new Headers(init?.headers || (typeof input === 'object' && input?.headers) || {});
-      if (method === 'GET' && url.origin === API && !headers.has('Authorization') && allowedAPI.has(url.pathname + url.search)) {
+      if (method === 'GET' && !headers.has('Authorization') && publicUrls.has(url.href)) {
         const saved = JSON.parse(sessionStorage.getItem(CACHE) || '{}');
-        const match = saved[url.pathname + url.search];
+        const match = saved[url.href];
         if (match && match.expires > Date.now()) {
-          delete saved[url.pathname + url.search]; // one-time use; fresh on next visit
+          delete saved[url.href]; // one-time use; fresh on next visit
           sessionStorage.setItem(CACHE, JSON.stringify(saved));
           return Promise.resolve(new Response(JSON.stringify(match.payload), {
             status: 200, headers: {'Content-Type':'application/json'}
@@ -81,14 +82,9 @@
     if (!Object.hasOwn(publicByPage, page) || (warming.get(page) || 0) > Date.now()) return;
     warming.set(page, Date.now() + TTL);
     try {
-      const results = await Promise.allSettled(publicByPage[page].map(async path => {
-        const r = await nativeFetch(API + path, {
-          headers: {Accept:'application/json'}, cache:'no-store', signal:AbortSignal.timeout(8000)
-        });
-        if (!r.ok) throw new Error('Prefetch HTTP ' + r.status);
-        const payload = await r.json();
-        if (payload?.ok !== true) throw new Error('Invalid prefetch response');
-        return [path, {payload, expires:Date.now() + TTL}];
+      const results = await Promise.allSettled(publicByPage[page].map(async address => {
+        const payload = await publicData.prefetch(address, nativeFetch);
+        return [address, {payload, expires:Date.now() + TTL}];
       }));
       let cache = {};
       try { cache = JSON.parse(sessionStorage.getItem(CACHE) || '{}'); } catch {}

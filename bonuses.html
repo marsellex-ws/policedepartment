@@ -9,7 +9,8 @@
   <link rel="icon" href="pd_favicon.png?v=20261107" type="image/png">
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="public-data.js?v=20261126"></script>
+  <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105" defer></script>
   <style>
     :root{color-scheme:dark;--bg:#040b19;--text:#eef8ff;--muted:#91abc7;--blue:#52bfff;--green:#4bf2ad;--purple:#ba89ff;--red:#ff5e89;--gold:#ffc665}
@@ -158,7 +159,6 @@
 <script>
 (()=>{'use strict';
  const $=id=>document.getElementById(id);
- const API='https://police-api-b2y4.onrender.com';
  const FALLBACK_PRIZES=[
   {id:'local1',name:'Деньги',tier:'easy',hp:1,armor:0,icon:'💵',image_url:''},
   {id:'local2',name:'Птица',tier:'easy',hp:2,armor:0,icon:'🕊️',image_url:''},
@@ -292,9 +292,8 @@
   $('resultLayer').hidden=false;lastActive=document.activeElement;$('resultClose').focus();status('');tone(970,.24,'triangle',.04)
  }
  function close(){ $('resultLayer').hidden=true;start.focus() }
- async function loadCatalog(){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),100000);let response;
-    try{response=await fetch(API+'/api/portal/range',{signal:c.signal,cache:'no-store',headers:{Accept:'application/json'}})}finally{clearTimeout(t)}
-    if(!response.ok)throw Error('HTTP '+response.status);const data=await response.json();if(!data.ok||!Array.isArray(data.prizes))throw Error('Неверный ответ API');
+ async function loadCatalog(){try{
+    const data=await window.PolicePublicData.range();
     catalog=data.prizes.filter(p=>CATEGORIES[p.tier] && p.is_enabled!==false && Number(p.hp)>=1 && Number(p.hp)<=200 && Number(p.armor)>=0 && Number(p.armor)<=200);
     if(data.settings)settings={...DEFAULTS,...data.settings};loaded=true;
     if(mode==='idle'){resetGame();if(!catalog.length){start.disabled=true;status('В админке нет активных призов. Добавьте хотя бы один приз.',false)}}
