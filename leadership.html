@@ -171,7 +171,8 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="public-data.js?v=20261126"></script>
+  <script src="public-data.js?v=leadership-20261127"></script>
+  <script src="leadership-order.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 </head>
@@ -207,14 +208,9 @@ function safeImage(u){if(typeof u!=='string'||!u.trim())return '';try{const x=ne
 function safeLink(u,vkOnly=false){const url=safeImage(u);if(!url)return '';if(vkOnly&&!['vk.com','m.vk.com','vk.ru'].includes(new URL(url).hostname))return '';return url}
 function title(s,item){return s.id==='responsible'&&item.gender==='female'?'Ответственная за PD':s.label}
 function social(kind,href,color,nick){const a=element(href?'a':'span','social-btn'+(href?'':' unavailable'));const label=kind==='vk'?'ВКонтакте':'Форум';a.title=href?label:'Ссылка не указана';a.setAttribute('aria-label',href?`${label}: ${nick}`:`${label}: ссылка не указана`);if(href){a.href=href;a.target='_blank';a.rel='noopener noreferrer'}const ico=element('img');ico.src=ASSET+kind+'_'+color+'.png';ico.alt='';ico.loading='lazy';a.append(ico);return a}
-function draw(items){const map=new Map(items.map(item=>[item.slot,item]));const active=new Map(),inactive=[];
+function draw(items,order=[]){const map=new Map(items.map(item=>[item.slot,item]));const active=new Map(),inactive=[];
  const appointed=id=>{const x=map.get(id)||{};return Boolean(String(x.nickname||'').trim()&&String(x.vk_url||'').trim()&&String(x.forum_url||'').trim())};
- const allCurators=['responsible','curator_lspd','curator_sfpd','curator_lvpd'].every(appointed);
- const categories=[
-  {key:'curators',name:'CURATORS',ids:['responsible','curator_lspd','curator_sfpd','curator_lvpd',...(allCurators?[]:['minister'])]},
-  {key:'leaders',name:'LEADERS',ids:[...(allCurators?['minister']:[]),'leader_lspd','leader_sfpd','leader_lvpd']},
-  {key:'swat',name:'COMMANDER SWAT',ids:['swat_commander','swat_deputy','swat_deputy_2']}
- ];
+ const categories=window.PoliceLeadershipOrder.groups(items,order);
  const groupFor=id=>categories.find(c=>c.ids.includes(id))?.key||'curators';
  slots.forEach((s,i)=>{
  const item=map.get(s.id)||{};const nick=String(item.nickname||'').trim()||'Не назначен';
@@ -228,7 +224,9 @@ function draw(items){const map=new Map(items.map(item=>[item.slot,item]));const 
  groups.replaceChildren(...categories.map(c=>{
    const section=element('section','leadership-category '+c.key);section.setAttribute('aria-label',c.name);
    const heading=element('div','category-heading');heading.append(element('span','category-title',c.name));section.append(heading);
-   const cards=element('div','leadership-grid');cards.append(...(active.get(c.key)||[]));section.append(cards);
+   const cards=element('div','leadership-grid');
+   const bySlot=new Map((active.get(c.key)||[]).map(card=>[card.dataset.slot,card]));
+   cards.append(...c.ids.map(id=>bySlot.get(id)).filter(Boolean));section.append(cards);
    if(!(active.get(c.key)||[]).length)section.hidden=true;
    return section;
  }));vacant.replaceChildren(...inactive);vacantSection.hidden=!inactive.length;}
@@ -238,7 +236,10 @@ async function load(){
   status.onclick=null;
   status.style.cursor='';
   try{
-    draw(await window.PolicePublicData.leadership());
+    const [items,layout]=await Promise.all([
+      window.PolicePublicData.leadership(),window.PolicePublicData.leadershipOrder().catch(()=>null)
+    ]);
+    draw(items,layout?.slots);
     status.textContent='';
     load.failures=0;
   }catch(e){
