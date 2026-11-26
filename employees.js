@@ -11,7 +11,6 @@ const categories=[
 // Keep distinct category results so switching also previews changes in the podium.
 const people=[['Alex_Morgan','LSPD',[148,216,92,164,381,84]],['Daniel_Carter','SFPD',[132,248,118,138,426,72]],['Max_Bennett','LVPD',[119,193,106,182,354,91]],['Ryan_Cooper','LSPD',[108,175,81,126,312,68]],['James_Walker','SFPD',[96,168,74,119,295,64]],['Leo_Hunter','LVPD',[87,154,69,104,278,59]],['Nick_Parker','LSPD',[76,142,62,96,241,52]],['Adam_Brooks','SFPD',[68,131,54,88,218,48]],['Mark_Reed','LVPD',[59,116,48,79,196,43]],['Jack_Miller','LSPD',[51,104,43,71,174,38]],['Chris_Hayes','SFPD',[44,92,38,64,153,34]],['Sam_Turner','LVPD',[38,81,31,56,132,29]]];
 const $=id=>document.getElementById(id);let selected=0,period='week',live=null,loading=false,loadError='',officer='all',historyPage=1;
-const API='https://police-api-b2y4.onrender.com';
 const fmt=new Intl.NumberFormat('ru-RU');
 const money=value=>value===null||value===undefined?'Не указана':'$'+new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(value);
 const escape=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -36,7 +35,8 @@ function render(){
  if(isTheft)renderHistory();
  $('refreshThefts').disabled=loading;
  $('theftStatus').hidden=!isTheft;
- $('theftStatus').textContent=loading?'Загружаем реагирования полиции…':loadError||(live?date(live.updated_at)+' МСК'+(live.profiles_available===false?' · Профили недоступны':'')+(ranked.length?'':' · За выбранный период реагирований нет.'):'');
+ const outOfDate=live&&Date.now()-Date.parse(live.updated_at)>15*60*1000;
+ $('theftStatus').textContent=loading?'Загружаем реагирования полиции…':loadError||(live?date(live.updated_at)+' МСК'+(outOfDate?' · Данные давно не обновлялись':'')+(live.profiles_available===false?' · Профили недоступны':'')+(ranked.length?'':' · За выбранный период реагирований нет.'):'');
  document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.category)===selected)));
  document.querySelectorAll('[data-period]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.period===period)));
  $('podium').innerHTML=ranked.slice(0,3).map((p,i)=>`<article class="winner place-${i+1}" aria-label="${i+1} место: ${escape(p.nickname)}"><div class="player-card" style="--scene:url('employees_assets/rank-${i+1}.webp')"><div class="rank-tag">${i===0?'★ ':''}${i+1} МЕСТО</div><div class="player-content"><div class="avatar">${avatar(p)}<span class="player-number">${i+1}</span></div><h3 class="player-name">${escape(p.nickname)}</h3><div class="player-login">${p.login?'@'+escape(p.login):''}</div><div class="player-value">${fmt.format(p.count)}</div><div class="player-unit">${c.unit}</div>${isTheft?`<div class="player-rewards"><span>Сумма<strong>${money(p.reward)}</strong></span><span>Средняя<strong>${money(p.average_reward)}</strong></span></div><button class="history-open" type="button" data-history-officer="${i}">История ↗</button>`:''}</div></div><div class="pedestal" aria-hidden="true"></div></article>`).join('');
@@ -59,9 +59,8 @@ function renderHistory(){
 async function loadThefts(){
  if(loading)return;loading=true;loadError='';render();
  try{
-  const response=await fetch(API+'/api/portal/employees/thefts',{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(100000)});
-  const data=await response.json();
-  if(!response.ok||data.ok!==true||!['day','week','month'].every(p=>Array.isArray(data.periods?.[p]?.items)))throw Error(data.error||'Некорректный ответ сервера');
+  const data=await window.PolicePublicData.thefts();
+  if(data?.ok!==true||!Number.isFinite(Date.parse(data.updated_at))||!['day','week','month'].every(p=>Array.isArray(data.periods?.[p]?.items)))throw Error('Рейтинг пока недоступен');
   live=data;
  }catch(error){loadError=(live?'Показаны ранее загруженные данные. ':'')+'Не удалось обновить рейтинг. Нажмите «Обновить».';console.warn('[Police] Theft leaderboard:',error.message)}
  finally{loading=false;render()}
