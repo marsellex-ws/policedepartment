@@ -305,7 +305,8 @@ header.header a.brand.pd-unified-brand strong{
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js?v=20261031fix2"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="public-data.js?v=20261126"></script>
+  <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 <script src="forum-avatar.js?v=20261106"></script>
 </head>
@@ -445,22 +446,17 @@ function renderChiefs(){
  }).join('');
 }
 async function refreshPublicPeople(){
-  const endpoints=['/api/portal/leadership','/api/portal/chiefs'];
-  const results=await Promise.allSettled(endpoints.map(async path=>{
-    const response=await fetch('https://police-api-b2y4.onrender.com'+path);
-    if(!response.ok)throw new Error('HTTP '+response.status);
-    const data=await response.json();
-    if(!data||!Array.isArray(data.items))throw new Error('Некорректный ответ');
-    return data.items;
-  }));
-  if(results[0].status==='fulfilled')portalLeadership=results[0].value;
-  if(results[1].status==='fulfilled')portalChiefs=results[1].value;
-  if(results.some(r=>r.status==='fulfilled')){
-    renderRoster(document.querySelector('[data-staff].active')?.dataset.staff||'watchers');renderChiefs();
+  const [leadership, chiefs] = await Promise.allSettled([
+    window.PolicePublicData.leadership(), window.PolicePublicData.chiefs()
+  ]);
+  if (leadership.status === 'fulfilled') portalLeadership = leadership.value;
+  if (chiefs.status === 'fulfilled') portalChiefs = chiefs.value.items;
+  if (leadership.status === 'fulfilled' || chiefs.status === 'fulfilled') {
+    renderRoster(document.querySelector('[data-staff].active')?.dataset.staff || 'watchers');
+    renderChiefs();
   }
-  if(results.some(r=>r.status==='rejected')){
+  if (leadership.status === 'rejected' || chiefs.status === 'rejected') {
     console.warn('[Police] Не все публичные блоки загрузились');
-    // Повторы и тайм-ауты обрабатываются общим api-fetch-retry.js?v=render-wakeup-20261107    // Не запускаем скрытые дополнительные загрузки страницы.
   }
 }
 window.pdRefreshPeople=refreshPublicPeople;
@@ -595,8 +591,8 @@ $('pdVkForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;
  error('');try{const r=await req('/api/portal/admin/users/'+encodeURIComponent(selected.login)+'/vk','PUT',{vk_url:$('pdVkUrl').value.trim()});selected.vk_url=r.vk_url;showMessage('Привязка VK сохранена');}catch(x){error(x.message)}
 };
 function showMessage(text){error('');const toast=$('toast');toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}
-async function loadChiefs(){const r=await req('/api/portal/chiefs');chiefs=r.items||[];renderChiefEditors()}
-async function loadLeadership(){const r=await req('/api/portal/leadership');leadership=r.items||[];renderLeadershipEditors()}
+async function loadChiefs(){const r=await window.PolicePublicData.chiefs();chiefs=r.items;renderChiefEditors()}
+async function loadLeadership(){leadership=await window.PolicePublicData.leadership();renderLeadershipEditors()}
 function editor({id,name,avatar_url='',extra='',fields,save}){
  const html=fields.map(f=>`<label for="${id}-${f.key}">${escape(f.label)}</label>${f.type==='select'?`<select id="${id}-${f.key}" name="${f.key}">${f.options.map(o=>`<option value="${o[0]}" ${o[0]===f.value?'selected':''}>${escape(o[1])}</option>`).join('')}</select>`:`<input id="${id}-${f.key}" name="${f.key}" type="${f.type||'text'}" maxlength="${f.max||100}" value="${escape(f.value??'')}" ${f.placeholder?`placeholder="${escape(f.placeholder)}"`:''}>`}`).join('');
  return `<div class="pd-admin-card"><div class="pd-admin-card-head"><h3>${escape(name)}</h3></div><div class="pd-edit-avatar"><img src="${escape(avatar_url||defaultAvatar)}" alt=""><span>${escape(extra)}</span></div><form class="pd-admin-form" data-pd-save="${id}">${html}<button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить</button></form></div>`;

@@ -941,7 +941,8 @@ header.top .headright > #manageBtn {display:none!important}
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="public-data.js?v=20261126"></script>
+  <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 </head>
 <body>
@@ -1474,7 +1475,7 @@ async function load(){
   try {
     let items = [], offset = 0;
     for(let i=0;i<35;i++){
-      const data = await api('/api/punishments?limit=100&offset='+offset);
+      const data = await window.PolicePublicData.registry(offset);
       if(id!==state.requestId) return;
       items.push(...(Array.isArray(data.items)?data.items:[]));
       if(data.next_offset==null) break;

@@ -11,7 +11,8 @@
   <link rel="preload" href="chiefs_assets/city-night.webp" as="image" type="image/webp">
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="public-data.js?v=20261126"></script>
+  <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105" defer></script>
   <style>
     :root{
@@ -571,7 +572,6 @@
 
 <script>
 (()=>{'use strict';
-  const API='https://police-api-b2y4.onrender.com';
   const FALLBACK_AVATAR='png_police_site/profile.png';
   const DEPT={
     LSPD:{title:'LSPD',label:'Los Santos Police Department',city:'LOS SANTOS',cls:'lspd',accent:'#53f0c4'},
@@ -669,19 +669,16 @@
   }
   async function refresh(){
     controller?.abort();const next=new AbortController();controller=next;status('Обновляем данные...');
-    const timeout=setTimeout(()=>next.abort(),100000);
     try{
-      const res=await fetch(API+'/api/portal/chiefs',{headers:{Accept:'application/json'},cache:'no-store',signal:next.signal});
-      if(!res.ok)throw new Error('HTTP '+res.status);
-      const data=await res.json();
-      if(!data||data.ok!==true||!Array.isArray(data.items))throw new Error('Неверный ответ сервера');
+      const signal=AbortSignal.any([next.signal,AbortSignal.timeout(15000)]);
+      const data=await window.PolicePublicData.chiefs(signal);
       if(controller!==next)return;
       items=data.items;historyWeeks=Array.isArray(data.activity?.weeks)?data.activity.weeks:[];render();renderWeeks();status('Данные руководства получены');
     }catch(err){
       if(controller!==next)return;
       console.warn('[Police] Chiefs refresh:',err);
       status('Временная ошибка соединения');showToast('Не удалось получить данные руководства.');
-    }finally{clearTimeout(timeout);if(controller===next){controller=null}}
+    }finally{if(controller===next){controller=null}}
   }
   periodButtons.forEach(btn=>btn.addEventListener('click',()=>{period=btn.dataset.period;periodButtons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));render();renderWeeks()}));
   window.addEventListener('pageshow',event=>{if(event.persisted)refresh()});

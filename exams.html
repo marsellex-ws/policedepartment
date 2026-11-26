@@ -110,7 +110,8 @@ header.header a.brand.pd-unified-brand small, header.top a.brand.pd-unified-bran
 </style>  <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js"></script>
   <script src="site-session.js"></script>
-  <script src="page-ready.js?v=render-20261105"></script>
+  <script src="public-data.js?v=20261126"></script>
+  <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 </head>
 <body><header class="top"><div class="shell topin"><a class="brand pd-unified-brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.webp" alt=""><span><strong>POLICE DEPARTMENT</strong></span></a><div class="headright"><div data-police-user-slot class="pd-header-user-slot"></div><button type="button" class="btn ghost hidden" id="manageBtn">⚙ Управление</button></div></div></header>
@@ -166,8 +167,8 @@ window.addEventListener('pageshow',()=>{if(readSharedSession()!==token)initAuth(
 window.addEventListener('storage',event=>{if(event.key===KEY||event.key===AUTH_EXPIRES)initAuth();});
 setInterval(()=>{if(token&&!readSharedSession()){token=null;user=null;refreshExamProfile();if(!$('manageView').classList.contains('hidden'))show('landing');}},60000);
 $('privacyBtn').onclick=()=>$('privacyDialog').showModal();$('closePrivacy').onclick=()=>$('privacyDialog').close();
-async function loadExams(){try{const r=await api('/api/exams');examList=r.exams||[];for(const slug of ['private','captain']){const exam=examList.find(x=>x.slug===slug);$('count-'+slug).textContent=exam?`${exam.question_count} вопросов`:'Временно недоступен';} $('loadStatus').textContent='';}catch(e){$('loadStatus').textContent='Нет связи с сервером';toast(e.message);}}
-async function selectExam(slug){try{const data=await api('/api/exams/'+slug);activeExam=data.exam;questions=data.questions||[];if(!questions.length){toast('Вопросы для этого экзамена пока не добавлены');return;}$('startTitle').textContent=activeExam.title;$('startDesc').textContent=`${questions.length} вопросов`;answers={};nickname='';position=0;$('playerNick').value='';show('startView');}catch(e){toast(e.message);}}
+async function loadExams(){try{const r=await window.PolicePublicData.exams();examList=r.exams;for(const slug of ['private','captain']){const exam=examList.find(x=>x.slug===slug);$('count-'+slug).textContent=exam?`${exam.question_count} вопросов`:'Временно недоступен';} $('loadStatus').textContent='';}catch(e){$('loadStatus').textContent='Нет связи с сервером';toast(e.message);}}
+async function selectExam(slug){try{const data=await window.PolicePublicData.exam(slug);activeExam=data.exam;questions=data.questions||[];if(!questions.length){toast('Вопросы для этого экзамена пока не добавлены');return;}$('startTitle').textContent=activeExam.title;$('startDesc').textContent=`${questions.length} вопросов`;answers={};nickname='';position=0;$('playerNick').value='';show('startView');}catch(e){toast(e.message);}}
 function isAnswered(q){const a=answers[q.id];return !!(a && (a.free_text?.trim()||a.choice_ids?.length));}
 function saveCurrent(){const q=questions[position],box=$('answerChoices');const free=box.querySelector('textarea[data-free]');const picked=[...box.querySelectorAll('input[data-choice]:checked')].map(x=>x.dataset.choice);
  const own=box.querySelector('input[data-custom]');const useFree=q.answer_mode==='text'||(own&&own.checked);
