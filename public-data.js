@@ -13,6 +13,7 @@
     leadership: url('pd_portal_leadership', {select: 'slot,nickname,avatar_url,vk_url,forum_url,gender'}),
     leadershipOrder: url('pd_leadership_order', {select: 'slots,version', id: 'eq.1'}),
     chiefs: url('rpc/pd_public_chiefs'),
+    chiefTerms: url('pd_chief_term_snapshot',{select:'entries,updated_at',id:'eq.1'}),
     thefts: url('pd_theft_snapshot', {select: 'payload', id: 'eq.1'}),
     exams: url('rpc/pd_public_exams'),
     registry: url('pd_punishments', {select: registryColumns, order: 'issued_at.desc', limit: 100, offset: 0}),
@@ -78,6 +79,11 @@
       const data = await read(urls.chiefs, signal);
       if (data?.ok !== true || !Array.isArray(data.items)) throw new Error('Не удалось получить список шефов');
       return data;
+    },
+    async chiefTerms(signal) {
+      const [snapshot] = await readRows(urls.chiefTerms,signal);
+      if (!Array.isArray(snapshot?.entries)) throw new Error('Сроки из таблицы пока недоступны');
+      return snapshot;
     },
     async thefts(signal) {
       const [snapshot] = await readRows(urls.thefts, signal);

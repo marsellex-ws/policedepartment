@@ -307,11 +307,21 @@ header.header a.brand.pd-unified-brand strong{
  .pd-leadership-order-controls{display:flex;gap:6px;align-items:center;flex-shrink:0}
  .pd-leadership-order-controls button{width:34px;height:34px;padding:0;font-size:17px}
  .pd-leadership-order-controls button:disabled{opacity:.34;cursor:default}
+ .pd-chief-term-panel{margin-bottom:16px}
+ .pd-chief-term-panel .pd-admin-card-head{gap:10px;flex-wrap:wrap}
+ .pd-chief-term-panel .pd-admin-card-head a{color:#91d0ff;font-size:12px;font-weight:750}
+ .pd-chief-term-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:9px}
+ .pd-chief-term-row{background:#0a1c30;border:1px solid #31516e;border-radius:10px;padding:11px;min-width:0}
+ .pd-chief-term-row strong{display:block;color:#eef6ff;overflow-wrap:anywhere}
+ .pd-chief-term-row small,.pd-chief-term-state{color:#a9c5de;font-size:12px}
+ .pd-chief-term-mismatch{color:#ffd391;font-size:11px;margin:6px 0 0}
+ .pd-chief-term-state{margin:7px 0 0}
 </style>
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js?v=20261031fix2"></script>
   <script src="site-session.js"></script>
-  <script src="public-data.js?v=leadership-20261127"></script>
+  <script src="public-data.js?v=chief-terms-20261127"></script>
+  <script src="chief-terms.js?v=20261127"></script>
   <script src="leadership-order.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
@@ -369,7 +379,14 @@ header.header a.brand.pd-unified-brand strong{
     <form id="pdVkForm" class="pd-admin-subcard"><h4>Привязка VK</h4><label for="pdVkUrl">Ссылка на страницу</label><input type="url" id="pdVkUrl" placeholder="https://vk.com/id123456" autocomplete="url"><button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить привязку</button></form>
     </div></section>
   </div>
-  <div id="pdAdminChiefs" class="hidden"><div class="pd-admin-grid" id="pdChiefEditor"></div></div>
+  <div id="pdAdminChiefs" class="hidden">
+    <section class="pd-admin-card pd-chief-term-panel" aria-labelledby="pdChiefTermTitle">
+      <div class="pd-admin-card-head"><h3 id="pdChiefTermTitle">Сроки по таблице ПД</h3><a href="https://docs.google.com/spreadsheets/d/12_hevQ5hzcww3l8LQ2DYQ9wmfScp0YtRdYTUj-FAEgQ/edit?gid=1782955489#gid=1782955489" target="_blank" rel="noopener noreferrer">Открыть таблицу ↗</a></div>
+      <div class="pd-chief-term-grid" id="pdChiefTerms"></div>
+      <p class="pd-chief-term-state" id="pdChiefTermState" role="status">Загружаем сроки…</p>
+    </section>
+    <div class="pd-admin-grid" id="pdChiefEditor"></div>
+  </div>
   <div id="pdAdminLeadership" class="hidden"><div id="pdLeadershipEditor"></div></div>
   <section id="pdAdminQuests" class="hidden" aria-label="Квесты и баллы"></section>
   <section id="pdAdminRange" data-view="settings" class="hidden" aria-label="Настройки тира и призы"></section>
@@ -526,6 +543,7 @@ const roleLabels={developer:'Разработчик',admin:'Администра
 const defaultAvatar='png_police_site/profile.png';
 let users=[],selected=null,leadership=[],chiefs=[],currentTab='users',adminUser=null;
 let leadershipLayout=null,leadershipLoad=null,movingLeadership=false;
+let chiefTermSnapshot=null,chiefsLoad=null,chiefsLoaded=false;
 const error=msg=>$('pdAdminError').textContent=msg||'';
 async function req(path,method='GET',data){
  const token=PoliceSession.get();
@@ -603,7 +621,38 @@ $('pdVkForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;
  error('');try{const r=await req('/api/portal/admin/users/'+encodeURIComponent(selected.login)+'/vk','PUT',{vk_url:$('pdVkUrl').value.trim()});selected.vk_url=r.vk_url;showMessage('Привязка VK сохранена');}catch(x){error(x.message)}
 };
 function showMessage(text){error('');const toast=$('toast');toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}
-async function loadChiefs(){const r=await window.PolicePublicData.chiefs();chiefs=r.items;renderChiefEditors()}
+function renderChiefTerms(){
+ const {describe,days,sameNickname}=window.PoliceChiefTerms;
+ $('pdChiefTerms').innerHTML=(chiefTermSnapshot?.entries||[]).map(entry=>{
+   const term=describe(entry.appointed_on);
+   if(!term)return '';
+   const current=chiefs.find(chief=>chief.department===entry.department)?.nickname;
+   const mismatch=current&&!sameNickname(current,entry.nickname);
+   return `<article class="pd-chief-term-row" data-term-department="${escape(entry.department)}">
+     <small>${entry.department==='MINISTRY'?'Министерство':escape(entry.department)}</small>
+     <strong>${escape(entry.nickname)}</strong>
+     <small>Назначение ${term.appointment} · На посту ${days(term.elapsed)}</small>
+     ${mismatch?'<p class="pd-chief-term-mismatch">В карточке активности: '+escape(current)+'</p>':''}
+   </article>`;
+ }).join('');
+}
+function loadChiefs(){
+ if(!chiefsLoad){
+   chiefsLoad=Promise.allSettled([window.PolicePublicData.chiefs(),window.PolicePublicData.chiefTerms()])
+     .then(([activity,terms])=>{
+       if(terms.status==='fulfilled')chiefTermSnapshot=terms.value;
+       if(activity.status==='fulfilled'){
+         chiefs=activity.value.items;chiefsLoaded=true;renderChiefEditors();
+       }
+       renderChiefTerms();
+       $('pdChiefTermState').textContent=terms.status==='rejected'?'Таблица пока недоступна':
+         chiefTermSnapshot.entries.length?'Обновлено '+new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',dateStyle:'short',timeStyle:'short'}).format(new Date(chiefTermSnapshot.updated_at))+' МСК':
+         'В таблице нет назначенных лидеров';
+       if(activity.status==='rejected')throw activity.reason;
+     }).finally(()=>{chiefsLoad=null});
+ }
+ return chiefsLoad;
+}
 function loadLeadership(){
  if(!leadershipLoad){
    leadershipLoad=Promise.all([window.PolicePublicData.leadership(),window.PolicePublicData.leadershipOrder()])
@@ -650,7 +699,7 @@ function renderChiefEditors(){
  {key:'account_number',label:'Номер аккаунта',value:x.account_number||'',max:20},
  {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||'',type:'url',max:700,placeholder:'https://...'}
  ]});}).join('');
- setupEditors($('pdChiefEditor'),async(dept,data)=>{const r=await req('/api/portal/admin/chiefs/'+dept,'PUT',data);const i=chiefs.findIndex(x=>x.department===dept);if(i>=0)chiefs[i]=r.item;renderChiefEditors();});
+ setupEditors($('pdChiefEditor'),async(dept,data)=>{const r=await req('/api/portal/admin/chiefs/'+dept,'PUT',data);const i=chiefs.findIndex(x=>x.department===dept);if(i>=0)chiefs[i]=r.item;renderChiefEditors();renderChiefTerms();});
 }
 function renderLeadershipEditors(){
  const host=$('pdLeadershipEditor');
@@ -739,6 +788,7 @@ function setTab(tab){
  $('pdAdminCases').classList.toggle('hidden',tab!=='cases');
  $('pdAdminQuests').classList.toggle('hidden',tab!=='quests');
  error('');requestAnimationFrame(positionTabLine);
+ if(tab==='chiefs'&&adminUser&&!chiefsLoaded)loadChiefs().catch(e=>error(e.message));
  if(tab==='leadership'&&adminUser&&!leadershipLayout)loadLeadership().catch(e=>error(e.message));
  if(tab==='roles')window.PoliceRoleManager?.init();
  if(tab==='quests')window.PoliceQuestAdmin?.init();
