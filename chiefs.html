@@ -11,7 +11,8 @@
   <link rel="preload" href="chiefs_assets/city-night.webp" as="image" type="image/webp">
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="site-session.js"></script>
-  <script src="public-data.js?v=20261126"></script>
+  <script src="public-data.js?v=chief-terms-20261127"></script>
+  <script src="chief-terms.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105" defer></script>
   <style>
@@ -495,6 +496,23 @@
     .weeks-legend span{display:inline-flex;align-items:center;gap:7px}.weeks-legend i{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--legend-color)}
     .weeks-empty{margin:16px 0 0;text-align:center;color:#8faac8;font-size:12px}
     @media(max-width:850px){.rank-banner{top:-48px;min-width:150px;height:43px;font-size:14px}.podium-scene{row-gap:90px!important}.weeks-history{padding:20px 10px}.weeks-chart{grid-template-columns:repeat(8,110px)}.week-col{min-width:110px}}
+    .chief-term{--stage:#75eab8;margin-top:13px;padding:10px 12px 9px;border-radius:12px;
+      border:1px solid color-mix(in srgb,var(--stage) 32%,#23426a);background:#071a2ee8}
+    .chief-term[data-stage="middle"]{--stage:#ffd376}
+    .chief-term[data-stage="late"]{--stage:#ff8b9e}
+    .chief-term-heading{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 10px}
+    .chief-term-heading span,.chief-term-details{font-size:11px;color:#b8cfe7}
+    .chief-term-heading strong{color:var(--stage);font-size:clamp(14px,2vw,18px);font-weight:900}
+    .chief-term-details{margin:4px 0 0;line-height:1.4}
+    .chief-term-details b{font-weight:800;color:#e3f2ff}
+    .chief-term-progress{position:relative;height:8px;margin:13px 0 10px;border-radius:20px;background:#293b55;box-shadow:inset 0 1px 2px #041222}
+    .chief-term-fill{display:block;height:100%;width:var(--term-percent);border-radius:20px;
+      background:linear-gradient(90deg,color-mix(in srgb,var(--stage) 55%,#15425c),var(--stage));
+      box-shadow:0 0 10px color-mix(in srgb,var(--stage) 50%,transparent)}
+    .chief-term-mood{position:absolute;left:clamp(11px,var(--term-percent),calc(100% - 11px));top:50%;transform:translate(-50%,-50%);
+      font-size:20px;line-height:1;filter:drop-shadow(0 2px 3px #060e23)}
+    .chief-term-caption{margin:0;color:var(--stage);font-size:11px;font-weight:800}
+    .chief-term-source{display:block;color:#c8ddf6;font-size:11px;margin-top:4px;overflow-wrap:anywhere}
   </style>
 </head>
 <body>
@@ -582,7 +600,7 @@
   const toastNode=document.getElementById('toast');
   const stateText=document.getElementById('apiStateText');
   const periodButtons=[...document.querySelectorAll('[data-period]')];
-  let items=[],historyWeeks=[],period='day',controller=null,toastTimer=0,lastRankOrder='';
+  let items=[],historyWeeks=[],chiefTerms=[],period='day',controller=null,toastTimer=0,lastRankOrder='';
   const htmlEscape=v=>String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const safeAvatar=v=>/^https:\/\//i.test(String(v||'')) ? String(v) : FALLBACK_AVATAR;
   const metric=(person,mode)=>{
@@ -597,6 +615,25 @@
   function showToast(message){toastNode.textContent=message;toastNode.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastNode.classList.remove('visible'),4200)}
   function status(message){stateText.textContent=message;}
   function shield(){return `<svg viewBox="0 0 160 160" aria-hidden="true"><circle class="ring" cx="80" cy="80" r="70"/><circle class="ring" cx="80" cy="80" r="58"/><path class="line" d="M46 110h68M60 100 80 56l20 44M80 56v54M55 42h50M44 50c12-9 25-14 36-14 16 0 29 6 36 14M52 119c17 9 39 9 56 0M31 80h16M113 80h16"/></svg>`}
+  function termCard(person){
+    const entry=chiefTerms.find(row=>row.department===person.department);
+    const term=window.PoliceChiefTerms.describe(entry?.appointed_on);
+    if(!term)return '';
+    const {days,sameNickname}=window.PoliceChiefTerms;
+    const owner=sameNickname(entry.nickname,person.nickname)?'':
+      `<span class="chief-term-source">По таблице ПД · ${htmlEscape(entry.nickname)}</span>`;
+    return `<section class="chief-term" data-stage="${term.stage}" aria-label="Срок ${htmlEscape(entry.nickname)}">
+      <div class="chief-term-heading"><span>Срок на посту</span><strong>Осталось ${days(term.remaining)}</strong></div>
+      ${owner}
+      <p class="chief-term-details">Назначение <b>${term.appointment}</b> · На посту <b>${days(term.elapsed)}</b></p>
+      <div class="chief-term-progress" role="progressbar" aria-label="Оставшийся срок"
+        aria-valuemin="0" aria-valuemax="${term.length}" aria-valuenow="${term.remaining}"
+        aria-valuetext="Осталось ${days(term.remaining)}" style="--term-percent:${term.percent}%">
+        <span class="chief-term-fill"></span><span class="chief-term-mood" aria-hidden="true">${term.mood}</span>
+      </div>
+      <p class="chief-term-caption">${term.label}</p>
+    </section>`;
+  }
   function card(person,rank,rankReady){
     const info=DEPT[person.department];
     const value=metric(person,period);
@@ -622,6 +659,7 @@
             </div>
           </div>
           <div class="stat-main"><div><small>${period==='day'?'Активность за день':'Активность за неделю'}</small><div class="stat-value">${score}<span>АО</span></div>${value===null?'':''}</div><div class="bars" aria-hidden="true"><i></i><i></i><i></i></div></div>
+          ${termCard(person)}
         </div>
       </div>
     </article></div><div class="pedestal"><div class="pedestal-ring"></div><div class="pedestal-label">${label}</div></div></div>`;
@@ -671,9 +709,17 @@
     controller?.abort();const next=new AbortController();controller=next;status('Обновляем данные...');
     try{
       const signal=AbortSignal.any([next.signal,AbortSignal.timeout(15000)]);
-      const data=await window.PolicePublicData.chiefs(signal);
+      const [activity,terms]=await Promise.allSettled([
+        window.PolicePublicData.chiefs(signal),window.PolicePublicData.chiefTerms(signal)
+      ]);
       if(controller!==next)return;
-      items=data.items;historyWeeks=Array.isArray(data.activity?.weeks)?data.activity.weeks:[];render();renderWeeks();status('Данные руководства получены');
+      const termReadFailed=terms.status==='rejected';
+      if(!termReadFailed)chiefTerms=terms.value.entries;
+      if(activity.status==='rejected'){render();throw activity.reason}
+      const data=activity.value;
+      items=data.items;historyWeeks=Array.isArray(data.activity?.weeks)?data.activity.weeks:[];
+      render();renderWeeks();
+      status(termReadFailed?'Сроки из таблицы не обновились':'Данные руководства получены');
     }catch(err){
       if(controller!==next)return;
       console.warn('[Police] Chiefs refresh:',err);
