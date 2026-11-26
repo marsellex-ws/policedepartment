@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <meta name="description" content="Угонки Police Department: текущий угон, архив, топ полицейских и статистика игроков Platinum.">
+  <title>Угонки · Police Department</title>
+  <link rel="icon" href="pd_favicon.png?v=20261107">
+  <link rel="preload" href="png_police_site/hero_night.webp" as="image">
+  <link rel="stylesheet" href="employees.css?v=20261126">
+  <link rel="stylesheet" href="thefts.css?v=20261127">
+  <script src="api-fetch-retry.js?v=render-wakeup-20261107" defer></script>
+  <script src="site-session.js" defer></script>
+  <script src="public-data.js?v=theft-portal-20261127" defer></script>
+  <script src="page-ready.js?v=supabase-20261126" defer></script>
+  <script src="role-ui.js?v=render-20261105" defer></script>
+  <script src="thefts.js?v=20261127" defer></script>
+</head>
+<body class="theft-page">
+  <div class="theft-backdrop" aria-hidden="true"></div>
+  <div class="theft-dots" aria-hidden="true"></div>
+  <header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="Police Department — главная"><img src="pd_photo.webp" alt=""><strong>POLICE DEPARTMENT</strong></a>
+    <div class="right-tools"><div class="pd-header-user-slot" data-police-user-slot></div></div>
+  </div>
+</header>
+  <main class="wrap theft-main">
+    <section class="theft-intro" aria-labelledby="theftTitle">
+      <a class="theft-back" href="index.html">← На главную</a>
+      <h1 id="theftTitle">УГОНКИ<span>.</span></h1>
+      <p>Оперативная сводка, история угонов и рейтинг реагирований</p>
+    </section>
+
+    <div class="theft-toolbar">
+      <div class="theft-tabs" role="group" aria-label="Разделы угонов">
+        <button type="button" data-view="police" aria-pressed="true">Топ полицейских</button>
+        <button type="button" data-view="current" aria-pressed="false">Текущий угон</button>
+        <button type="button" data-view="history" aria-pressed="false">История угонов</button>
+        <button type="button" data-view="players" aria-pressed="false">Топ угонщиков</button>
+      </div>
+      <button type="button" class="theft-action" id="theftRefresh">↻ Обновить</button>
+    </div>
+    <p class="theft-statusline" id="theftStatus" role="status" aria-live="polite"></p>
+
+    <section aria-labelledby="policeTitle" data-panel="police">
+      <div class="theft-section-header">
+        <h2 id="policeTitle">Реагирования полиции</h2>
+        <div class="theft-controls-row">
+          <div class="theft-periods" role="group" aria-label="Период рейтинга">
+            <button type="button" data-period="day" aria-pressed="false">24 часа</button>
+            <button type="button" data-period="week" aria-pressed="true">7 дней</button>
+            <button type="button" data-period="month" aria-pressed="false">30 дней</button>
+          </div>
+          <label class="theft-week">Архив <select id="theftWeeks" aria-label="Календарная неделя"><option value="">Календарные недели</option></select></label>
+        </div>
+      </div>
+      <div class="theft-metrics" id="policeMetrics"></div>
+      <div class="theft-podium" id="policePodium"></div>
+      <div class="theft-panel">
+        <div class="theft-panel-header"><h3>Все сотрудники</h3><span id="policeCount"></span></div>
+        <div class="theft-table-wrap"><table class="theft-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Сотрудник</th><th scope="col">Реагирования</th><th scope="col">Заработок</th><th scope="col">Средняя награда</th><th scope="col">Последнее</th></tr></thead>
+          <tbody id="policeRows"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="currentTitle" data-panel="current" hidden>
+      <div class="theft-section-header"><h2 id="currentTitle">Текущий угон</h2></div>
+      <div class="theft-panel theft-current" id="currentTheft"></div>
+    </section>
+
+    <section aria-labelledby="historyTitle" data-panel="history" hidden>
+      <div class="theft-section-header">
+        <h2 id="historyTitle">История угонов</h2>
+        <label class="theft-filter"><span>Поиск по нику или номеру аккаунта</span><input type="search" id="theftSearch" maxlength="80" placeholder="Ник или номер аккаунта"></label>
+      </div>
+      <div class="theft-panel">
+        <div class="theft-table-wrap"><table class="theft-table">
+          <thead><tr><th scope="col">Игрок</th><th scope="col">Дата · МСК</th><th scope="col">Вознаграждение</th><th scope="col">Статус</th></tr></thead>
+          <tbody id="theftHistoryRows"></tbody>
+        </table></div>
+        <div class="theft-pager" aria-label="Страницы истории">
+          <button type="button" class="theft-action" data-page="history" data-step="-1" aria-label="Предыдущая страница">←</button>
+          <span id="historyPage">1</span>
+          <button type="button" class="theft-action" data-page="history" data-step="1" aria-label="Следующая страница">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="playersTitle" data-panel="players" hidden>
+      <div class="theft-section-header"><h2 id="playersTitle">Топ угонщиков</h2></div>
+      <div class="theft-metrics" id="playerMetrics"></div>
+      <div class="theft-podium" id="playerPodium"></div>
+      <div class="theft-panel">
+        <div class="theft-panel-header"><h3>Все игроки</h3></div>
+        <div class="theft-table-wrap"><table class="theft-table">
+          <thead><tr><th scope="col">#</th><th scope="col">Игрок</th><th scope="col">Уровень</th><th scope="col">Успех</th><th scope="col">Неудачи</th><th scope="col">Задержания</th><th scope="col">Заработок</th></tr></thead>
+          <tbody id="playerRows"></tbody>
+        </table></div>
+        <div class="theft-pager" aria-label="Страницы рейтинга игроков">
+          <button type="button" class="theft-action" data-page="players" data-step="-1" aria-label="Предыдущая страница">←</button>
+          <span id="playersPage">1</span>
+          <button type="button" class="theft-action" data-page="players" data-step="1" aria-label="Следующая страница">→</button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <dialog class="theft-dialog" id="policeHistory" aria-labelledby="policeHistoryTitle">
+    <header class="theft-panel-header"><h2 id="policeHistoryTitle"></h2><form method="dialog"><button type="submit" class="theft-action" aria-label="Закрыть историю">×</button></form></header>
+    <div class="theft-table-wrap"><table class="theft-table">
+      <thead><tr><th scope="col">Дата · МСК</th><th scope="col">Награда</th></tr></thead>
+      <tbody id="policeHistoryRows"></tbody>
+    </table></div>
+  </dialog>
+  <footer class="footer">
+  <div class="wrap footer-inner">
+    <p>© marsellex · С 2024 по настоящее время</p>
+    <nav class="links" aria-label="Полезные ссылки">
+      <a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a>
+      <a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a>
+      <a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a>
+      <a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a>
+      <a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
