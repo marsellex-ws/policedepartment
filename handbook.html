@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#091424">
+  <meta name="description" content="Кодексы, устав, команды, экзамены и другие материалы полиции штата Platinum.">
+  <title>Справочник полиции · Police Department</title>
+  <link rel="icon" href="pd_favicon.png">
+  <link rel="stylesheet" href="handbook.css?v=20261127">
+  <script src="site-session.js" defer></script>
+  <script src="public-data.js?v=handbook-20261127" defer></script>
+  <script src="role-ui.js?v=render-20261105" defer></script>
+  <script src="handbook.js?v=20261127" defer></script>
+</head>
+<body class="handbook-page">
+  <header class="handbook-top">
+    <div class="handbook-wrap">
+      <a class="handbook-brand" href="index.html"><img src="pd_photo.webp" alt="" width="40" height="40"><strong>POLICE DEPARTMENT</strong></a>
+      <div class="pd-header-user-slot" data-police-user-slot></div>
+    </div>
+  </header>
+
+  <main class="handbook-wrap" id="main">
+    <div class="handbook-hero">
+      <a class="handbook-home" href="index.html">← На главную</a>
+      <h1>Справочник <span>полиции</span></h1>
+    </div>
+    <div class="handbook-layout">
+      <aside class="handbook-sidebar">
+        <label for="handbookSearch">Разделы справочника</label>
+        <input type="search" id="handbookSearch" placeholder="Найти раздел" autocomplete="off">
+        <nav id="handbookContents" aria-label="Разделы справочника"></nav>
+        <p id="handbookNoResults" hidden>Разделы не найдены.</p>
+      </aside>
+      <section class="handbook-section" id="handbookSection" aria-labelledby="handbookTitle" aria-busy="true">
+        <header><h2 id="handbookTitle">Справочник полиции</h2></header>
+        <p class="handbook-status" id="handbookStatus" role="status">Загрузка справочника…</p>
+        <button class="handbook-retry" type="button" id="handbookRetry" hidden>Повторить загрузку</button>
+        <article class="handbook-prose" id="handbookContent" hidden></article>
+      </section>
+    </div>
+  </main>
+  <footer class="handbook-footer">
+    <div class="handbook-wrap">
+      <p>© marsellex · С 2024 по настоящее время</p>
+      <nav aria-label="Полезные ссылки">
+        <a href="https://vk.com/marsellex" target="_blank" rel="noopener noreferrer">VK</a>
+        <a href="https://t.me/marsellex1" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a href="https://vk.com/absroleplay1script" target="_blank" rel="noopener noreferrer">World Script</a>
+        <a href="https://vk.com/police_absone" target="_blank" rel="noopener noreferrer">Police Platinum</a>
+        <a href="https://vk.com/melanie_hanter" target="_blank" rel="noopener noreferrer">Ответственная за полицию</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

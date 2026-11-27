@@ -283,10 +283,11 @@ header.header a.brand.pd-unified-brand strong{
  .pd-leadership-order-controls button:disabled{opacity:.34;cursor:default}
 </style>
 <link rel="stylesheet" href="admin-workspace.css?v=20261127">
+<link rel="stylesheet" href="handbook.css?v=20261127">
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js?v=20261031fix2"></script>
   <script src="site-session.js"></script>
-  <script src="public-data.js?v=chief-terms-20261127"></script>
+  <script src="public-data.js?v=handbook-20261127"></script>
   <script src="chief-terms.js?v=unified-20261127"></script>
   <script src="leadership-order.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
@@ -329,6 +330,7 @@ header.header a.brand.pd-unified-brand strong{
   <nav class="pd-admin-sidebar" aria-label="Разделы админки" role="tablist" aria-orientation="vertical">
     <button type="button" data-pd-tab="users" role="tab" aria-controls="pdAdminUsers" aria-selected="true"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#users"/></svg></span><span class="pd-admin-sidebar-label"><span>Пользователи</span></span></button>
     <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#shield"/></svg></span><span class="pd-admin-sidebar-label"><span>Руководство полиции</span></span></button>
+    <button type="button" data-pd-tab="handbook" role="tab" aria-controls="pdAdminHandbook" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#book"/></svg></span><span class="pd-admin-sidebar-label"><span>Справочник</span></span></button>
     <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#graduation"/></svg></span><span class="pd-admin-sidebar-label"><span>Выдача ролей</span></span></button>
     <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#target"/></svg></span><span class="pd-admin-sidebar-label"><span>Настройки тира</span></span></button>
     <button type="button" data-pd-tab="prizes" role="tab" aria-controls="pdAdminRange" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#trophy"/></svg></span><span class="pd-admin-sidebar-label"><span>Призы</span></span></button>
@@ -347,6 +349,47 @@ header.header a.brand.pd-unified-brand strong{
     </div></section>
   </div>
   <div id="pdAdminLeadership" class="hidden"><div id="pdLeadershipEditor"></div></div>
+  <section id="pdAdminHandbook" class="pd-admin-card handbook-admin hidden" aria-label="Справочник">
+    <div class="pd-admin-card-head"><h3>Редактор справочника</h3><a href="handbook.html" target="_blank" rel="noopener">Открыть справочник ↗</a></div>
+    <div data-handbook-fields hidden>
+      <div class="handbook-admin-fields">
+        <label>Раздел<select data-handbook-section></select></label>
+        <label>Заголовок<input type="text" maxlength="120" required data-handbook-title></label>
+      </div>
+      <fieldset class="handbook-toolbar" data-handbook-tools aria-label="Форматирование текста">
+        <select data-command="formatBlock" aria-label="Тип абзаца" title="Тип абзаца"><option value="p">Обычный текст</option><option value="h3">Заголовок</option><option value="h4">Подзаголовок</option><option value="blockquote">Цитата</option><option value="pre">Моноширинный блок</option></select>
+        <select data-command="fontName" aria-label="Шрифт" title="Шрифт"><option value="Arial">Arial</option><option value="Georgia">Georgia</option><option value="Times New Roman">Times New Roman</option><option value="Verdana">Verdana</option><option value="Courier New">Courier New</option></select>
+        <select data-command="fontSize" aria-label="Размер текста" title="Размер текста"><option value="1">Очень мелкий</option><option value="2">Мелкий</option><option value="3" selected>Обычный</option><option value="4">Крупный</option><option value="5">Очень крупный</option><option value="6">Заголовочный</option></select>
+        <button type="button" data-command="bold" title="Полужирный" aria-label="Полужирный"><b>Ж</b></button>
+        <button type="button" data-command="italic" title="Курсив" aria-label="Курсив"><i>К</i></button>
+        <button type="button" data-command="underline" title="Подчёркнутый" aria-label="Подчёркнутый"><u>Ч</u></button>
+        <button type="button" data-command="strikeThrough" title="Зачёркнутый" aria-label="Зачёркнутый"><s>З</s></button>
+        <input type="color" data-command="foreColor" title="Цвет текста" aria-label="Цвет текста" value="#17283d">
+        <input type="color" data-command="hiliteColor" title="Цвет фона текста" aria-label="Цвет фона текста" value="#f8e990">
+        <button type="button" data-command="justifyLeft" title="По левому краю">Слева</button>
+        <button type="button" data-command="justifyCenter" title="По центру">Центр</button>
+        <button type="button" data-command="justifyRight" title="По правому краю">Справа</button>
+        <button type="button" data-command="insertUnorderedList" title="Маркированный список">• Список</button>
+        <button type="button" data-command="insertOrderedList" title="Нумерованный список">1. Список</button>
+        <button type="button" data-command="outdent" title="Уменьшить отступ" aria-label="Уменьшить отступ">←</button>
+        <button type="button" data-command="indent" title="Увеличить отступ" aria-label="Увеличить отступ">→</button>
+        <button type="button" data-command="tab" title="Вставить табуляцию">Табуляция</button>
+        <button type="button" data-command="link" title="Вставить ссылку">Ссылка</button>
+        <button type="button" data-command="image" title="Вставить изображение">Изображение</button>
+        <button type="button" data-command="spoiler" title="Вставить раскрывающийся блок">Скрытый текст</button>
+        <button type="button" data-command="removeFormat" title="Убрать форматирование">Очистить стиль</button>
+        <button type="button" data-command="undo" title="Отменить" aria-label="Отменить">↶</button>
+        <button type="button" data-command="redo" title="Повторить" aria-label="Повторить">↷</button>
+      </fieldset>
+      <div class="handbook-prose" contenteditable="false" role="textbox" aria-label="Текст раздела" aria-multiline="true" aria-describedby="handbookEditorKeys" data-handbook-editor></div>
+      <p class="handbook-admin-help" id="handbookEditorKeys">Tab — вставить табуляцию. Esc — выйти из поля.</p>
+    </div>
+    <div class="handbook-admin-actions">
+      <button type="button" class="pd-admin-btn pd-admin-primary" data-handbook-save disabled>Опубликовать раздел</button>
+      <button type="button" class="pd-admin-btn pd-admin-ghost" data-handbook-reload>Загрузить заново</button>
+      <p data-handbook-status role="status"></p>
+    </div>
+  </section>
   <section id="pdAdminQuests" class="hidden" aria-label="Квесты и баллы"></section>
   <section id="pdAdminRange" data-view="settings" class="hidden" aria-label="Настройки тира и призы"></section>
   <section id="pdAdminCases" class="hidden" aria-label="Кейсы">
@@ -380,7 +423,7 @@ header.header a.brand.pd-unified-brand strong{
 <a class="feature" style="--accent:#fc718b" href="reestr.html"><img class="feature-bg" src="png_police_site/01_registry.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/registry.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Реестр наказаний</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#64baff" href="exams.html"><img class="feature-bg" src="png_police_site/02_exams.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/exams.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Электронные экзамены</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ff637e" href="thefts.html"><img class="feature-bg" src="png_police_site/03_car_thefts.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/car_thefts.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Угонки</strong></span><span class="arrow">↗</span></span></a>
-<a class="feature" style="--accent:#b494ff" href="#" data-soon="Справочник полиции"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
+<a class="feature" style="--accent:#b494ff" href="handbook.html"><img class="feature-bg" src="png_police_site/04_guide.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/guide.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Справочник полиции</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#56e2bc" href="#news"><img class="feature-bg" src="png_police_site/05_news.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/news.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Новости и обновления</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#f1bd67" href="leadership.html"><img class="feature-bg" src="png_police_site/06_staff.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/staff.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Руководство полиции</strong></span><span class="arrow">↗</span></span></a>
 <a class="feature" style="--accent:#ff9a64" href="chiefs.html"><img class="feature-bg" src="png_police_site/07_chief_activity.webp" alt="" loading="lazy" decoding="async"><span class="feature-caption"><span class="feature-ico"><img src="png_police_site/chief_activity.png" alt="" loading="lazy"></span><span class="feature-title"><strong>Активность шефов</strong></span><span class="arrow">↗</span></span></a>
@@ -455,7 +498,7 @@ document.querySelectorAll('[data-soon]').forEach(el=>el.addEventListener('click'
 document.querySelectorAll('[data-article]').forEach(el=>el.addEventListener('click',()=>toast(el.dataset.article)));
 $('bellBtn').onclick=()=>toast('Новых уведомлений нет');
 $('nav').addEventListener('click',()=> $('nav').classList.remove('open'));
-const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','thefts.html'],['Справочник полиции','#services'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты','quests.html'],['Бонусы','bonuses.html'],['Личный кабинет','https://police-department.ru/entrance.html']];
+const searchable=[['Реестр наказаний','reestr.html'],['Электронные экзамены','#services'],['Угонки','thefts.html'],['Справочник полиции','handbook.html'],['Новости и обновления','#news'],['Руководство полиции','leadership.html'],['Активность шефов','chiefs.html'],['Топ сотрудников','#ratings'],['Квесты','quests.html'],['Бонусы','bonuses.html'],['Личный кабинет','https://police-department.ru/entrance.html']];
 const escapeHTML=t=>t.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function showSearch(){ $('searchOverlay').classList.add('open');$('globalSearch').value='';renderSearch('');setTimeout(()=>$('globalSearch').focus(),10)}
 function hideSearch(){$('searchOverlay').classList.remove('open')}
@@ -498,6 +541,7 @@ restore();
 <script src="role-manager.js?v=admin-20261127"></script>
 <script src="range-admin.js?v=admin-20261127"></script>
 <script src="quests-admin.js?v=admin-20261127"></script>
+<script src="handbook-admin.js?v=20261127"></script>
 <script>
 (()=>{'use strict';
 const $=id=>document.getElementById(id),API='https://police-api-b2y4.onrender.com';
@@ -509,7 +553,7 @@ let users=[],selected=null,leadership=[],chiefs=[],currentTab='users',adminUser=
 let leadershipLayout=null,leadershipLoad=null,movingLeadership=false;
 let usersReady=false,usersLoad=null;
 const chiefDepartment={leader_lspd:'LSPD',leader_sfpd:'SFPD',leader_lvpd:'LVPD'};
-const adminTabs=['users','leadership','roles','range','prizes','cases','quests'];
+const adminTabs=['users','leadership','handbook','roles','range','prizes','cases','quests'];
 function linkedTab(){
  const hash=location.hash.slice(1);
  return hash==='chiefs'?'leadership':adminTabs.includes(hash)?hash:currentTab;
@@ -764,6 +808,7 @@ function setTab(tab){
  $('pdAdminUsers').classList.toggle('hidden',tab!=='users');
  $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
  $('pdAdminRoles').classList.toggle('hidden',tab!=='roles');
+ $('pdAdminHandbook').classList.toggle('hidden',tab!=='handbook');
  $('pdAdminRange').classList.toggle('hidden',tab!=='range'&&tab!=='prizes');
  $('pdAdminRange').dataset.view=tab==='range'?'settings':'prizes';
  $('pdAdminCases').classList.toggle('hidden',tab!=='cases');
@@ -774,6 +819,7 @@ function setTab(tab){
  }
  if(tab==='leadership'&&adminUser&&!leadershipLayout)loadLeadership().catch(e=>error(e.message));
  if(tab==='roles')window.PoliceRoleManager?.init();
+ if(tab==='handbook')window.PoliceHandbookAdmin?.init(req);
  if(tab==='quests')window.PoliceQuestAdmin?.init();
  if(tab==='range'||tab==='prizes')window.PoliceRangeAdmin?.init();
 }

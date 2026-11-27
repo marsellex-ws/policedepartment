@@ -10,6 +10,7 @@
   }
 
   const urls = Object.freeze({
+    handbook: url('pd_handbook_sections', {select:'slug,title,sort_order',order:'sort_order.asc'}),
     leadership: url('pd_portal_leadership', {select: 'slot,nickname,avatar_url,vk_url,forum_url,gender'}),
     leadershipOrder: url('pd_leadership_order', {select: 'slots,version', id: 'eq.1'}),
     chiefs: url('rpc/pd_public_chiefs'),
@@ -69,6 +70,13 @@
     admin,
     urls,
     prefetch: (address, fetcher) => read(address, AbortSignal.timeout(8000), fetcher),
+    handbook: signal => readRows(urls.handbook, signal),
+    async handbookSection(slug, signal) {
+      const select = 'slug,title,body_html,version';
+      const [section] = await readRows(url('pd_handbook_sections', {select, slug:'eq.' + slug, limit:1}), signal);
+      if (!section) throw Error('Раздел справочника не найден');
+      return section;
+    },
     leadership: signal => readRows(urls.leadership, signal),
     async leadershipOrder(signal) {
       const [layout] = await readRows(urls.leadershipOrder, signal);
