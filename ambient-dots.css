@@ -1,0 +1,13 @@
+.pd-ambient-dots{position:fixed;inset:0;pointer-events:none}
+.pd-ambient-dots::before,.pd-ambient-dots::after{content:"";position:absolute;inset:0}
+.pd-ambient-dots::before{
+  background:radial-gradient(circle,#d9ebff25 1px,transparent 1.45px) 0 0 / 27px 27px;
+}
+.pd-ambient-dots::after{
+  background:linear-gradient(90deg,transparent 5%,#fd547f90 23%,#83bdffcf 45%,#ffffffdf 51%,#61b3ffcf 61%,#ee557994 76%,transparent 95%)
+    -60vw 0 / 52vw 100% no-repeat;
+  mask:radial-gradient(circle,#000 1.2px,transparent 1.7px) 0 0 / 27px 27px;
+  animation:pd-dot-sweep 24s linear infinite;
+}
+@keyframes pd-dot-sweep{from{background-position:-60vw 0}to{background-position:115vw 0}}
+@media(prefers-reduced-motion:reduce){.pd-ambient-dots::after{animation:none}}

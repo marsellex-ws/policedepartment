@@ -1,15 +1,24 @@
 .handbook-page{margin:0;background:#091424;color:#eaf3ff;font:16px/1.5 system-ui,Segoe UI,sans-serif}
 .handbook-page *{box-sizing:border-box}
+/* Keep the docks on the portal type scale while the handbook keeps its reading layout. */
+.handbook-page :is(.header,.footer,.pd-login-dialog,.search-overlay,.toast){font:14px/1.5 Inter,"Segoe UI",Arial,sans-serif}
+.handbook-page :is(.header,.footer,.pd-login-dialog,.search-overlay) a{text-decoration:none}
+:where(.handbook-page :is(.header,.pd-login-dialog,.search-overlay)) :is(button,input){font:inherit}
+.handbook-page :is(.header,.pd-login-dialog,.search-overlay) button{cursor:pointer}
+.handbook-page .footer a:hover{text-decoration:underline}
+.handbook-page .shell{width:min(1560px,calc(100% - 52px));margin:auto}
+.handbook-page{display:flex;flex-direction:column;min-height:100vh;isolation:isolate;color-scheme:dark;overflow-x:clip}
+.handbook-page main{flex:1}
+.handbook-page [hidden]{display:none!important}
+.handbook-ambience{z-index:-1;background:linear-gradient(90deg,#071321e8,#08182dd6 49%,#09182eb0),url("png_police_site/hero_night.webp") 62% center/cover}
+.handbook-page .handbook-prose{color-scheme:light}
+.handbook-section,#handbookContents{scroll-margin-top:102px}
+@media(max-width:850px){.handbook-page .shell{width:calc(100% - 28px)}}
 .handbook-wrap{width:min(1420px,calc(100% - 64px));margin-inline:auto}
-.handbook-top{background:#0b1729;border-bottom:1px solid #243e57}
-.handbook-top .handbook-wrap,.handbook-footer .handbook-wrap{display:flex;align-items:center;justify-content:space-between;gap:20px}
-.handbook-top .handbook-wrap{min-height:66px}
-.handbook-brand{display:inline-flex;align-items:center;gap:12px;color:#f0f6ff;font-size:.83rem;letter-spacing:.08em;text-decoration:none}
-.handbook-brand img{object-fit:contain}
+.handbook-home:hover{text-decoration:underline}
 .handbook-hero{position:relative;display:grid;align-content:center;min-height:250px;margin:30px 0 24px;padding:clamp(24px,5vw,68px);overflow:hidden;border:1px solid #375474;border-radius:20px;background:linear-gradient(90deg,#0b1729 0%,#0b1729ee 37%,#10284966 100%),url("png_police_site/04_guide.webp") right 34%/cover no-repeat}
 .handbook-hero::after{position:absolute;inset:auto 0 0;height:2px;pointer-events:none;content:"";background:linear-gradient(90deg,#68baff,#8e89f9 50%,#142743 87%)}
 .handbook-home{width:max-content;color:#abd6ff;text-decoration:none;font-size:.9rem}
-.handbook-home:hover,.handbook-footer a:hover{text-decoration:underline}
 .handbook-hero h1{margin:10px 0 0;font-size:clamp(2rem,5.1vw,4.3rem);line-height:1;letter-spacing:-.04em}
 .handbook-hero h1 span{color:#9bcaff}
 .handbook-layout{display:grid;grid-template-columns:minmax(205px,260px) minmax(0,1fr);gap:20px;align-items:start;margin-bottom:36px}
@@ -22,14 +31,11 @@
 .handbook-sidebar nav a{display:block;padding:6px 8px;border-radius:7px;color:#e3efff;font-size:.875rem;line-height:1.3;text-decoration:none}
 .handbook-sidebar nav a:hover{background:#1d3654}
 .handbook-sidebar nav a[aria-current=page]{background:#224064;box-shadow:inset 2px 0 #62b4ff;color:#f6faff;font-weight:700}
-.handbook-section{min-height:210px;overflow:hidden;scroll-margin-top:12px}
+.handbook-section{min-height:210px;overflow:hidden}
 .handbook-section>header{padding:18px clamp(16px,3vw,36px);border-bottom:1px solid #294864}
 .handbook-section h2{margin:0;font-size:clamp(1.24rem,2.5vw,2rem);line-height:1.22}
 .handbook-status{margin:24px;color:#a9c2dd}
 .handbook-retry{margin:0 24px 20px;padding:8px 14px;border:1px solid #6caeff;border-radius:8px;background:#224267;color:white;font:inherit;cursor:pointer}
-.handbook-footer{padding:16px 0;background:#0b1729;border-top:1px solid #243e57;color:#b0c4dc;font-size:.85rem}
-.handbook-footer nav{display:flex;flex-wrap:wrap;gap:9px 16px}
-.handbook-footer a{color:#c7dfff;text-decoration:none}
 .handbook-prose{box-sizing:border-box;padding:clamp(14px,3vw,35px);background:#f2f6fb;color:#17283d;font-family:Arial,sans-serif;line-height:1.58;overflow-wrap:anywhere;tab-size:4}
 .handbook-prose pre{white-space:pre-wrap}
 .handbook-prose .handbook-tab{white-space:pre;display:inline-block;min-width:2em}
@@ -68,15 +74,13 @@
 .handbook-admin-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 .handbook-admin-actions p{margin:0;color:#acd0f1}
 .handbook-admin-actions p[data-kind=error]{color:#ffbbc0}
-@media(min-width:1300px) and (min-height:860px){.handbook-sidebar{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow:auto}}
+@media(min-width:1300px) and (min-height:860px){.handbook-sidebar{position:sticky;top:102px;max-height:calc(100vh - 116px);overflow:auto}}
 @media(max-width:760px){
   .handbook-wrap{width:calc(100% - 24px)}
   .handbook-hero{min-height:170px;margin-top:14px}
-  .handbook-layout{grid-template-columns:1fr;gap:12px}
+  .handbook-layout{grid-template-columns:minmax(0,1fr);gap:12px}
   .handbook-sidebar{padding:12px}
-  .handbook-sidebar nav{display:grid;grid-template-columns:1fr 1fr;gap:0 8px}
-  .handbook-footer .handbook-wrap{display:block}
+  .handbook-sidebar nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px}
   .handbook-prose th,.handbook-prose td{padding:4px}
 }
 @media(max-width:620px){.handbook-toolbar{position:static}}
-@media(max-width:380px){.handbook-brand{font-size:.72rem;gap:6px}.handbook-brand img{width:32px;height:32px}}
