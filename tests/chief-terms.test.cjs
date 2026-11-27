@@ -23,3 +23,5 @@ test('a chief term counts Moscow days and changes color at 15 and 7 remaining', 
   assert.equal(describe('2026-02-29'),null);
   assert.ok(context.window.PoliceChiefTerms.sameNickname('Johnny Nelson','Johnny_Nelson'));
 });
+
+assert.equal(context.window.PoliceChiefTerms.dateForElapsed(14,new Date('2026-11-27T12:00:00+03:00')),'2026-11-13');
