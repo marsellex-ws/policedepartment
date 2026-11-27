@@ -226,7 +226,10 @@
     if (button) tool(button.dataset.command,button.dataset.value);
   });
   toolbar.addEventListener('change',event => {
-    if (event.target.dataset.command) tool(event.target.dataset.command,event.target.value);
+    const control = event.target;
+    if (!control.dataset.command || !control.value) return;
+    tool(control.dataset.command,control.value);
+    if (control instanceof HTMLSelectElement) control.selectedIndex = 0;
   });
   editor.addEventListener('keydown',event => {
     if (event.key === 'Escape') {

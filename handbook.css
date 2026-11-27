@@ -58,6 +58,7 @@
 .handbook-admin .handbook-admin-fields :is(select,input){width:100%}
 .handbook-toolbar{min-inline-size:0;position:sticky;top:8px;z-index:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:14px;padding:8px;background:#10223a;border:1px solid #446689;border-radius:9px 9px 0 0}
 .handbook-toolbar button,.handbook-toolbar select,.handbook-toolbar input{min-height:35px;max-width:100%;padding:4px 8px;border:1px solid #385a7d;border-radius:5px;background:#1a3554;color:#fff;font:inherit;font-size:.85rem}
+.handbook-toolbar select{width:auto;min-inline-size:0}
 .handbook-toolbar button{cursor:pointer}
 .handbook-toolbar button:hover{background:#315b85}
 .handbook-toolbar input[type=color]{padding:3px;width:38px}
