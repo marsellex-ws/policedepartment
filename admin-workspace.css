@@ -1,19 +1,8 @@
 .pd-admin-ambience{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
+  z-index:0;
   background:linear-gradient(90deg,#071321 0%,#08182df5 49%,#09182ed6 100%),
     url('png_police_site/hero_night.webp') 62% center/cover;
 }
-.pd-admin-ambience::before,.pd-admin-ambience::after{content:"";position:absolute;inset:0}
-.pd-admin-ambience::before{
-  background:radial-gradient(circle,#d9ebff25 1px,transparent 1.45px) 0 0 / 27px 27px;
-}
-.pd-admin-ambience::after{
-  background:linear-gradient(90deg,transparent 5%,#fd547f90 23%,#83bdffcf 45%,#ffffffdf 51%,#61b3ffcf 61%,#ee557994 76%,transparent 95%)
-    -60vw 0 / 52vw 100% no-repeat;
-  mask:radial-gradient(circle,#000 1.2px,transparent 1.7px) 0 0 / 27px 27px;
-  animation:pd-admin-sweep 24s linear infinite;
-}
-@keyframes pd-admin-sweep{from{background-position:-60vw 0}to{background-position:115vw 0}}
 body.pd-admin-only #pdAdminSection{position:relative;z-index:1;padding-top:27px}
 body.pd-admin-only #pdAdminSection.hidden{display:none!important}
 .pd-admin-workspace{
@@ -80,6 +69,5 @@ body.pd-admin-only #pdAdminSection.hidden{display:none!important}
   .pd-sheet-plus{width:32px}
   .pd-admin-content .pd-admin-grid{grid-template-columns:1fr}
 }
-@media(prefers-reduced-motion:reduce){.pd-admin-ambience::after{animation:none}}
 .pd-sheet-feedback{margin:0;color:#ffd391;font-size:11px}
 .pd-sheet-feedback:empty{display:none}
