@@ -9,7 +9,7 @@
 .handbook-page .shell{width:min(1560px,calc(100% - 52px));margin:auto}
 .handbook-page{display:flex;flex-direction:column;min-height:100vh;isolation:isolate;color-scheme:dark;overflow-x:clip}
 .handbook-page main{flex:1}
-.handbook-page [hidden]{display:none!important}
+.handbook-page :is([hidden],.hidden){display:none!important}
 .handbook-ambience{z-index:-1;background:linear-gradient(90deg,#071321e8,#08182dd6 49%,#09182eb0),url("png_police_site/hero_night.webp") 62% center/cover}
 .handbook-page .handbook-prose{color-scheme:light}
 .handbook-section,#handbookContents{scroll-margin-top:102px}
