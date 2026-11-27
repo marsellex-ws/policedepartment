@@ -11,6 +11,14 @@
   const nicknameKey = value => String(value || '').trim().toLowerCase().replace(/[\s_]+/g,'_');
   const sameNickname = (a,b) => Boolean(nicknameKey(a) && nicknameKey(a) === nicknameKey(b));
 
+  function dateForElapsed(elapsed, now = new Date()) {
+    if (!Number.isSafeInteger(elapsed) || elapsed < 0) return '';
+    const today = Date.parse(moscow.format(now) + 'T00:00:00Z');
+    const date = new Date(today - elapsed * dayMs);
+    if (!Number.isFinite(date.valueOf()) || date.getUTCFullYear() < 1 || date.getUTCFullYear() > 9999) return '';
+    return date.toISOString().slice(0,10);
+  }
+
   function describe(appointedOn, now = new Date()) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(appointedOn || '')) return null;
     const start = new Date(appointedOn + 'T00:00:00Z');
@@ -25,5 +33,5 @@
     return {appointment:russianDate.format(start),elapsed,remaining,stage,mood,label,percent:remaining/length*100,length};
   }
 
-  window.PoliceChiefTerms = Object.freeze({describe,days,sameNickname});
+  window.PoliceChiefTerms = Object.freeze({describe,days,sameNickname,dateForElapsed});
 })();

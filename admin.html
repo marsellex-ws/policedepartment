@@ -236,32 +236,6 @@ header.header a.brand.pd-unified-brand strong{
   header.header a.brand.pd-unified-brand strong{font-size:clamp(11px,2.7vw,13px)!important}
 }
 
-/* Registry-style section tabs: slim underline, smooth movement, no pill backgrounds. */
-.pd-admin-tabs{
- position:relative;display:flex;align-items:stretch;gap:12px;
- flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
- padding:0 0 6px;margin:0 0 22px;
- border-bottom:1px solid #86c9f74a;
-}
-.pd-admin-tabs::-webkit-scrollbar{display:none}
-.pd-admin-tabs button,.pd-admin-tabs button.selected{
- position:relative;flex:0 0 auto;min-width:0;
- border:0;border-radius:0;background:transparent;box-shadow:none;
- padding:11px 15px 14px;color:#90afc7;font-size:13px;font-weight:800;
- white-space:nowrap;transition:color .23s,text-shadow .23s;
-}
-.pd-admin-tabs button.selected{color:#f4faff}
-.pd-admin-tabs button:hover,.pd-admin-tabs button:focus-visible{color:#ecfaff;text-shadow:0 0 14px #77caff66}
-.pd-admin-tabs button:focus-visible{outline:1px solid #86c9f7aa;outline-offset:-4px;border-radius:4px}
-.pd-admin-tabs .pd-admin-tab-indicator{
- position:absolute;bottom:0;left:0;width:40px;height:3px;
- pointer-events:none;border-radius:50px;z-index:2;
- background:#78caff;box-shadow:0 0 13px #78caff55;
- transition:left .26s ease,width .26s ease;
-}
-@media(max-width:650px){.pd-admin-tabs{gap:5px}.pd-admin-tabs button,.pd-admin-tabs button.selected{flex:0 0 auto;padding:10px 11px 13px;font-size:11px}}
-@media(prefers-reduced-motion:reduce){.pd-admin-tabs .pd-admin-tab-indicator{transition:none}}
-
 /* Range administration */
 #pdAdminRange{display:grid;gap:19px}#pdAdminRange.hidden{display:none!important}
 #pdAdminRange .range-admin-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
@@ -307,27 +281,20 @@ header.header a.brand.pd-unified-brand strong{
  .pd-leadership-order-controls{display:flex;gap:6px;align-items:center;flex-shrink:0}
  .pd-leadership-order-controls button{width:34px;height:34px;padding:0;font-size:17px}
  .pd-leadership-order-controls button:disabled{opacity:.34;cursor:default}
- .pd-chief-term-panel{margin-bottom:16px}
- .pd-chief-term-panel .pd-admin-card-head{gap:10px;flex-wrap:wrap}
- .pd-chief-term-panel .pd-admin-card-head a{color:#91d0ff;font-size:12px;font-weight:750}
- .pd-chief-term-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:9px}
- .pd-chief-term-row{background:#0a1c30;border:1px solid #31516e;border-radius:10px;padding:11px;min-width:0}
- .pd-chief-term-row strong{display:block;color:#eef6ff;overflow-wrap:anywhere}
- .pd-chief-term-row small,.pd-chief-term-state{color:#a9c5de;font-size:12px}
- .pd-chief-term-mismatch{color:#ffd391;font-size:11px;margin:6px 0 0}
- .pd-chief-term-state{margin:7px 0 0}
 </style>
+<link rel="stylesheet" href="admin-workspace.css?v=20261127">
   <script src="api-fetch-retry.js?v=render-wakeup-20261107"></script>
   <script src="ui-pending.js?v=20261031fix2"></script>
   <script src="site-session.js"></script>
   <script src="public-data.js?v=chief-terms-20261127"></script>
-  <script src="chief-terms.js?v=20261127"></script>
+  <script src="chief-terms.js?v=unified-20261127"></script>
   <script src="leadership-order.js?v=20261127"></script>
   <script src="page-ready.js?v=supabase-20261126"></script>
   <script src="role-ui.js?v=render-20261105"></script>
 <script src="forum-avatar.js?v=20261106"></script>
 </head>
 <body class="pd-admin-only">
+<div class="pd-admin-ambience" aria-hidden="true"></div>
 <!-- Самодостаточный набор иконок: не требует библиотек -->
 <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
 <symbol id="shield" viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5.5 3.4 8.7 8 11 4.6-2.3 8-5.5 8-11V5z"/><path d="m12 7 1.4 3 3.2.5-2.3 2.2.5 3.2L12 14.3l-2.8 1.6.6-3.2-2.3-2.2 3.1-.5z"/></symbol>
@@ -358,18 +325,18 @@ header.header a.brand.pd-unified-brand strong{
 </section>
 
 <section id="pdAdminSection" class="shell pd-admin-section hidden" aria-labelledby="pdAdminTitle">
-  <div class="pd-admin-heading"><div><div class="pd-eyebrow">POLICE DEPARTMENT · ADMINISTRATION</div><h2 id="pdAdminTitle">Панель управления</h2></div><button id="pdAdminClose" class="pd-admin-btn pd-admin-ghost" type="button">← На главную</button></div>
-  <nav class="pd-admin-tabs" aria-label="Разделы админки" role="tablist">
-    <button type="button" class="selected" data-pd-tab="users" role="tab" aria-controls="pdAdminUsers" aria-selected="true">Пользователи</button>
-    <button type="button" data-pd-tab="chiefs" role="tab" aria-controls="pdAdminChiefs" aria-selected="false">Активность шефов</button>
-    <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false">Руководство полиции</button>
-    <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false">Выдача ролей</button>
-    <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false">Настройки тира</button>
-    <button type="button" data-pd-tab="prizes" role="tab" aria-controls="pdAdminRange" aria-selected="false">Призы</button>
-    <button type="button" data-pd-tab="cases" role="tab" aria-controls="pdAdminCases" aria-selected="false">Кейсы</button>
-    <button type="button" data-pd-tab="quests" role="tab" aria-controls="pdAdminQuests" aria-selected="false">Квесты и баллы</button>
-    <span class="pd-admin-tab-indicator" aria-hidden="true"></span>
+  <div class="pd-admin-workspace">
+  <nav class="pd-admin-sidebar" aria-label="Разделы админки" role="tablist" aria-orientation="vertical">
+    <button type="button" data-pd-tab="users" role="tab" aria-controls="pdAdminUsers" aria-selected="true"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#users"/></svg></span><span class="pd-admin-sidebar-label"><span>Пользователи</span></span></button>
+    <button type="button" data-pd-tab="leadership" role="tab" aria-controls="pdAdminLeadership" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#shield"/></svg></span><span class="pd-admin-sidebar-label"><span>Руководство полиции</span></span></button>
+    <button type="button" data-pd-tab="roles" role="tab" aria-controls="pdAdminRoles" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#graduation"/></svg></span><span class="pd-admin-sidebar-label"><span>Выдача ролей</span></span></button>
+    <button type="button" data-pd-tab="range" role="tab" aria-controls="pdAdminRange" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#target"/></svg></span><span class="pd-admin-sidebar-label"><span>Настройки тира</span></span></button>
+    <button type="button" data-pd-tab="prizes" role="tab" aria-controls="pdAdminRange" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#trophy"/></svg></span><span class="pd-admin-sidebar-label"><span>Призы</span></span></button>
+    <button type="button" data-pd-tab="cases" role="tab" aria-controls="pdAdminCases" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#gift"/></svg></span><span class="pd-admin-sidebar-label"><span>Кейсы</span></span></button>
+    <button type="button" data-pd-tab="quests" role="tab" aria-controls="pdAdminQuests" aria-selected="false"><span class="pd-admin-sidebar-icon" aria-hidden="true"><svg class="icon"><use href="#book"/></svg></span><span class="pd-admin-sidebar-label"><span>Квесты и баллы</span></span></button>
   </nav>
+  <div class="pd-admin-content">
+  <div class="pd-admin-heading"><div><div class="pd-eyebrow">POLICE DEPARTMENT · ADMINISTRATION</div><h2 id="pdAdminTitle">Панель управления</h2></div><button id="pdAdminClose" class="pd-admin-btn pd-admin-ghost" type="button">← На главную</button></div>
   <div id="pdAdminError" class="pd-admin-error" role="alert"></div>
   <div id="pdAdminUsers" class="pd-admin-layout">
     <aside class="pd-admin-card pd-users-card"><div class="pd-admin-card-head"><h3>Пользователи <small id="pdUsersCount"></small></h3></div><input type="search" id="pdUserSearch" placeholder="Ник или логин" autocomplete="off" aria-label="Поиск пользователей"><div class="pd-users-list" id="pdUsersList"><p class="pd-empty">Загрузка...</p></div></aside>
@@ -378,14 +345,6 @@ header.header a.brand.pd-unified-brand strong{
     <div class="pd-admin-subcard"><h4>Пароль пользователя</h4><p class="pd-hint">Старые сеансы будут завершены. Новый пароль появится после подтверждения.</p><button id="pdResetPassword" type="button" class="pd-admin-btn pd-admin-danger">Сменить пароль</button><div id="pdPasswordResult" class="pd-temp-password hidden"><label>Новый пароль</label><div class="pd-password-row"><code id="pdPasswordValue"></code><button type="button" id="pdCopyPassword" class="pd-admin-btn pd-admin-ghost">Копировать</button></div></div></div>
     <form id="pdVkForm" class="pd-admin-subcard"><h4>Привязка VK</h4><label for="pdVkUrl">Ссылка на страницу</label><input type="url" id="pdVkUrl" placeholder="https://vk.com/id123456" autocomplete="url"><button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить привязку</button></form>
     </div></section>
-  </div>
-  <div id="pdAdminChiefs" class="hidden">
-    <section class="pd-admin-card pd-chief-term-panel" aria-labelledby="pdChiefTermTitle">
-      <div class="pd-admin-card-head"><h3 id="pdChiefTermTitle">Сроки по таблице ПД</h3><a href="https://docs.google.com/spreadsheets/d/12_hevQ5hzcww3l8LQ2DYQ9wmfScp0YtRdYTUj-FAEgQ/edit?gid=1782955489#gid=1782955489" target="_blank" rel="noopener noreferrer">Открыть таблицу ↗</a></div>
-      <div class="pd-chief-term-grid" id="pdChiefTerms"></div>
-      <p class="pd-chief-term-state" id="pdChiefTermState" role="status">Загружаем сроки…</p>
-    </section>
-    <div class="pd-admin-grid" id="pdChiefEditor"></div>
   </div>
   <div id="pdAdminLeadership" class="hidden"><div id="pdLeadershipEditor"></div></div>
   <section id="pdAdminQuests" class="hidden" aria-label="Квесты и баллы"></section>
@@ -413,6 +372,8 @@ header.header a.brand.pd-unified-brand strong{
       <p class="pd-roles-hint" id="pdRolesEmptyHint">Сначала найди и выбери пользователя слева.</p>
     </div>
   </section>
+  </div>
+  </div>
 </section>
 
 <div class="shell"><section class="quick" id="services" aria-label="Разделы">
@@ -516,7 +477,10 @@ function readSharedSession(){return PoliceSession.get();}
 let token=readSharedSession(),user=null;
 const roles={developer:'Разработчик',admin:'Администратор',minister:'Министр',leader:'Лидер',senior:'Старший состав'};
 const dialog=$('pdLoginDialog');
-function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';PoliceRoleUI.decorateExisting(user);$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer','minister','leader'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');}
+function render(){const on=!!user;$('openLogin').classList.toggle('hidden',on);$('pdProfile').classList.toggle('hidden',!on);if(on){$('pdNick').textContent=user.nickname||user.login;$('pdRole').textContent=roles[user.role]||'Пользователь';$('pdAvatar').src=user.avatar_url||'png_police_site/profile.png';PoliceRoleUI.decorateExisting(user);$('pdAvatar').onerror=()=>{$('pdAvatar').onerror=null;$('pdAvatar').src='png_police_site/profile.png';}}$('pdAdminOpen').classList.toggle('hidden',!on||!['admin','developer','minister','leader'].includes(user?.role));if(!on)$('pdAdminSection').classList.add('hidden');
+ else if(!$('pdAdminOpen').classList.contains('hidden')&&$('pdAdminSection').classList.contains('hidden'))
+   window.dispatchEvent(new Event('pd-admin-ready'));
+}
 async function api(path,opts={}){const headers={'Accept':'application/json'};if(opts.data!==undefined)headers['Content-Type']='application/json';if(opts.auth)headers.Authorization='Bearer '+token;
 const response=await fetch(API+path,{method:opts.method||'GET',headers,body:opts.data===undefined?undefined:JSON.stringify(opts.data)});let json={};try{json=await response.json()}catch{}if(!response.ok||json.ok===false)throw Object.assign(new Error(json.error||'Ошибка сервера ('+response.status+')'),{status:response.status});return json;}
 async function restore(){if(!token){render();return;}try{user=(await window.PolicePublicData.admin('me')).user;restore.failures=0;}catch(e){if(e.status===401){clearSharedSession();token=null;user=null;restore.failures=0;}else{console.warn('[Police] Не удалось проверить сессию, авторизация сохранена:',e.message);restore.failures=(restore.failures||0)+1;if(restore.failures<=3)setTimeout(()=>{if(token&&!user)restore()},2500*restore.failures);}}render();}window.addEventListener('online',()=>{if(token&&!user){restore.failures=0;restore()}});
@@ -543,7 +507,13 @@ const roleLabels={developer:'Разработчик',admin:'Администра
 const defaultAvatar='png_police_site/profile.png';
 let users=[],selected=null,leadership=[],chiefs=[],currentTab='users',adminUser=null;
 let leadershipLayout=null,leadershipLoad=null,movingLeadership=false;
-let chiefTermSnapshot=null,chiefsLoad=null,chiefsLoaded=false;
+let usersReady=false,usersLoad=null;
+const chiefDepartment={leader_lspd:'LSPD',leader_sfpd:'SFPD',leader_lvpd:'LVPD'};
+const adminTabs=['users','leadership','roles','range','prizes','cases','quests'];
+function linkedTab(){
+ const hash=location.hash.slice(1);
+ return hash==='chiefs'?'leadership':adminTabs.includes(hash)?hash:currentTab;
+}
 const error=msg=>$('pdAdminError').textContent=msg||'';
 async function req(path,method='GET',data){
  const token=PoliceSession.get();
@@ -561,28 +531,15 @@ async function openAdmin(){
  $('pdAdminSection').classList.remove('hidden');
  $('pdProfileMenu').classList.add('hidden');
  $('pdAdminSection').scrollIntoView({behavior:'smooth',block:'start'});
- // Render the selected panel immediately; network requests must not block tab clicks.
- setTab(location.hash==='#quests'?'quests':location.hash==='#range'?'range':location.hash==='#prizes'?'prizes':location.hash==='#cases'?'cases':location.hash==='#roles'?'roles':location.hash==='#chiefs'?'chiefs':location.hash==='#leadership'?'leadership':currentTab);
  try{
-   const me=await window.PolicePublicData.admin('me');
-   adminUser=me.user;
-   if(!['developer','admin','minister','leader'].includes(adminUser?.role)) throw Error('Недостаточно прав');
-   if(adminUser.role==='minister'||adminUser.role==='leader'){
-     document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.toggle('hidden',adminUser.role==='leader'?b.dataset.pdTab!=='quests':!['roles','quests'].includes(b.dataset.pdTab)));
-     setTab(adminUser.role==='leader'?'quests':location.hash==='#roles'?'roles':'quests');
-     return;
-   }
-   document.querySelectorAll('[data-pd-tab]').forEach(b=>b.classList.remove('hidden'));
-   if(location.hash==='#quests') {setTab('quests');return;}
-   if(location.hash==='#range') {setTab('range');return;}
-   if(location.hash==='#prizes') {setTab('prizes');return;}
-   if(location.hash==='#cases') {setTab('cases');return;}
-   if(location.hash==='#roles') {setTab('roles');return;}
-   if(location.hash==='#chiefs') {setTab('chiefs');await loadChiefs();return;}
-   if(location.hash==='#leadership') {setTab('leadership');await loadLeadership();return;}
-   const results=await Promise.allSettled([loadUsers(),loadChiefs(),loadLeadership()]);
-   const failed=results.find(r=>r.status==='rejected');
-   if(failed) error('Некоторые данные не загрузились: '+failed.reason.message);
+   adminUser=(await window.PolicePublicData.admin('me')).user;
+   if(!['developer','admin','minister','leader'].includes(adminUser?.role))throw Error('Недостаточно прав');
+   document.querySelectorAll('[data-pd-tab]').forEach(button=>{
+     const tab=button.dataset.pdTab;
+     button.classList.toggle('hidden',adminUser.role==='leader'?tab!=='quests':
+       adminUser.role==='minister'&&!['roles','quests'].includes(tab));
+   });
+   setTab(linkedTab());
  }catch(e){
    error(e.message||'Ошибка загрузки админки');
    if(/прав|Войдите|401|403/i.test(e.message||'')) $('pdAdminSection').classList.add('hidden');
@@ -621,49 +578,32 @@ $('pdVkForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;
  error('');try{const r=await req('/api/portal/admin/users/'+encodeURIComponent(selected.login)+'/vk','PUT',{vk_url:$('pdVkUrl').value.trim()});selected.vk_url=r.vk_url;showMessage('Привязка VK сохранена');}catch(x){error(x.message)}
 };
 function showMessage(text){error('');const toast=$('toast');toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}
-function renderChiefTerms(){
- const {describe,days,sameNickname}=window.PoliceChiefTerms;
- $('pdChiefTerms').innerHTML=(chiefTermSnapshot?.entries||[]).map(entry=>{
-   const term=describe(entry.appointed_on);
-   if(!term)return '';
-   const current=chiefs.find(chief=>chief.department===entry.department)?.nickname;
-   const mismatch=current&&!sameNickname(current,entry.nickname);
-   return `<article class="pd-chief-term-row" data-term-department="${escape(entry.department)}">
-     <small>${entry.department==='MINISTRY'?'Министерство':escape(entry.department)}</small>
-     <strong>${escape(entry.nickname)}</strong>
-     <small>Назначение ${term.appointment} · На посту ${days(term.elapsed)}</small>
-     ${mismatch?'<p class="pd-chief-term-mismatch">В карточке активности: '+escape(current)+'</p>':''}
-   </article>`;
- }).join('');
-}
-function loadChiefs(){
- if(!chiefsLoad){
-   chiefsLoad=Promise.allSettled([window.PolicePublicData.chiefs(),window.PolicePublicData.chiefTerms()])
-     .then(([activity,terms])=>{
-       if(terms.status==='fulfilled')chiefTermSnapshot=terms.value;
-       if(activity.status==='fulfilled'){
-         chiefs=activity.value.items;chiefsLoaded=true;renderChiefEditors();
-       }
-       renderChiefTerms();
-       $('pdChiefTermState').textContent=terms.status==='rejected'?'Таблица пока недоступна':
-         chiefTermSnapshot.entries.length?'Обновлено '+new Intl.DateTimeFormat('ru-RU',{timeZone:'Europe/Moscow',dateStyle:'short',timeStyle:'short'}).format(new Date(chiefTermSnapshot.updated_at))+' МСК':
-         'В таблице нет назначенных лидеров';
-       if(activity.status==='rejected')throw activity.reason;
-     }).finally(()=>{chiefsLoad=null});
- }
- return chiefsLoad;
-}
 function loadLeadership(){
  if(!leadershipLoad){
-   leadershipLoad=Promise.all([window.PolicePublicData.leadership(),window.PolicePublicData.leadershipOrder()])
-     .then(([items,layout])=>{leadership=items;leadershipLayout=layout;renderLeadershipEditors()})
-     .finally(()=>{leadershipLoad=null});
+   leadershipLoad=Promise.all([
+     window.PolicePublicData.leadership(),window.PolicePublicData.leadershipOrder(),window.PolicePublicData.chiefs()
+   ]).then(([items,layout,activity])=>{
+     leadership=items;leadershipLayout=layout;chiefs=activity.items;renderLeadershipEditors();
+   }).finally(()=>{leadershipLoad=null});
  }
  return leadershipLoad;
 }
 function editor({id,name,avatar_url='',extra='',fields,controls=''}){
- const html=fields.map(f=>`<label for="${id}-${f.key}">${escape(f.label)}</label>${f.type==='select'?`<select id="${id}-${f.key}" name="${f.key}">${f.options.map(o=>`<option value="${o[0]}" ${o[0]===f.value?'selected':''}>${escape(o[1])}</option>`).join('')}</select>`:`<input id="${id}-${f.key}" name="${f.key}" type="${f.type||'text'}" maxlength="${f.max||100}" value="${escape(f.value??'')}" ${f.placeholder?`placeholder="${escape(f.placeholder)}"`:''}>`}`).join('');
- return `<div class="pd-admin-card" data-pd-editor="${id}"><div class="pd-admin-card-head"><h3>${escape(name)}</h3>${controls}</div><div class="pd-edit-avatar"><img src="${escape(avatar_url||defaultAvatar)}" alt=""><span>${escape(extra)}</span></div><form class="pd-admin-form" data-pd-save="${id}">${html}<button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить</button></form></div>`;
+ const html=fields.map(field=>{
+   const fieldId=id+'-'+field.key;
+   const label=`<label for="${fieldId}">${escape(field.label)}</label>`;
+   if(field.type==='select'){
+     return label+`<select id="${fieldId}" name="${field.key}">${field.options.map(([value,caption])=>`<option value="${value}" ${value===field.value?'selected':''}>${escape(caption)}</option>`).join('')}</select>`;
+   }
+   const input=`<input id="${fieldId}" name="${field.key}" type="${field.type||'text'}" maxlength="${field.max||100}"
+     value="${escape(field.value??'')}" ${field.attributes||''}>`;
+   return label+(field.sheet?`<div class="pd-admin-field-plus">${input}
+     <button class="pd-sheet-plus" type="button" data-sheet-field="${field.key}"
+       title="Получить данные из таблицы" aria-label="Получить данные из таблицы: ${escape(field.label)}">+</button>
+   </div>`:input);
+ }).join('');
+ const sheetFeedback=fields.some(field=>field.sheet)?'<p class="pd-sheet-feedback" data-sheet-status role="status" aria-live="polite"></p>':'';
+ return `<div class="pd-admin-card" data-pd-editor="${id}"><div class="pd-admin-card-head"><h3>${escape(name)}</h3>${controls}</div><div class="pd-edit-avatar"><img src="${escape(avatar_url||defaultAvatar)}" alt=""><span>${escape(extra)}</span></div><form class="pd-admin-form" data-pd-save="${id}">${html}${sheetFeedback}<button type="submit" class="pd-admin-btn pd-admin-primary">Сохранить</button></form></div>`;
 }
 function setupEditors(parent,save){
  parent.querySelectorAll('img').forEach(img=>image(img,img.getAttribute('src')));
@@ -686,20 +626,18 @@ function setupEditors(parent,save){
  }
 
  if(avatar)avatar.addEventListener('input',()=>{const v=avatar.value.trim();if(!v||/^https:\/\//i.test(v))image(preview,v)});
+ const dateInput=form.elements.namedItem('appointed_on'), daysInput=form.elements.namedItem('elapsed_days');
+ if(dateInput&&daysInput){
+   const {describe,dateForElapsed}=window.PoliceChiefTerms;
+   dateInput.addEventListener('input',()=>{daysInput.value=describe(dateInput.value)?.elapsed??''});
+   daysInput.addEventListener('input',()=>{
+     dateInput.value=daysInput.value===''?'':dateForElapsed(daysInput.valueAsNumber);
+   });
+ }
  form.onsubmit=async e=>{e.preventDefault();if(form.dataset.avatarBusy==='1')return;error('');const data=Object.fromEntries(new FormData(form));const btn=form.querySelector('button[type=submit]');btn.disabled=true;
  try{await save(form.dataset.pdSave,data);showMessage('Изменения сохранены');window.pdRefreshPeople?.();}catch(x){error(x.message)}finally{btn.disabled=false}
  };
  });
-}
-function renderChiefEditors(){
- $('pdChiefEditor').innerHTML=['LSPD','SFPD','LVPD'].map(d=>{
- const x=chiefs.find(c=>c.department===d)||{};
- return editor({id:d,name:'Лидер '+d,avatar_url:x.avatar_url,extra:'Активность шефов',fields:[
- {key:'nickname',label:'Ник',value:x.nickname||'',max:64},
- {key:'account_number',label:'Номер аккаунта',value:x.account_number||'',max:20},
- {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||'',type:'url',max:700,placeholder:'https://...'}
- ]});}).join('');
- setupEditors($('pdChiefEditor'),async(dept,data)=>{const r=await req('/api/portal/admin/chiefs/'+dept,'PUT',data);const i=chiefs.findIndex(x=>x.department===dept);if(i>=0)chiefs[i]=r.item;renderChiefEditors();renderChiefTerms();});
 }
 function renderLeadershipEditors(){
  const host=$('pdLeadershipEditor');
@@ -708,19 +646,39 @@ function renderLeadershipEditors(){
  <h3>${line.label}</h3><div class="pd-admin-grid">${line.ids.map(slot=>{
  const label=labels[slot];
  const x=leadership.find(c=>c.slot===slot)||{};
+ const department=chiefDepartment[slot];
+ const chief=chiefs.find(c=>c.department===department)||{};
+ const term=window.PoliceChiefTerms.describe(chief.appointed_on);
+ const maxDate=window.PoliceChiefTerms.dateForElapsed(0);
  const controls=`<div class="pd-leadership-order-controls">
   <button type="button" class="pd-admin-btn pd-admin-ghost" data-pd-move="-1" aria-label="Переместить ${escape(label)} влево">←</button>
   <button type="button" class="pd-admin-btn pd-admin-ghost" data-pd-move="1" aria-label="Переместить ${escape(label)} вправо">→</button>
  </div>`;
- return editor({id:slot,name:label,avatar_url:x.avatar_url,extra:'Руководство полиции',controls,fields:[
- {key:'nickname',label:'Ник',value:x.nickname||'',max:64},
- {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||'',type:'url',max:700},
+ return editor({id:slot,name:label,avatar_url:x.avatar_url||chief.avatar_url,extra:'Руководство полиции',controls,fields:[
+ {key:'nickname',label:'Ник',value:x.nickname||chief.nickname||'',max:64,sheet:Boolean(department)},
+ ...(department?[
+   {key:'account_number',label:'Номер аккаунта для АО',value:chief.account_number||'',max:20,attributes:'inputmode="numeric" pattern="[0-9]{1,20}"'},
+   {key:'appointed_on',label:'Дата назначения',value:chief.appointed_on||'',type:'date',attributes:'max="'+maxDate+'"',sheet:true},
+   {key:'elapsed_days',label:'Дней на посту',value:term?.elapsed??'',type:'number',attributes:'min="0" step="1"',sheet:true}
+ ]:[]),
+ {key:'avatar_url',label:'Ссылка на аватарку',value:x.avatar_url||chief.avatar_url||'',type:'url',max:700},
  {key:'vk_url',label:'VK',value:x.vk_url||'',type:'url',max:250},
  {key:'forum_url',label:'Ссылка на форум',value:x.forum_url||'',type:'url',max:700},
  ...(slot==='responsible'?[{key:'gender',label:'Обращение',type:'select',value:x.gender||'male',options:[['male','Ответственный'],['female','Ответственная']]}]:[]),
 
  ]});}).join('')}</div></section>`).join('');
- setupEditors(host,async(slot,data)=>{data.gender=data.gender||leadership.find(x=>x.slot===slot)?.gender||'male';const r=await req('/api/portal/admin/leadership/'+slot,'PUT',data);const i=leadership.findIndex(x=>x.slot===slot);if(i>=0)leadership[i]=r.item;applyLeadershipOrder();});
+ setupEditors(host,async(slot,data)=>{
+   data.gender=data.gender||leadership.find(x=>x.slot===slot)?.gender||'male';
+   if(chiefDepartment[slot]){
+     data.appointed_on=data.appointed_on||null;
+     delete data.elapsed_days;
+   }
+   const r=await req('/api/portal/admin/leadership/'+slot,'PUT',data);
+   const i=leadership.findIndex(x=>x.slot===slot);
+   if(i>=0)leadership[i]=r.item;
+   if(r.chief)chiefs=chiefs.filter(x=>x.department!==r.chief.department).concat(r.chief);
+   applyLeadershipOrder();
+ });
  applyLeadershipOrder();
 }
 function applyLeadershipOrder(){
@@ -737,6 +695,11 @@ function applyLeadershipOrder(){
  }
 }
 $('pdLeadershipEditor').addEventListener('click',async event=>{
+ const inputButton=event.target.closest('[data-sheet-field]');
+ if(inputButton){
+   await fillFromSheet(inputButton);
+   return;
+ }
  const button=event.target.closest('[data-pd-move]');
  if(!button||movingLeadership)return;
  const card=button.closest('[data-pd-editor]');
@@ -761,44 +724,77 @@ $('pdLeadershipEditor').addEventListener('click',async event=>{
    focus?.focus({preventScroll:true});
  }
 });
-function positionTabLine(){
- const tabs=document.querySelector('.pd-admin-tabs'),line=tabs?.querySelector('.pd-admin-tab-indicator');
- const active=tabs?.querySelector('[data-pd-tab].selected');
- if(!tabs||!line||!active)return;
- const width=Math.max(26,Math.min(88,active.offsetWidth-22));
- line.style.width=width+'px';
- line.style.left=(active.offsetLeft+(active.offsetWidth-width)/2)+'px';
+async function fillFromSheet(button){
+ const form=button.closest('form');
+ const field=button.dataset.sheetField;
+ const department=chiefDepartment[form.dataset.pdSave];
+ const feedback=form.querySelector('[data-sheet-status]');
+ button.disabled=true;
+ feedback.textContent='';
+ try{
+   const snapshot=await window.PolicePublicData.chiefTerms();
+   const entry=snapshot.entries.find(row=>row.department===department);
+   const term=window.PoliceChiefTerms.describe(entry?.appointed_on);
+   if(!term)throw Error('Для этого департамента нет действующей записи');
+   const input=form.elements.namedItem(field), nickname=form.elements.namedItem('nickname');
+   const matches=window.PoliceChiefTerms.sameNickname(nickname.value,entry.nickname);
+   if(field!=='nickname'&&!matches)throw Error('Срок указан для '+entry.nickname+'. Сначала подставьте его ник.');
+   if(field==='nickname'&&!matches&&nickname.value.trim()){
+     form.elements.namedItem('account_number').value='';
+     form.elements.namedItem('appointed_on').value='';
+     form.elements.namedItem('elapsed_days').value='';
+     feedback.textContent='Ник подставлен. Укажите номер аккаунта и дату назначения.';
+   }
+   input.value={nickname:entry.nickname,appointed_on:entry.appointed_on,elapsed_days:term.elapsed}[field];
+   input.dispatchEvent(new Event('input',{bubbles:true}));
+ }catch(e){feedback.textContent=e.message}
+ finally{button.disabled=false}
 }
 function setTab(tab){
  if(adminUser?.role==='leader')tab='quests';
  if(adminUser?.role==='minister'&&!['roles','quests'].includes(tab))tab='quests';
- const allowed=['users','chiefs','leadership','roles','range','prizes','cases','quests'];if(!allowed.includes(tab))return;
+ if(!adminTabs.includes(tab))return;
  currentTab=tab;
  document.querySelectorAll('[data-pd-tab]').forEach(b=>{
    const active=b.dataset.pdTab===tab;
    b.classList.toggle('selected',active);
    b.setAttribute('aria-selected',String(active));
+   b.tabIndex=active?0:-1;
  });
  $('pdAdminUsers').classList.toggle('hidden',tab!=='users');
- $('pdAdminChiefs').classList.toggle('hidden',tab!=='chiefs');
  $('pdAdminLeadership').classList.toggle('hidden',tab!=='leadership');
  $('pdAdminRoles').classList.toggle('hidden',tab!=='roles');
  $('pdAdminRange').classList.toggle('hidden',tab!=='range'&&tab!=='prizes');
  $('pdAdminRange').dataset.view=tab==='range'?'settings':'prizes';
  $('pdAdminCases').classList.toggle('hidden',tab!=='cases');
  $('pdAdminQuests').classList.toggle('hidden',tab!=='quests');
- error('');requestAnimationFrame(positionTabLine);
- if(tab==='chiefs'&&adminUser&&!chiefsLoaded)loadChiefs().catch(e=>error(e.message));
+ error('');
+ if(tab==='users'&&adminUser&&!usersReady&&!usersLoad){
+   usersLoad=loadUsers().then(()=>{usersReady=true}).catch(e=>error(e.message)).finally(()=>{usersLoad=null});
+ }
  if(tab==='leadership'&&adminUser&&!leadershipLayout)loadLeadership().catch(e=>error(e.message));
  if(tab==='roles')window.PoliceRoleManager?.init();
  if(tab==='quests')window.PoliceQuestAdmin?.init();
  if(tab==='range'||tab==='prizes')window.PoliceRangeAdmin?.init();
 }
-document.querySelectorAll('.pd-admin-tabs [data-pd-tab]').forEach(b=>{
- b.onclick=()=>setTab(b.dataset.pdTab);
+const sidebar=document.querySelector('.pd-admin-sidebar');
+sidebar.addEventListener('click',event=>{
+ const button=event.target.closest('[data-pd-tab]');
+ if(button&&adminUser)setTab(button.dataset.pdTab);
 });
-window.addEventListener('resize',()=>requestAnimationFrame(positionTabLine));
-window.addEventListener('hashchange',()=>{if(location.hash==='#roles')setTab('roles');if(location.hash==='#chiefs')setTab('chiefs');if(location.hash==='#leadership')setTab('leadership');if(location.hash==='#range')setTab('range');if(location.hash==='#prizes')setTab('prizes');if(location.hash==='#cases')setTab('cases');if(location.hash==='#quests')setTab('quests');});
+sidebar.addEventListener('keydown',event=>{
+ if(!['ArrowUp','ArrowDown','Home','End'].includes(event.key)||!adminUser)return;
+ const buttons=[...sidebar.querySelectorAll('[data-pd-tab]:not(.hidden)')];
+ const index=buttons.indexOf(document.activeElement);
+ if(index<0)return;
+ event.preventDefault();
+ const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:
+   (index+(event.key==='ArrowUp'?-1:1)+buttons.length)%buttons.length;
+ setTab(buttons[next].dataset.pdTab);
+ buttons[next].focus();
+});
+window.addEventListener('hashchange',()=>{if(adminUser)setTab(linkedTab())});
+window.addEventListener('pd-admin-ready',openAdmin);
 if(location.pathname.endsWith('/admin.html'))openAdmin();
 window.addEventListener('storage',e=>{if(e.key==='pd_site_token'&&!e.newValue){selected=null;$('pdAdminSection').classList.add('hidden')}});
 })();
