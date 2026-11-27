@@ -142,6 +142,29 @@
     exec('insertHTML',node.outerHTML);
   }
 
+  function insertSpoiler() {
+    const selection = window.getSelection();
+    const range = selection.getRangeAt(0);
+    const node = range.startContainer;
+    const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+    const block = element.closest('p,h2,h3,h4,h5,h6,pre,blockquote,summary');
+    const details = document.createElement('details');
+    details.open = true;
+    const summary = document.createElement('summary');
+    summary.textContent = 'Скрытый текст';
+    const body = document.createElement(range.collapsed ? 'p' : 'div');
+    if (range.collapsed) body.textContent = 'Текст блока';
+    else body.append(range.extractContents());
+    details.append(summary,body);
+
+    // insertHTML flattens the summary in Chromium's editing host.
+    if (block && editor.contains(block)) block.after(details);
+    else range.insertNode(details);
+    selection.selectAllChildren(body);
+    rememberSelection();
+    markDirty();
+  }
+
   function tool(command, value) {
     if (busy || !current) return;
     if (command === 'link') {
@@ -173,18 +196,9 @@
 
     restoreSelection();
     switch (command) {
-      case 'spoiler': {
-        const selected = window.getSelection().toString();
-        const details = document.createElement('details');
-        details.open = true;
-        const summary = document.createElement('summary');
-        summary.textContent = 'Скрытый текст';
-        const paragraph = document.createElement('p');
-        paragraph.textContent = selected || 'Текст блока';
-        details.append(summary,paragraph);
-        insert(details);
+      case 'spoiler':
+        insertSpoiler();
         break;
-      }
       case 'tab': {
         const tab = document.createElement('span');
         tab.className = 'handbook-tab';
